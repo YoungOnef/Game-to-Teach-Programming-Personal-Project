@@ -627,7 +627,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2100463267}
         m_TargetAssemblyTypeName: NewScript, Assembly-CSharp
-        m_MethodName: setText
+        m_MethodName: inputText
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2954,10 +2954,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userOutText: {fileID: 448724147}
-  userInputField: {fileID: 1487299368}
-  Input1: 1
-  Input2: 10
-  Output: 0
+  inputField: {fileID: 1487299366}
+  ScriptText: 
 --- !u!1 &2131366135
 GameObject:
   m_ObjectHideFlags: 0

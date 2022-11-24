@@ -9,69 +9,53 @@ public class NewScript : MonoBehaviour
 {
 
     public TextMeshProUGUI userOutText;
-    public TMP_InputField userInputField;
-    public int Input1 = 10;
-    public int Input2 = 10;
-    public int Output;
+    //public TMP_InputField userInputField;
+    public GameObject inputField;
 
-    private Script enviroment;
+    public string ScriptText;
+
     void Start()
     {
-        Debug.Log("script has started");
-        Script.DefaultOptions.DebugPrint = (s) => Debug.Log(s);
-
-        enviroment = new Script();
-
-        string tmpstring = @"
-        print('We are in MoonSharp Interpreter')
-        
-        Output = 10 + 10
-
-        print('we are in a function')
-        print(Output)
-        
-        
-        ";
-        //*/
-        //defing the code
-        // string testScript = "print('Hello world')";
-        //Debug.Log("Total ", Output);
-        //running the script
-        DynValue ret = enviroment.DoString(tmpstring);
-       // Debug.Log(ret.Type);
-
+        //string text = inputField.GetComponent<TMP_InputField>().text;
+        /*StartLua(@"
+        function test( n )
+            return n * 2
+        end
+        ");
+        */
     }
-
-
-
-    public void setText()
+    public void inputText()
     {
-        userOutText.text = userInputField.text;
+        string script = inputField.GetComponent<TMP_InputField>().text;
+        Debug.Log("script: " + script);
 
+
+        StartLua (script);
     }
 
-    public void resetText()
+
+    public void StartLua(string rawLuaCode)
     {
-        userInputField.text = "";
+        //creating a new script Object
+        Script myLuaScript = new Script();
+        //grabbing the result and run the script
+        DynValue result = myLuaScript.DoString(rawLuaCode);
+
+        //displaying the result
+        Debug.Log(result.Number);
+
+        double number = result.Number;
+        setText(number);
+        //calling the function and passing a number
+        //result = myLuaScript.Call(myLuaScript.Globals["test"],20);
+
+        //displaying the result
+        //Debug.Log(result.Number);
+
     }
+    public void setText(double number)
+    {
+        userOutText.text = number.ToString();
 
-
+    }
 }
-
-/* working
- * 
-        private Script enviroment;
-    void Start()
-    {
-        Debug.Log("script has started");
-        Script.DefaultOptions.DebugPrint = (s) => Debug.Log(s);
-
-        enviroment = new Script();
-
-        string testScript = "print('Hello world')";
-
-        DynValue ret = enviroment.DoString(testScript);
-        //Debug.Log(ret.Type);
-
-	}
-*/
