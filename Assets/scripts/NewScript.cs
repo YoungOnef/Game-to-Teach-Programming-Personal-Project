@@ -40,22 +40,45 @@ public class NewScript : MonoBehaviour
         Script myLuaScript = new Script();
         //grabbing the result and run the script
         DynValue result = myLuaScript.DoString(rawLuaCode);
-
+        
+        
+        Debug.Log("result.Type");
+        Debug.Log(result.Type);
+        //userOutText.text = result.ToString();
         //displaying the result
-        Debug.Log(result.Number);
 
-        double number = result.Number;
-        setText(number);
-        //calling the function and passing a number
-        //result = myLuaScript.Call(myLuaScript.Globals["test"],20);
+        
+        if (result.Type == DataType.Number)
+        { 
+            Debug.Log(result.Number);
+            double number = result.Number;
+            setTextdouble(number);
+        
+        }
+        
+        if (result.Type == DataType.String)
+        {
+            Debug.Log(result.String);
+            string word = result.String;
+            //setText(word);
+            userOutText.text = word.ToString();
+        }
+            //calling the function and passing a number
+            //result = myLuaScript.Call(myLuaScript.Globals["test"],20);
 
-        //displaying the result
-        //Debug.Log(result.Number);
+            //displaying the result
+            //Debug.Log(result.Number);
 
-    }
-    public void setText(double number)
+        }
+    public void setTextdouble(double number)
     {
         userOutText.text = number.ToString();
+
+    }
+    public void setText(string word)
+    {
+        //Debug.Log("setText ", word);
+        userOutText.text = word.ToString();
 
     }
 }
