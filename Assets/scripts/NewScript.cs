@@ -7,16 +7,7 @@ using MoonSharp.Interpreter;
 
 public class NewScript : MonoBehaviour
 {
-    public bool Input1 = false;
-    public bool Input2 = false;
 
-    public bool Output1 = false;
-    public bool Output2 = false;
-
-    public Toggle togInput1;
-    public Toggle togInput2;
-    public Toggle togOutput1;
-    public Toggle togOutput2;
 
     public int number = 10;
 
@@ -41,7 +32,7 @@ public class NewScript : MonoBehaviour
         end
         ");
         */
-        print(toggler.GetComponent<Toggle>().isOn);
+        //print(toggler.GetComponent<Toggle>().isOn);
         //togInput1 = true;
     }
     public void inputText()
@@ -62,51 +53,17 @@ public class NewScript : MonoBehaviour
         //creating a new script Object
         Script myLuaScript = new Script();
 
-        //printing in the debug within unity
-        //myLuaScript.Options.DebugPrint = s => { Debug.Log(s); };
-
         //defining global veriable and sending the veriable
-        //myLuaScript.Globals["number"] = number;
+        myLuaScript.Globals["number"] = number;
 
-        myLuaScript.Globals["Input1"] = Input1;
-        myLuaScript.Globals["Input2"] = Input2;
-
-        myLuaScript.Globals["Output1"] = Output1;
-        myLuaScript.Globals["Output2"] = Output2;
-
-        //myLuaScript.Input1 = togInput1.isOn;
-
-
+        //running the script via lua
         DynValue result = myLuaScript.DoString(rawLuaCode);
 
-        Output1 = myLuaScript.Globals.Get("Output1").CastToBool();
-        Output2 = myLuaScript.Globals.Get("Output2").CastToBool();
+        //getting veriable back
+        int newnumber = (int)myLuaScript.Globals.Get("number").CastToNumber();
 
-        //Output1 = togOutput1.isOn;
-        //Output2 = togOutput2.isOn;
-
-        Debug.Log("Output1");
-        Debug.Log(Output1);
-        //Debug.Log("Output2");
-        //Debug.Log(Output2);
-        if (Output1 == true)
-        {
-            Output1 = togOutput1.isOn;
-        }
-        if (Output2 == true)
-        {
-            Output2 = togOutput2.isOn;
-        }
-        else
-        {
-            //Output2 = togOutput2.
-        }
-
-
-        //number = myLuaScript.Globals.Get("number").CastToNumber;
-
-        //Debug.Log("number");
-        //Debug.Log(number);
+        Debug.Log("newnumber");
+        Debug.Log(newnumber);
         //call the function, send the parameter, return it as defined veriable
         //result = myLuaScript.Call(myLuaScript.Globals["test"], 2);
 
