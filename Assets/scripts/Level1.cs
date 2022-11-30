@@ -8,6 +8,8 @@ using TMPro;
 public class Level1 : MonoBehaviour
 {
     public GameObject inputField;
+    public TMP_InputField userInputField;
+    public TextMeshProUGUI userOutText;
     public string ScriptText;
 
     [SerializeField]
@@ -29,12 +31,26 @@ public class Level1 : MonoBehaviour
 
     public void inputText()
     {
-        //getting text
-        string script = inputField.GetComponent<TMP_InputField>().text;
-        Debug.Log("script: " + script);
+        try
+        {
+            //getting text
+            string script = inputField.GetComponent<TMP_InputField>().text;
+            Debug.Log("script: " + script);
 
 
-        StartLua(script);
+            StartLua(script);
+            userOutText.text = "None Error messages from Lua";
+        }
+        catch (ScriptRuntimeException ex)
+        {
+            //example of error message
+            //return obj.calcHypotenuse(3, 4);
+            Debug.Log("Doh! An error occured! {0}");
+            Debug.Log(ex.DecoratedMessage);
+            string error = ex.DecoratedMessage.ToString();
+            userOutText.text = "An error occured!: \n" + error;
+        }
+
     }
     public void StartLua(string rawLuaCode)
     {
@@ -93,7 +109,10 @@ randomChannelThree = math.random()
 
         CubeRenderer.material.SetColor("_Color", newCubeColor);
 
-
+    }
+    public void resetText()
+    {
+        userInputField.text = "";
     }
 
 }
