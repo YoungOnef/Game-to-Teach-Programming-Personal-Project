@@ -12,7 +12,7 @@ public class NewScript : MonoBehaviour
     public int number = 10;
 
     public TextMeshProUGUI userOutText;
-    //public TMP_InputField userInputField;
+    public TMP_InputField userInputField;
     public GameObject inputField;
 
     public string ScriptText;
