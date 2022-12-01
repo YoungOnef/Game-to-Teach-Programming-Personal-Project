@@ -85,7 +85,7 @@ public class Level1 : MonoBehaviour
         myLuaScript.Globals["randomChannelThree"] = randomChannelThree;
 
 
-        //myLuaScript.Globals["MoveForward"] = (Func<void>)moveForward;
+        myLuaScript.Globals["MoveForward"] = (Action)moveForward;
         myLuaScript.Globals["Mul"] = (Func<int, int, int>)Mul;
 
         //running the script via lua
