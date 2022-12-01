@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using MoonSharp.Interpreter;
 using TMPro;
+using System;
 
 public class Level1 : MonoBehaviour
 {
@@ -19,14 +20,20 @@ public class Level1 : MonoBehaviour
 
     private Color newCubeColor;
 
-    private float randomChannelOne, randomChannelTwo, RandomChannelThree;
+    private float randomChannelOne, randomChannelTwo, randomChannelThree;
+
+    public float speed = 2;
 
     // Start is called before the first frame update
     void Start()
     {
         CubeRenderer = cube.GetComponent<Renderer>();
+        
     }
-
+    void Update()
+    {
+        
+    }
 
 
     public void inputText()
@@ -51,7 +58,20 @@ public class Level1 : MonoBehaviour
             userOutText.text = "An error occured!: \n" + error;
         }
 
+    }    
+    private void moveForward()
+    {
+         cube.transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
+
+    private static int Mul(int a, int b)
+    {
+        int num = a + b;
+        Debug.Log("Sum: ");
+        Debug.Log(num);
+        return num;
+    }
+
     public void StartLua(string rawLuaCode)
     {
 
@@ -62,13 +82,23 @@ public class Level1 : MonoBehaviour
         //defining global veriable and sending the veriable
         myLuaScript.Globals["randomChannelOne"] = randomChannelOne;
         myLuaScript.Globals["randomChannelTwo"] = randomChannelTwo;
-        myLuaScript.Globals["RandomChannelThree"] = RandomChannelThree;
+        myLuaScript.Globals["randomChannelThree"] = randomChannelThree;
 
+
+        //myLuaScript.Globals["MoveForward"] = (Func<void>)moveForward;
+        myLuaScript.Globals["Mul"] = (Func<int, int, int>)Mul;
 
         //running the script via lua
         DynValue result = myLuaScript.DoString(rawLuaCode);
 
+
+        //result = myLuaScript.Call(myLuaScript.Globals["add"], 4,4);
         /* examples
+function add(num1,num2)
+     return Mul(num1,num2)
+end
+add(5,5)
+     
 randomChannelOne = 1
 randomChannelTwo = 0
 randomChannelThree = 1
@@ -91,21 +121,21 @@ randomChannelThree = math.random()
 
 
         //getting veriable back
-        float newrandomChannelOne = (float)myLuaScript.Globals.Get("randomChannelOne").CastToNumber();
-        float newrandomChannelTwo = (float)myLuaScript.Globals.Get("randomChannelTwo").CastToNumber();
-        float newRandomChannelThree = (float)myLuaScript.Globals.Get("randomChannelThree").CastToNumber();
+        randomChannelOne = (float)myLuaScript.Globals.Get("randomChannelOne").CastToNumber();
+        randomChannelTwo = (float)myLuaScript.Globals.Get("randomChannelTwo").CastToNumber();
+        randomChannelThree = (float)myLuaScript.Globals.Get("randomChannelThree").CastToNumber();
 
-        Debug.Log("newrandomChannelOne");
-        Debug.Log(newrandomChannelOne);
+        Debug.Log("randomChannelOne");
+        Debug.Log(randomChannelOne);
         
-        Debug.Log("newrandomChannelTwo");
-        Debug.Log(newrandomChannelTwo);
+        Debug.Log("randomChannelTwo");
+        Debug.Log(randomChannelTwo);
 
-        Debug.Log("newRandomChannelThree");
-        Debug.Log(newRandomChannelThree);
+        Debug.Log("randomChannelThree");
+        Debug.Log(randomChannelThree);
         
 
-        newCubeColor = new Color(newrandomChannelOne, newrandomChannelTwo, newRandomChannelThree, 1f);
+        newCubeColor = new Color(randomChannelOne, randomChannelTwo, randomChannelThree, 1f);
 
         CubeRenderer.material.SetColor("_Color", newCubeColor);
 
