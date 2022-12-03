@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using MoonSharp.Interpreter;
 using TMPro;
 using System;
+using System.IO;
+
 
 public class Level1 : MonoBehaviour
 {
@@ -28,11 +30,11 @@ public class Level1 : MonoBehaviour
     void Start()
     {
         CubeRenderer = cube.GetComponent<Renderer>();
-        
+
     }
     void Update()
     {
-        
+
     }
 
 
@@ -48,28 +50,19 @@ public class Level1 : MonoBehaviour
             StartLua(script);
             userOutText.text = "None Error messages from Lua";
         }
+        catch (SyntaxErrorException ex)
+        {
+            // if a syntax error was detected, display an error message to the user
+            Debug.Log("Syntax error: " + ex.Message);
+            userOutText.text = "Syntax error: " + ex.Message;
+        }
         catch (ScriptRuntimeException ex)
         {
-            //example of error message
-            //return obj.calcHypotenuse(3, 4);
-            Debug.Log("Doh! An error occured! {0}");
-            Debug.Log(ex.DecoratedMessage);
-            string error = ex.DecoratedMessage.ToString();
-            userOutText.text = "An error occured!: \n" + error;
+            // if a runtime error was detected, display an error message to the user
+            Debug.Log("Runtime error: " + ex.DecoratedMessage);
+            userOutText.text = "Runtime error: " + ex.DecoratedMessage;
         }
 
-    }    
-    private void moveForward()
-    {
-         cube.transform.Translate(Vector3.forward * speed * Time.deltaTime);
-    }
-
-    private static int Mul(int a, int b)
-    {
-        int num = a + b;
-        Debug.Log("Sum: ");
-        Debug.Log(num);
-        return num;
     }
 
     public void StartLua(string rawLuaCode)
@@ -85,38 +78,10 @@ public class Level1 : MonoBehaviour
         myLuaScript.Globals["randomChannelThree"] = randomChannelThree;
 
 
-        myLuaScript.Globals["MoveForward"] = (Action)moveForward;
-        myLuaScript.Globals["Mul"] = (Func<int, int, int>)Mul;
 
         //running the script via lua
         DynValue result = myLuaScript.DoString(rawLuaCode);
 
-
-        //result = myLuaScript.Call(myLuaScript.Globals["add"], 4,4);
-        /* examples
-function add(num1,num2)
-     return Mul(num1,num2)
-end
-add(5,5)
-     
-randomChannelOne = 1
-randomChannelTwo = 0
-randomChannelThree = 1
-
-
-math.randomseed(os.time())
-math.random()
-randomChannelOne = math.random(0.0,1)
-randomChannelTwo = math.random(0.0,1)
-randomChannelThree = math.random(0.0,1)
-
-
-math.randomseed(os.time())
-math.random()
-randomChannelOne = math.random()
-randomChannelTwo = math.random()
-randomChannelThree = math.random()
-         */
 
 
 
@@ -127,13 +92,13 @@ randomChannelThree = math.random()
 
         Debug.Log("randomChannelOne");
         Debug.Log(randomChannelOne);
-        
+
         Debug.Log("randomChannelTwo");
         Debug.Log(randomChannelTwo);
 
         Debug.Log("randomChannelThree");
         Debug.Log(randomChannelThree);
-        
+
 
         newCubeColor = new Color(randomChannelOne, randomChannelTwo, randomChannelThree, 1f);
 
@@ -144,5 +109,33 @@ randomChannelThree = math.random()
     {
         userInputField.text = "";
     }
+
+    public void SaveScript(string fileName)
+    {
+
+        // create a new StreamWriter and open the file
+        StreamWriter writer = new StreamWriter(fileName);
+
+        // write the user's script to the file
+        writer.Write(userInputField.text);
+
+        // close the file
+        writer.Close();
+    }
+    public void LoadScript(string fileName)
+    {
+        // create a new StreamReader and open the file
+        StreamReader reader = new StreamReader(fileName);
+
+        // read the entire file into a string
+        string script = reader.ReadToEnd();
+
+        // close the file
+        reader.Close();
+
+        // set the user's input field to the script we just loaded
+        userInputField.text = script;
+    }
+
 
 }
