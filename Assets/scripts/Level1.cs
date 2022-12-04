@@ -19,7 +19,10 @@ public class Level1 : MonoBehaviour
     public TextMeshProUGUI userOutText;
     public TextMeshProUGUI userOutTextFunctionDispaly;
 
-    private GameObject clickedObject;
+    // UI element for displaying the name of the clicked object
+    public TextMeshProUGUI objectNameText;
+    // The prefab for the new GameObject
+    public GameObject prefab;
     // The cube object
     [SerializeField]
     private GameObject cube;
@@ -66,6 +69,28 @@ public class Level1 : MonoBehaviour
     {
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
+
+        // Check if the player has clicked the mouse
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Get the mouse position in screen coordinates
+            Vector2 mousePos = Input.mousePosition;
+
+            // Create a ray from the camera to the mouse position
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+            // Use the ray to check if it intersects with any colliders in the scene
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // If the ray intersects with a collider, create a new GameObject at the hit point
+                GameObject newObject = Instantiate(prefab, hit.point, Quaternion.identity);
+
+                // Set the name of the new GameObject to the name of the clicked object
+                newObject.name = hit.transform.gameObject.name;
+                
+            }
+        }
     }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
@@ -260,11 +285,10 @@ public class Level1 : MonoBehaviour
         // Create a new instance of the Lua interpreter
         Script lua = new Script();
 
-        // Register the "this" keyword so that the script can access members of this class
+
         //lua.Globals["this"] = this;
 
-        // Register the "cube" object so that the script can access its properties and methods
-        //lua.Globals["cube"] = cube;
+        //lua.Globals["newCube"] = newCube;
 
         // Register the "print" function so that the script can print messages to the debug log
         lua.Globals["print"] = (Action<DynValue>)PrintToDebugLogAndTextArea; ;
@@ -315,6 +339,7 @@ public class Level1 : MonoBehaviour
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
     {
+
         // Register the "SetCubeColor" function
         lua.Globals["SetCubeColor"] = (Action<float, float, float>)SetCubeColor;
 
