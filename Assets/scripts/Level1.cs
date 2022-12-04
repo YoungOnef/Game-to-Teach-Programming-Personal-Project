@@ -12,90 +12,117 @@ using UnityEngine.SceneManagement;
 
 public class Level1 : MonoBehaviour
 {
+    // UI elements
     public GameObject inputField;
     public TMP_InputField userInputField;
+    public TextMeshProUGUI userOutTextForDebug;
     public TextMeshProUGUI userOutText;
-    public string ScriptText;
+    public TextMeshProUGUI userOutTextFunctionDispaly;
 
+    private GameObject clickedObject;
+    // The cube object
     [SerializeField]
     private GameObject cube;
+    private Renderer cubeRenderer;
 
-    private Renderer CubeRenderer;
 
+    // Variables for the cube's color and size
     private Color newCubeColor;
-
     private float randomChannelOne, randomChannelTwo, randomChannelThree;
-    string sceneName;
-    public float speed = 2;
-    public float cubeSize = 1.0f;
+    private float speed = 2;
+    //private float cubeSize = 1.0f;
 
-    //keeping all the functions in the list
+    // Variables for managing tasks
     private List<UnityAction> listOfTasks = new List<UnityAction>();
-    //keeping all time in the list
     private List<float> listOfTime = new List<float>();
-    private IEnumerator CurrnetTask;//CreateCorutine List 
-    UnityEvent unityEvent = new UnityEvent();// UnityEvents
+    private IEnumerator currentTask;
+    UnityEvent unityEvent = new UnityEvent();
+    // Create a UnityAction object that represents a method
+
+    // The name of the current scene
+    private string sceneName;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        CubeRenderer = cube.GetComponent<Renderer>();
+        GameObject newCube = GameObject.Find("cube");
+        //renderer = cube:GetComponent("Renderer")
+        // Get the renderer component of the cube
+        cubeRenderer = cube.GetComponent<Renderer>();
+
+        // Get the name of the current scene
         sceneName = SceneManager.GetActiveScene().name;
         sceneName += ".txt";
+        
+        // Initialize the userOutTextFunctionDispaly variable
+        //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
+
 
     }
+    // Update is called once per frame
     void Update()
     {
+        // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
     }
 
+    // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
     private IEnumerator RunCodeUntil(UnityAction callfunction, float waitTime = 0)
     {
-        //adding Listener to untiy event
+
         unityEvent.AddListener(callfunction);
-        //waiting 
         yield return new WaitForSeconds(waitTime);
-        //remvoing from listening list 
+
+        // Remove the function from the UnityEvent
         unityEvent.RemoveListener(callfunction);
     }
-    //grabbing whole list from the tasks and loopint thourgh it
-    //Starting the timer, for the function and running it
+    // This method loops through the list of tasks and waits the specified amount of time before executing each one.
     private IEnumerator DoTask()
     {
-        //
         for (int i = 0; i < listOfTasks.Count; i++)
         {
-            StartCoroutine(RunCodeUntil(listOfTasks[i], listOfTime[i]));
+            string methodName = listOfTasks[i].Method.Name;
+            userOutTextFunctionDispaly.text = methodName;
+
+            // Add the task to the UnityEvent and wait the specified amount of time.
+            unityEvent.AddListener(listOfTasks[i]);
             yield return new WaitForSeconds(listOfTime[i]);
+
+            // Remove the task from the UnityEvent.
+            unityEvent.RemoveListener(listOfTasks[i]);
+
+
         }
 
-        //cleainign the list form data
+        // Clear the list of tasks and times.
         listOfTasks.Clear();
         listOfTime.Clear();
-        yield return true;
     }
     public void inputText()
     {
-
         //stopping all corotines
         StopAllCoroutines();
 
         listOfTasks = new List<UnityAction>();
         listOfTime = new List<float>();
+
         try
         {
-            //getting text
+            // Get the script text from the input field
             string script = inputField.GetComponent<TMP_InputField>().text;
             Debug.Log("script: " + script);
 
 
             StartLua(script);
-            userOutText.text = "None Error messages from Lua";
+            userOutTextForDebug.text = "None Error messages from Lua";
+
 
             if (listOfTasks.Count == listOfTime.Count)
             {
-                CurrnetTask = DoTask();
-                StartCoroutine(CurrnetTask);
+                currentTask = DoTask();
+                StartCoroutine(currentTask);
             }
             else
             {
@@ -107,19 +134,19 @@ public class Level1 : MonoBehaviour
         {
             // if a syntax error was detected, display an error message to the user
             Debug.Log("Syntax error: " + ex.Message);
-            userOutText.text = "Syntax error: " + ex.Message;
+            userOutTextForDebug.text = "Syntax error: " + ex.Message;
         }
         catch (ScriptRuntimeException ex)
         {
             // if a runtime error was detected, display an error message to the user
             Debug.Log("Runtime error: " + ex.DecoratedMessage);
-            userOutText.text = "Runtime error: " + ex.DecoratedMessage;
+            userOutTextForDebug.text = "Runtime error: " + ex.DecoratedMessage;
         }
         catch (Exception ex)
         {
             // if any other exception was thrown, display the error message to the user
             Debug.Log("Error: " + ex.Message);
-            userOutText.text = "Error: " + ex.Message;
+            userOutTextForDebug.text = "Error: " + ex.Message;
         }
         ResetCubePosition();
 
@@ -129,12 +156,14 @@ public class Level1 : MonoBehaviour
     {
         // set the cube color using the r, g, and b values provided by the user
         newCubeColor = new Color(r, g, b, 1f);
-        CubeRenderer.material.SetColor("_Color", newCubeColor);
+        cubeRenderer.material.SetColor("_Color", newCubeColor);
 
         // update the predefined color values so they match the new color of the cube
         randomChannelOne = r;
         randomChannelTwo = g;
         randomChannelThree = b;
+
+        userOutTextFunctionDispaly.text = "SetCubeColor";
     }
     public void SetCubeSize(float size)
     {
@@ -165,11 +194,148 @@ public class Level1 : MonoBehaviour
         listOfTasks.Add(MoveB);
         listOfTime.Add(Time);
     }
+    private void Wait(float Time = 1f)
+    {
+        
+        print($"Wait {Time}");
+        listOfTasks.Add(() => { });
+        listOfTime.Add(Time);
+
+    }
+    // The "move" function moves the cube by the specified amount in the specified direction.
+    private void Move(double distance, string direction, double delay)
+    {
+        Vector3 displacement = new Vector3(0, 0, 0);
+
+        // Set the displacement based on the specified direction
+        if (direction == "up")
+        {
+            displacement = new Vector3(0, (float)distance * speed * Time.deltaTime, 0);
+        }
+        else if (direction == "down")
+        {
+            displacement = new Vector3(0, -(float)distance * speed * Time.deltaTime, 0);
+        }
+        else if (direction == "left")
+        {
+            displacement = new Vector3(-(float)distance * speed * Time.deltaTime, 0, 0);
+        }
+        else if (direction == "right")
+        {
+            displacement = new Vector3((float)distance * speed * Time.deltaTime, 0, 0);
+        }
+        else if (direction == "forward")
+        {
+            displacement = new Vector3(0, 0, (float)distance * speed * Time.deltaTime);
+        }
+        else if (direction == "backward")
+        {
+            displacement = new Vector3(0, 0, -(float)distance * speed * Time.deltaTime);
+        }
+
+        // Add a task to the list of tasks that moves the cube by the specified amount in the specified direction.
+        // The task will wait for the specified delay plus the time delta before executing.
+        listOfTasks.Add(() => cube.transform.position += displacement);
+        listOfTime.Add((float)delay + Time.deltaTime);
+    }
+
+
+
     private void MoveF() => cube.transform.position += Vector3.forward * speed * Time.deltaTime;
     private void MoveR() => cube.transform.position += Vector3.right * speed * Time.deltaTime;
     private void MoveB() => cube.transform.position -= Vector3.forward * speed * Time.deltaTime;
     private void MoveL() => cube.transform.position -= Vector3.right * speed * Time.deltaTime;
-    public void StartLua(string rawLuaCode)
+
+
+    // This method sets the speed at which the cube moves.
+    private void SetCubeSpeed(float speed)
+    {
+        // Set the speed field to the specified value
+        userOutTextFunctionDispaly.text = "SetCubeSpeed";
+        this.speed = speed;
+    }
+
+    private void StartLua(string script)
+    {
+        // Create a new instance of the Lua interpreter
+        Script lua = new Script();
+
+        // Register the "this" keyword so that the script can access members of this class
+        //lua.Globals["this"] = this;
+
+        // Register the "cube" object so that the script can access its properties and methods
+        //lua.Globals["cube"] = cube;
+
+        // Register the "print" function so that the script can print messages to the debug log
+        lua.Globals["print"] = (Action<DynValue>)PrintToDebugLogAndTextArea; ;
+
+        // Register the custom functions that the script can call
+        RegisterFunctions(lua);
+
+        // Execute the script
+        lua.DoString(script);
+    }
+    // This method prints the type and value of the specified value to the debug log and the Text object
+    private void PrintToDebugLogAndTextArea(DynValue value)
+    {
+        // Get the type of the value
+        string type = value.Type.ToString();
+
+        // Convert the value to a string
+        string message = value.ToObject().ToString();
+
+        // Print the type and value to the debug log
+        Debug.Log("Printing " + type + " value from Lua script: " + message);
+
+        // Set the text of the Text object to the type and value
+        userOutText.SetText(type + ": " + message);
+    }
+    // The "turn" function turns the cube in the specified direction after waiting for the specified amount of time.
+
+    private void Turn(string direction)
+    {
+        Vector3 rotation = new Vector3(0, 0, 0);
+
+        // Set the rotation based on the specified direction
+        if (direction == "left")
+        {
+            rotation = new Vector3(0, -90, 0);
+        }
+        else if (direction == "right")
+        {
+            rotation = new Vector3(0, 90, 0);
+        }
+        else if (direction == "back")
+        {
+            rotation = new Vector3(0, 180, 0);
+        }
+        cube.transform.Rotate(rotation);
+    }
+
+    // This method registers the custom functions that the script can call.
+    private void RegisterFunctions(Script lua)
+    {
+        // Register the "SetCubeColor" function
+        lua.Globals["SetCubeColor"] = (Action<float, float, float>)SetCubeColor;
+
+        // Register the "SetCubeSize" function
+        lua.Globals["SetCubeSize"] = (Action<float>)SetCubeSize;
+
+        // Register the "SetCubeSpeed" function
+        lua.Globals["SetCubeSpeed"] = (Action<float>)SetCubeSpeed;
+
+        //functions to move the cube
+        lua.Globals["MoveForward"] = (Action<float>)MoveForward;
+        lua.Globals["moveRight"] = (Action<float>)MoveRight;
+        lua.Globals["MoveLeft"] = (Action<float>)MoveLeft;
+        lua.Globals["MoveBack"] = (Action<float>)MoveBack;
+        lua.Globals["Move"] = (Action<double, string,double>)Move;
+        lua.Globals["Turn"] = (Action<string>)Turn;
+        lua.Globals["Wait"] = (Action<float>)Wait;
+
+
+    }
+    public void StartLuaold(string rawLuaCode)
     {
 
 
@@ -182,8 +348,8 @@ public class Level1 : MonoBehaviour
         myLuaScript.Globals["randomChannelThree"] = randomChannelThree;
 
 
-        myLuaScript.Globals["setCubeColor"] = (Action<float, float, float>)((r, g, b) => SetCubeColor(r, g, b));
-        myLuaScript.Globals["SetCubeSize"] = (Action<float>)SetCubeSize;
+        //myLuaScript.Globals["setCubeColor"] = (Action<float, float, float>)((r, g, b) => SetCubeColor(r, g, b));
+        //myLuaScript.Globals["SetCubeSize"] = (Action<float>)SetCubeSize;
         myLuaScript.Globals["MoveForward"] = (Action<float>)MoveForward;
         myLuaScript.Globals["MoveRight"] = (Action<float>)MoveRight;
         myLuaScript.Globals["MoveLeft"] = (Action<float>)MoveLeft;
@@ -228,7 +394,7 @@ public class Level1 : MonoBehaviour
         // Clear the list of tasks and stop the current task, if any
         listOfTasks.Clear();
         listOfTime.Clear();
-        StopCoroutine(CurrnetTask);
+        StopCoroutine(currentTask);
     }
 
     public void ResetCubePosition()

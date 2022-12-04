@@ -1,182 +1,234 @@
-using MoonSharp.Interpreter;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using MoonSharp.Interpreter;
+using TMPro;
+using System;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using System.IO;
+using UnityEngine.SceneManagement;
 
-public class LuaCode : MonoBehaviour
+
+public class testing : MonoBehaviour
 {
-    [SerializeField] private GameObject cube;
-    [SerializeField] float speed = 1f;
+    // The UI input field where the user will enter their script.
+    public GameObject inputField;
+    public TMP_InputField userInputField;
+    public TextMeshProUGUI userOutText;
+
+    // The cube that will be manipulated by the script.
+    [SerializeField]
+    private GameObject cube;
+
+    // The renderer for the cube, used to change its color.
     private Renderer CubeRenderer;
 
-    Script myLuaScript;
+    // The new color that will be applied to the cube.
     private Color newCubeColor;
-    private Vector3 _colorVector3 = new Vector3(0, 0, 0);
-    private string Var1 = "Red";
-    private string Var2 = "Green";
-    private string Var3 = "Blue";
-    private string VarStings = "Variables:\n";
 
-    private Button run;
-    private Button restart;
-    private Label OutPutCode;
-    private TextField CodeField;
-    private Label Variables;
+    // Random values used to generate a new color for the cube.
+    private float randomChannelOne, randomChannelTwo, randomChannelThree;
+
+    // The name of the current scene.
+    string sceneName;
+
+    // The speed at which the cube will move.
+    public float speed = 2;
+
+    // The size of the cube.
+    public float cubeSize = 1.0f;
+
+    // The object responsible for executing Lua scripts.
+    private LuaInterpreter luaInterpreter;
+
+    // The object responsible for running a sequence of tasks defined by the script.
+    private TaskRunner taskRunner;
+
+    // The object responsible for handling user input and executing the script.
+    private InputHandler inputHandler;
+
+    // Start is called before the first frame update
+    // This method is called when the scene is first loaded.
+    void Start()
+    {
+        // Get the renderer for the cube.
+        CubeRenderer = cube.GetComponent<Renderer>();
+
+        // Get the name of the current scene.
+        sceneName = SceneManager.GetActiveScene().name;
+        sceneName += ".txt";
+
+        // Create the objects responsible for executing Lua scripts, running tasks, and handling input.
+        luaInterpreter = new LuaInterpreter();
+        taskRunner = new TaskRunner();
+        inputHandler = new InputHandler(luaInterpreter, taskRunner, userOutText);
+
+        // Set up the input field to call the input handler when the user enters text.
+        inputField.GetComponent<TMP_InputField>().onEndEdit.AddListener(inputHandler.HandleInput);
+    }
+
+    // This method is called once per frame.
+    private void Update()
+    {
+        // Update the task runner to run any tasks that are currently active.
+        taskRunner.RunTasks();
+    }
+}
+// This class is responsible for executing Lua scripts and registering the functions that the script can call.
+public class LuaInterpreter
+{
+    // The list of tasks that will be executed by the script.
     private List<UnityAction> listOfTasks = new List<UnityAction>();
+
+    // The list of times that each task will be executed after.
     private List<float> listOfTime = new List<float>();
-    private IEnumerator CurrnetTask;//CreateCorutine List
-    UnityEvent unityEvent = new UnityEvent();// UnityEvents
 
-    void Update()
+    // This method initializes the interpreter and executes the given script.
+    public void StartLua(string script)
     {
-        //Run All Added Events PerUpdate
-        unityEvent.Invoke();
-    }
-    private IEnumerator RunCodeUntil(UnityAction coll, float waitTime = 0)
-    {
-        unityEvent.AddListener(coll);
-        yield return new WaitForSeconds(waitTime);
-        unityEvent.RemoveListener(coll);
-    }
-    private IEnumerator DoTask()
-    {
-        for (int i = 0; i < listOfTasks.Count; i++)
-        {
-            StartCoroutine(RunCodeUntil(listOfTasks[i], listOfTime[i]));
-            yield return new WaitForSeconds(listOfTime[i]);
-        }
-        StopAllCoroutines();
-        listOfTasks = new List<UnityAction>();
-        listOfTime = new List<float>();
-        yield return true;
-    }
-    void GetUiElements()
-    {
-        var root = GetComponent<UIDocument>().rootVisualElement;
-
-        run = root.Q<Button>("RunBt");
-        restart = root.Q<Button>("ResetBt");
-
-        CodeField = root.Q<TextField>("CodeField");
-
-        OutPutCode = root.Q<Label>("OutPutCode");
-        Variables = root.Q<Label>("Variables");
-
-        Variables.text = string.Join("\n• ", new string[] {
-            VarStings,
-            Var1,
-            Var2,
-            Var3
-        });
-
-        run.clicked += inputText;
-        restart.clicked += _ResetFunc;
-    }
-    void _ResetFunc()
-    {
-        StopAllCoroutines();
-        CodeField.value = "";
-        myLuaScript = new Script();
-        _colorVector3 = new Vector3(0, 0, 0);
-        resetText();
-        inputText();
-        print("RESET");
-    }
-    public void MoveForward(float Time = 1f)
-    {
-        print($"MoveForward {Time}");
-        listOfTasks.Add(MoveF);
-        listOfTime.Add(Time);
-    }
-    private void MoveRight(float Time = 1f)
-    {
-        print($"MoveRight {Time}");
-        listOfTasks.Add(MoveR);
-        listOfTime.Add(Time);
-    }
-    private void MoveF() => cube.transform.position += Vector3.forward * speed * Time.deltaTime;
-    private void MoveR() => cube.transform.position += Vector3.right * speed * Time.deltaTime;
-
-    private static int Mul(int a, int b)
-    {
-        int num = a + b;
-        print($"Sum: {num}");
-        return num;
-    }
-    public void inputText()
-    {
-        StopAllCoroutines();
-        listOfTasks = new List<UnityAction>();
-        listOfTime = new List<float>();
         try
         {
-            StartLua(CodeField.text);
-            OutPutCode.text = "None Error";
-            if (listOfTasks.Count == listOfTime.Count)
+            // Create a new script environment.
+            Script env = new Script();
+
+            // Register the list of tasks and times as global variables in the Lua environment.
+            env.Globals["listOfTasks"] = listOfTasks;
+            env.Globals["listOfTime"] = listOfTime;
+
+            // Execute the script.
+            env.DoString(script);
+        }
+        catch (Exception ex)
+        {
+            // If any exceptions are thrown, print the error message to the console.
+            Debug.Log("Error: " + ex.Message);
+        }
+    }
+
+    // This method registers a global function in the Lua environment.
+    public void RegisterGlobal(string name, Delegate function)
+    {
+        // Create a new script environment.
+        Script env = new Script();
+
+        // Register the function with the given name in the Lua environment.
+        env.Globals[name] = function;
+    }
+}
+public class TaskRunner
+    {
+        // The list of tasks that will be executed by the script.
+        private List<UnityAction> listOfTasks = new List<UnityAction>();
+
+        // The list of times that each task will be executed after.
+        private List<float> listOfTime = new List<float>();
+
+        // The current task that is being executed.
+        private IEnumerator currentTask;
+
+        // The UnityEvent object used to execute tasks.
+        private UnityEvent unityEvent = new UnityEvent();
+
+        // This method adds a new task to the list of tasks that will be executed.
+        public void AddTask(UnityAction task, float time)
+        {
+            listOfTasks.Add(task);
+            listOfTime.Add(time);
+        }
+
+        // This method runs the tasks in the list of tasks.
+        public void RunTasks()
+        {
+            // If there are no current tasks and there are tasks in the list, start a new task.
+            if (currentTask == null && listOfTasks.Count > 0)
             {
-                CurrnetTask = DoTask();
-                StartCoroutine(CurrnetTask);
+                currentTask = DoTask();
+                //StartCoroutine(currentTask);
             }
-            else
+        }
+
+        // This method loops through the list of tasks and waits the specified amount of time before executing each one.
+        private IEnumerator DoTask()
+        {
+            for (int i = 0; i < listOfTasks.Count; i++)
             {
-                Debug.LogError($"ERROR Lists Count NotMaching : listOfTasks.Count({listOfTasks.Count}) listOfTime.Count({listOfTime.Count})");
+                // Add the task to the UnityEvent and wait the specified amount of time.
+                unityEvent.AddListener(listOfTasks[i]);
+                yield return new WaitForSeconds(listOfTime[i]);
+
+                // Remove the task from the UnityEvent.
+                unityEvent.RemoveListener(listOfTasks[i]);
             }
+
+            // Clear the list of tasks and times.
+            listOfTasks.Clear();
+            listOfTime.Clear();
+        }
+
+        // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
+        private IEnumerator RunCodeUntil(UnityAction callfunction, float waitTime = 0)
+        {
+            unityEvent.AddListener(callfunction);
+            yield return new WaitForSeconds(waitTime);
+            unityEvent.RemoveListener(callfunction);
+        }
+    }
+
+// This class is responsible for handling user input and executing the script.
+public class InputHandler
+{
+    // The object responsible for executing Lua scripts.
+    private LuaInterpreter luaInterpreter;
+
+    // The object responsible for running a sequence of tasks defined by the script.
+    private TaskRunner taskRunner;
+
+    // The UI element that displays error messages to the user.
+    private TextMeshProUGUI userOutText;
+
+    // This constructor takes the objects responsible for executing scripts, running tasks, and displaying error messages.
+    public InputHandler(LuaInterpreter luaInterpreter, TaskRunner taskRunner, TextMeshProUGUI userOutText)
+    {
+        this.luaInterpreter = luaInterpreter;
+        this.taskRunner = taskRunner;
+        this.userOutText = userOutText;
+    }
+
+    // This method handles user input and executes the script.
+    public void HandleInput(string input)
+    {
+        // Stop any currently running tasks.
+        //taskRunner.StopAllTasks();
+
+        try
+        {
+            // Execute the script and clear any error messages.
+            luaInterpreter.StartLua(input);
+            userOutText.text = "None Error messages from Lua";
+
+            // Run the tasks defined by the script.
+            taskRunner.RunTasks();
+        }
+        catch (SyntaxErrorException ex)
+        {
+            // If a syntax error was detected, display an error message to the user.
+            Debug.Log("Syntax error: " + ex.Message);
+            userOutText.text = "Syntax error: " + ex.Message;
         }
         catch (ScriptRuntimeException ex)
         {
-            OutPutCode.text = "An error occured!: \n" + ex.ToString();
+            // If a runtime error was detected, display an error message to the user.
+            Debug.Log("Runtime error: " + ex.DecoratedMessage);
+            userOutText.text = "Runtime error: " + ex.DecoratedMessage;
         }
-
-    }
-
-    public void StartLua(string rawLuaCode)
-    {
-
-        //creating a new script Object
-        myLuaScript = new Script();
-
-        //defining global veriable and sending the veriable
-        myLuaScript.Globals[Var1] = _colorVector3.x;
-        myLuaScript.Globals[Var2] = _colorVector3.y;
-        myLuaScript.Globals[Var3] = _colorVector3.z;
-
-        myLuaScript.Globals["MoveForward"] = (Action<float>)MoveForward;
-        myLuaScript.Globals["MoveRight"] = (Action<float>)MoveRight;
-        myLuaScript.Globals["Mul"] = (Func<int, int, int>)Mul;
-        //myLuaScript.Globals["Mul"] = (Func<int, int, int>)Mul;
-
-
-        //running the script via lua
-        DynValue result = myLuaScript.DoString(rawLuaCode);
-
-        //getting veriable back
-        _colorVector3.x = (float)myLuaScript.Globals.Get(Var1).CastToNumber();
-        _colorVector3.y = (float)myLuaScript.Globals.Get(Var2).CastToNumber();
-        _colorVector3.z = (float)myLuaScript.Globals.Get(Var3).CastToNumber();
-
-        newCubeColor = Vec3ToColor(_colorVector3);
-
-        CubeRenderer.material.SetColor("_Color", newCubeColor);
-    }
-    Color Vec3ToColor(Vector3 vec3) => new Color(vec3.x, vec3.y, vec3.z);
-    public void resetText() => OutPutCode.text = "None Error";
-    public void SetText(string text) => OutPutCode.text = text;
-
-    private void Awake()
-    {
-        CubeRenderer = cube.GetComponent<Renderer>();
-        GetUiElements();
-
-    }
-    void Start()
-    {
-        resetText();
-        inputText();
+        catch (Exception ex)
+        {
+            // If any other exception was thrown, display the error message to the user.
+            Debug.Log("Error: " + ex.Message);
+            userOutText.text = "Error: " + ex.Message;
+        }
     }
 }
+
