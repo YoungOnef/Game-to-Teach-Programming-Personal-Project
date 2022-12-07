@@ -19,15 +19,12 @@ public class Level1 : MonoBehaviour
     public TextMeshProUGUI userOutText;
     public TextMeshProUGUI userOutTextFunctionDispaly;
 
-    // UI element for displaying the name of the clicked object
-    public TextMeshProUGUI objectNameText;
-    // The prefab for the new GameObject
-    public GameObject prefab;
     // The cube object
     [SerializeField]
     private GameObject cube;
     private Renderer cubeRenderer;
 
+    public GameObject ScreenButton;
 
     // Variables for the cube's color and size
     private Color newCubeColor;
@@ -58,7 +55,7 @@ public class Level1 : MonoBehaviour
         // Get the name of the current scene
         sceneName = SceneManager.GetActiveScene().name;
         sceneName += ".txt";
-        
+
         // Initialize the userOutTextFunctionDispaly variable
         //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
 
@@ -70,27 +67,6 @@ public class Level1 : MonoBehaviour
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
 
-        // Check if the player has clicked the mouse
-        if (Input.GetMouseButtonDown(0))
-        {
-            // Get the mouse position in screen coordinates
-            Vector2 mousePos = Input.mousePosition;
-
-            // Create a ray from the camera to the mouse position
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-            // Use the ray to check if it intersects with any colliders in the scene
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                // If the ray intersects with a collider, create a new GameObject at the hit point
-                GameObject newObject = Instantiate(prefab, hit.point, Quaternion.identity);
-
-                // Set the name of the new GameObject to the name of the clicked object
-                newObject.name = hit.transform.gameObject.name;
-                
-            }
-        }
     }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
@@ -154,7 +130,7 @@ public class Level1 : MonoBehaviour
                 Debug.LogError($"ERROR Lists Count NotMaching : listOfTasks.Count({listOfTasks.Count}) listOfTime.Count({listOfTime.Count})");
             }
         }
-        
+
         catch (SyntaxErrorException ex)
         {
             // if a syntax error was detected, display an error message to the user
@@ -221,7 +197,7 @@ public class Level1 : MonoBehaviour
     }
     private void Wait(float Time = 1f)
     {
-        
+
         print($"Wait {Time}");
         listOfTasks.Add(() => { });
         listOfTime.Add(Time);
@@ -354,7 +330,7 @@ public class Level1 : MonoBehaviour
         lua.Globals["moveRight"] = (Action<float>)MoveRight;
         lua.Globals["MoveLeft"] = (Action<float>)MoveLeft;
         lua.Globals["MoveBack"] = (Action<float>)MoveBack;
-        lua.Globals["Move"] = (Action<double, string,double>)Move;
+        lua.Globals["Move"] = (Action<double, string, double>)Move;
         lua.Globals["Turn"] = (Action<string>)Turn;
         lua.Globals["Wait"] = (Action<float>)Wait;
 
@@ -430,7 +406,7 @@ public class Level1 : MonoBehaviour
 
     public void SaveInput()
     {
-        
+
         // get the user input
         string userInput = inputField.GetComponent<TMP_InputField>().text;
 
@@ -447,5 +423,16 @@ public class Level1 : MonoBehaviour
         inputField.GetComponent<TMP_InputField>().text = userInput;
     }
 
+    public void HideOrViewConsole()
+    {
+        if (ScreenButton.activeSelf == true)
+        {
+            ScreenButton.SetActive(false);
 
+        }
+        else
+        {
+            ScreenButton.SetActive(true);
+        }
+    }
 }
