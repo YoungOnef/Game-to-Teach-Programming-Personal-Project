@@ -23,7 +23,6 @@ public class Level1 : MonoBehaviour
     [SerializeField]
     private GameObject cube;
     private Renderer cubeRenderer;
-
     public GameObject ScreenButton;
 
     // Variables for the cube's color and size
@@ -56,9 +55,11 @@ public class Level1 : MonoBehaviour
         sceneName = SceneManager.GetActiveScene().name;
         sceneName += ".txt";
 
+       
+
         // Initialize the userOutTextFunctionDispaly variable
         //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
-
+        //Teleport(10, 10, 10);
 
     }
     // Update is called once per frame
@@ -312,6 +313,7 @@ public class Level1 : MonoBehaviour
         cube.transform.Rotate(rotation);
     }
 
+
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
     {
@@ -334,7 +336,31 @@ public class Level1 : MonoBehaviour
         lua.Globals["Turn"] = (Action<string>)Turn;
         lua.Globals["Wait"] = (Action<float>)Wait;
 
+        /*-- Set the cube's color to blue
+SetCubeColor(0, 0, 1)
 
+-- Wait for 2 seconds
+Wait(1)
+
+SetCubeSize(5)
+
+SetCubeSpeed(4)
+Wait(1)
+-- Set the cube's color to red
+SetCubeColor(1, 0, 0)
+
+-- Move the cube forward by 1 unit
+MoveForward(1)
+
+-- Wait for 1 second
+Wait(1)
+
+-- Move the cube right by 1 unit
+MoveRight(1)
+Wait(1)
+MoveBack(1)
+
+        */
     }
     public void StartLuaold(string rawLuaCode)
     {
