@@ -64,7 +64,7 @@ public class testing : MonoBehaviour
         // Create the objects responsible for executing Lua scripts, running tasks, and handling input.
         luaInterpreter = new LuaInterpreter();
         taskRunner = new TaskRunner();
-        inputHandler = new InputHandler(luaInterpreter, taskRunner, userOutText);
+        inputHandler = new InputHandlerw(luaInterpreter, taskRunner, userOutText);
 
         // Set up the input field to call the input handler when the user enters text.
         inputField.GetComponent<TMP_InputField>().onEndEdit.AddListener(inputHandler.HandleInput);
@@ -178,7 +178,7 @@ public class TaskRunner
     }
 
 // This class is responsible for handling user input and executing the script.
-public class InputHandler
+public class InputHandlerw
 {
     // The object responsible for executing Lua scripts.
     private LuaInterpreter luaInterpreter;
@@ -190,7 +190,7 @@ public class InputHandler
     private TextMeshProUGUI userOutText;
 
     // This constructor takes the objects responsible for executing scripts, running tasks, and displaying error messages.
-    public InputHandler(LuaInterpreter luaInterpreter, TaskRunner taskRunner, TextMeshProUGUI userOutText)
+    public InputHandlerw(LuaInterpreter luaInterpreter, TaskRunner taskRunner, TextMeshProUGUI userOutText)
     {
         this.luaInterpreter = luaInterpreter;
         this.taskRunner = taskRunner;
