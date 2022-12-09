@@ -43,6 +43,9 @@ public class Level1 : MonoBehaviour
 
 
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +58,11 @@ public class Level1 : MonoBehaviour
         sceneName = SceneManager.GetActiveScene().name;
         sceneName += ".txt";
 
-       
+
+        // Add a Rigidbody component to the cube game object and set its useGravity property to true
+        Rigidbody rb = cube.AddComponent<Rigidbody>();
+        rb.useGravity = true;
+
 
         // Initialize the userOutTextFunctionDispaly variable
         //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
@@ -68,6 +75,27 @@ public class Level1 : MonoBehaviour
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
 
+        // Check if the cube's y-position is less than -10
+        if (cube.transform.position.y < -10)
+        {
+            // Display a message in the debug log
+            Debug.Log("You are dead!");
+        }
+
+
+    }
+
+    // This method is called when the cube enters a trigger collider
+    void OnTriggerEnter(Collider other, GameObject cube)
+    {
+
+        Debug.Log("Collided with: " + other.name);
+        // Check if the collider that the cube entered is the "death trigger"
+        if (other.name == "Coin")
+        {
+            // Display a message in the debug log
+            Debug.Log("Coin Collected");
+        }
     }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
@@ -150,7 +178,7 @@ public class Level1 : MonoBehaviour
             Debug.Log("Error: " + ex.Message);
             userOutTextForDebug.text = "Error: " + ex.Message;
         }
-        ResetCubePosition();
+        //ResetCubePosition();
 
     }
 
