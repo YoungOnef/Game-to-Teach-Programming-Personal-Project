@@ -60,7 +60,7 @@ public class Level1 : MonoBehaviour
 
 
         // Add a Rigidbody component to the cube game object and set its useGravity property to true
-        Rigidbody rb = cube.AddComponent<Rigidbody>();
+        Rigidbody rb = cube.GetComponent<Rigidbody>();
         rb.useGravity = true;
 
 
@@ -86,16 +86,12 @@ public class Level1 : MonoBehaviour
     }
 
     // This method is called when the cube enters a trigger collider
-    void OnTriggerEnter(Collider other, GameObject cube)
+    public void Coin(Collider other)
     {
+        if (other.tag != "Coin")
+            return;
 
-        Debug.Log("Collided with: " + other.name);
-        // Check if the collider that the cube entered is the "death trigger"
-        if (other.name == "Coin")
-        {
-            // Display a message in the debug log
-            Debug.Log("Coin Collected");
-        }
+        print($"coin name: {other.name} Pos: {other.transform}");
     }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.

@@ -2583,9 +2583,10 @@ GameObject:
   - component: {fileID: 1616785494}
   - component: {fileID: 1616785498}
   - component: {fileID: 1616785499}
+  - component: {fileID: 1616785500}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2784,6 +2785,19 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &1616785500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616785493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37733486d046b544a8de651a7c4313a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: {fileID: 0}
 --- !u!1 &1646974283
 GameObject:
   m_ObjectHideFlags: 0
@@ -3479,7 +3493,7 @@ GameObject:
   - component: {fileID: 1804490704}
   m_Layer: 0
   m_Name: ScriptManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
