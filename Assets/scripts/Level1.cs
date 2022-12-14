@@ -91,13 +91,13 @@ public class Level1 : MonoBehaviour
         if (other.tag == "Coin")
         {
             // Destroy the coin
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
             // Add 1 to the score
             score += 1;
             // Display the score in the debug log
             Debug.Log("Score: " + score);
             
-            
+
         }
             
 
