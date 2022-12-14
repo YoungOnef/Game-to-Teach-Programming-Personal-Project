@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        print("coin collided");
+        
         level.Coin(other);
     }
 }

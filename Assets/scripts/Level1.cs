@@ -41,9 +41,9 @@ public class Level1 : MonoBehaviour
     // The name of the current scene
     private string sceneName;
 
+    
 
-
-
+    public int score = 0;
 
 
     // Start is called before the first frame update
@@ -88,10 +88,20 @@ public class Level1 : MonoBehaviour
     // This method is called when the cube enters a trigger collider
     public void Coin(Collider other)
     {
-        if (other.tag != "Coin")
-            return;
+        if (other.tag == "Coin")
+        {
+            // Destroy the coin
+            Destroy(other.gameObject);
+            // Add 1 to the score
+            score += 1;
+            // Display the score in the debug log
+            Debug.Log("Score: " + score);
+            
+            
+        }
+            
 
-        print($"coin name: {other.name} Pos: {other.transform}");
+        
     }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
