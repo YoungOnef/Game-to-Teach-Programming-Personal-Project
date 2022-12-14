@@ -69,6 +69,7 @@ public class Level1 : MonoBehaviour
         //Teleport(10, 10, 10);
 
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -99,9 +100,6 @@ public class Level1 : MonoBehaviour
             
 
         }
-            
-
-        
     }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
@@ -395,55 +393,6 @@ Wait(1)
 MoveBack(1)
 
         */
-    }
-    public void StartLuaold(string rawLuaCode)
-    {
-
-
-        //creating a new script Object
-        Script myLuaScript = new Script();
-
-        //defining global veriable and sending the veriable
-        myLuaScript.Globals["randomChannelOne"] = randomChannelOne;
-        myLuaScript.Globals["randomChannelTwo"] = randomChannelTwo;
-        myLuaScript.Globals["randomChannelThree"] = randomChannelThree;
-
-
-        //myLuaScript.Globals["setCubeColor"] = (Action<float, float, float>)((r, g, b) => SetCubeColor(r, g, b));
-        //myLuaScript.Globals["SetCubeSize"] = (Action<float>)SetCubeSize;
-        myLuaScript.Globals["MoveForward"] = (Action<float>)MoveForward;
-        myLuaScript.Globals["MoveRight"] = (Action<float>)MoveRight;
-        myLuaScript.Globals["MoveLeft"] = (Action<float>)MoveLeft;
-        myLuaScript.Globals["MoveBack"] = (Action<float>)MoveBack;
-
-        //running the script via lua
-        DynValue result = myLuaScript.DoString(rawLuaCode);
-
-
-
-
-        //getting veriable back
-        randomChannelOne = (float)myLuaScript.Globals.Get("randomChannelOne").CastToNumber();
-        randomChannelTwo = (float)myLuaScript.Globals.Get("randomChannelTwo").CastToNumber();
-        randomChannelThree = (float)myLuaScript.Globals.Get("randomChannelThree").CastToNumber();
-
-
-
-
-        Debug.Log("randomChannelOne");
-        Debug.Log(randomChannelOne);
-
-        Debug.Log("randomChannelTwo");
-        Debug.Log(randomChannelTwo);
-
-        Debug.Log("randomChannelThree");
-        Debug.Log(randomChannelThree);
-        SetCubeColor(randomChannelOne, randomChannelTwo, randomChannelThree);
-
-        //newCubeColor = new Color(randomChannelOne, randomChannelTwo, randomChannelThree, 1f);
-
-        //CubeRenderer.material.SetColor("_Color", newCubeColor);
-
     }
     public void resetText()
     {
