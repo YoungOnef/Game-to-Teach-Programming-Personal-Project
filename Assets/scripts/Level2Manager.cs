@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //
-public class Level1Manager : LevelBase
+public class Level2Manager : LevelBase
 {
     // First, create a reference to the prefab you want to instantiate
     public GameObject prefab;
+    int finshScore;
+
+    
+    
     public override void Setup(LevelHandler handler)
     {
         base.Setup(handler);

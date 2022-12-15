@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         level = GameObject.FindGameObjectWithTag("GameController").GetComponent<Level1>();
+        
     }
     void OnTriggerEnter(Collider other)
     {
