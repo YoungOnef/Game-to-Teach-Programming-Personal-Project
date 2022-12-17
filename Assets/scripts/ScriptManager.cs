@@ -63,9 +63,6 @@ public class ScriptManager : MonoBehaviour
         Rigidbody rb = cube.GetComponent<Rigidbody>();
         rb.useGravity = true;
 
-        userOutTextForDebug.text = "START";
-        userOutText.text = "START";
-        userOutTextFunctionDispaly.text = "START";
         // Initialize the userOutTextFunctionDispaly variable
         //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
         //Teleport(10, 10, 10);
@@ -88,21 +85,7 @@ public class ScriptManager : MonoBehaviour
 
     }
 
-    // This method is called when the cube enters a trigger collider
-    public void Coin(Collider other)
-    {
-        if (other.tag == "Coin")
-        {
-            // Destroy the coin
-            //Destroy(other.gameObject);
-            // Add 1 to the score
-            score += 1;
-            // Display the score in the debug log
-            Debug.Log("Score: " + score);
-            
 
-        }
-    }
 
     // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
     private IEnumerator RunCodeUntil(UnityAction callfunction, float waitTime = 0)
