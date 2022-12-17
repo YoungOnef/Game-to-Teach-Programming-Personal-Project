@@ -7,15 +7,12 @@ public class LevelHandler : MonoBehaviour
     LevelBase level;
     Vector3 spawnPosition = new Vector3(0, 0, 0);
     int pointsNeeded = 0;
-    
+    public int coinCount = 0; // Player's coin count
 
     private void Start()
     {
-
         level = GameObject.Find("Level1Manager").GetComponent<LevelBase>();
-
         level.Setup(this);
-
         Debug.Log($"Points needed = ( {pointsNeeded} )");
     }
 
@@ -25,5 +22,10 @@ public class LevelHandler : MonoBehaviour
         // Then, instantiate the prefab
         Instantiate(prefab, position, transform.rotation);
     }
-    
+
+    public bool AllPointsCollected()
+    {
+        return pointsNeeded == coinCount;
+    }
+
 }
