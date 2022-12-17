@@ -65,7 +65,9 @@ public class ScriptManager : MonoBehaviour
 
         // Initialize the userOutTextFunctionDispaly variable
         //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
-        //Teleport(10, 10, 10);
+       
+
+        
 
     }
 
@@ -87,23 +89,13 @@ public class ScriptManager : MonoBehaviour
 
 
 
-    // This method adds a task to the UnityEvent and waits the specified amount of time before removing it.
-    private IEnumerator RunCodeUntil(UnityAction callfunction, float waitTime = 0)
-    {
-
-        unityEvent.AddListener(callfunction);
-        yield return new WaitForSeconds(waitTime);
-
-        // Remove the function from the UnityEvent
-        unityEvent.RemoveListener(callfunction);
-    }
     // This method loops through the list of tasks and waits the specified amount of time before executing each one.
     private IEnumerator DoTask()
     {
         for (int i = 0; i < listOfTasks.Count; i++)
         {
-            string methodName = listOfTasks[i].Method.Name;
-            userOutTextFunctionDispaly.text = methodName;
+            // Update the userOutTextFunctionDispaly variable to show the name of the function being executed
+            userOutTextFunctionDispaly.text = listOfTasks[i].Method.Name;
 
             // Add the task to the UnityEvent and wait the specified amount of time.
             unityEvent.AddListener(listOfTasks[i]);
@@ -329,8 +321,21 @@ public class ScriptManager : MonoBehaviour
         }
         cube.transform.Rotate(rotation);
     }
+    public void Teleport(float x, float y, float z)
+    {
+        Debug.Log("Teleport");
+        Debug.Log(x);
+        Debug.Log(y);
+        Debug.Log(z);
+        // Get the current position of the game object
+        Vector3 currentPosition = transform.position;
 
+        // Set the new position of the game object
+        currentPosition = new Vector3(x, y, z);
 
+        // Update the transform's position
+        cube.transform.position = currentPosition;
+    }
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
     {
@@ -352,6 +357,9 @@ public class ScriptManager : MonoBehaviour
         lua.Globals["Move"] = (Action<double, string, double>)Move;
         lua.Globals["Turn"] = (Action<string>)Turn;
         lua.Globals["Wait"] = (Action<float>)Wait;
+
+        lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
+
 
         /*-- Set the cube's color to blue
 SetCubeColor(0, 0, 1)
