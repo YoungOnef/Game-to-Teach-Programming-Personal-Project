@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 using System.IO;
 using UnityEngine.SceneManagement;
 using MoonSharp.Interpreter.Debugging;
+using Unity.VisualScripting;
 
 public class ScriptManager : MonoBehaviour
 {
@@ -60,6 +61,15 @@ public class ScriptManager : MonoBehaviour
         // Add a Rigidbody component to the cube game object and set its useGravity property to true
         Rigidbody rb = cube.GetComponent<Rigidbody>();
         rb.useGravity = true;
+        
+        
+        string data = DataInputHoldingData.instance.dataInput;
+
+        if (data != null || data != "")
+        {
+            userInputField.text = data;
+            
+        }
 
     }
 
@@ -74,7 +84,18 @@ public class ScriptManager : MonoBehaviour
         {
             // Display a message in the debug log
             Debug.Log("You are dead!");
+            RestartScene();
         }
+    }
+
+    public void RestartScene()
+    {
+        DataInputHoldingData.instance.dataInput = userInputField.text;
+        // Get the current scene name
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        // Load the scene with the given name
+        SceneManager.LoadScene(sceneName);
     }
     // This method loops through the list of tasks and waits the specified amount of time before executing each one.
     private IEnumerator DoTask()
@@ -378,7 +399,7 @@ MoveBack(1)
     }
     public void UserOutTextFunctionDispaly(string text)
     {
-        userOutTextFunctionDispaly.text = text;
+        //userOutTextFunctionDispaly.text = text;
     }
     public void ResetText()
     {
@@ -393,18 +414,6 @@ MoveBack(1)
         StopCoroutine(currentTask);
     }
 
-    public void ResetCubeData()
-    {
-        // Reset the position of the cube
-        cube.transform.position = Vector3.zero;
-
-        // Reset the color of the cube
-        cubeRenderer.material.color = Color.white;
-
-        // Reset the size of the cube
-        cube.transform.localScale = Vector3.one;
-
-    }
 
     public void SaveInput()
     {
