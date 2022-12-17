@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using System.IO;
 using UnityEngine.SceneManagement;
 
-public class Level1 : MonoBehaviour
+public class ScriptManager : MonoBehaviour
 {
     // UI elements
     public GameObject inputField;
@@ -63,7 +63,9 @@ public class Level1 : MonoBehaviour
         Rigidbody rb = cube.GetComponent<Rigidbody>();
         rb.useGravity = true;
 
-
+        userOutTextForDebug.text = "START";
+        userOutText.text = "START";
+        userOutTextFunctionDispaly.text = "START";
         // Initialize the userOutTextFunctionDispaly variable
         //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
         //Teleport(10, 10, 10);

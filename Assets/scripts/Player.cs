@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] Level1 level;
+    [SerializeField] ScriptManager level;
 
     bool isColliding;
 
     private void Awake()
     {
-        level = GameObject.FindGameObjectWithTag("GameController").GetComponent<Level1>();
+        level = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScriptManager>();
         
     }
     void OnTriggerEnter(Collider other)
