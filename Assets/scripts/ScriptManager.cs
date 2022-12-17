@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 using System.IO;
 using UnityEngine.SceneManagement;
+using MoonSharp.Interpreter.Debugging;
 
 public class ScriptManager : MonoBehaviour
 {
@@ -40,9 +41,6 @@ public class ScriptManager : MonoBehaviour
 
     // The name of the current scene
     private string sceneName;
-
-    
-
     public int score = 0;
 
 
@@ -63,12 +61,6 @@ public class ScriptManager : MonoBehaviour
         Rigidbody rb = cube.GetComponent<Rigidbody>();
         rb.useGravity = true;
 
-        // Initialize the userOutTextFunctionDispaly variable
-        //userOutTextFunctionDispaly = GameObject.Find("FunctionDisplayText").GetComponent<TextMeshProUGUI>();
-       
-
-        
-
     }
 
     // Update is called once per frame
@@ -83,12 +75,7 @@ public class ScriptManager : MonoBehaviour
             // Display a message in the debug log
             Debug.Log("You are dead!");
         }
-
-
     }
-
-
-
     // This method loops through the list of tasks and waits the specified amount of time before executing each one.
     private IEnumerator DoTask()
     {
@@ -111,7 +98,7 @@ public class ScriptManager : MonoBehaviour
         listOfTasks.Clear();
         listOfTime.Clear();
     }
-    public void inputText()
+    public void InputText()
     {
         //stopping all corotines
         StopAllCoroutines();
@@ -159,7 +146,7 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("Error: " + ex.Message);
             userOutTextForDebug.text = "Error: " + ex.Message;
         }
-        //ResetCubePosition();
+        //ResetCubeData();
 
     }
 
@@ -174,40 +161,45 @@ public class ScriptManager : MonoBehaviour
         randomChannelTwo = g;
         randomChannelThree = b;
 
-        userOutTextFunctionDispaly.text = "SetCubeColor";
+        UserOutTextFunctionDispaly("SetCubeColor");
     }
     public void SetCubeSize(float size)
     {
+        UserOutTextFunctionDispaly("SetCubeSize");
         // set the scale of the cube to the specified size
         cube.transform.localScale = new Vector3(size, size, size);
     }
     public void MoveForward(float Time = 1f)
     {
+        UserOutTextFunctionDispaly("MoveForward");
         print($"MoveForward {Time}");
         listOfTasks.Add(MoveF);
         listOfTime.Add(Time);
     }
     private void MoveRight(float Time = 1f)
     {
+        UserOutTextFunctionDispaly("MoveRight");
         print($"MoveRight {Time}");
         listOfTasks.Add(MoveR);
         listOfTime.Add(Time);
     }
     private void MoveLeft(float Time = 1f)
     {
+        UserOutTextFunctionDispaly("MoveLeft");
         print($"MoveLeft {Time}");
         listOfTasks.Add(MoveL);
         listOfTime.Add(Time);
     }
     private void MoveBack(float Time = 1f)
     {
+        UserOutTextFunctionDispaly("MoveBack");
         print($"MoveBack {Time}");
         listOfTasks.Add(MoveB);
         listOfTime.Add(Time);
     }
     private void Wait(float Time = 1f)
     {
-
+        UserOutTextFunctionDispaly("Wait");
         print($"Wait {Time}");
         listOfTasks.Add(() => { });
         listOfTime.Add(Time);
@@ -243,14 +235,12 @@ public class ScriptManager : MonoBehaviour
         {
             displacement = new Vector3(0, 0, -(float)distance * speed * Time.deltaTime);
         }
-
+        UserOutTextFunctionDispaly("Move");
         // Add a task to the list of tasks that moves the cube by the specified amount in the specified direction.
         // The task will wait for the specified delay plus the time delta before executing.
         listOfTasks.Add(() => cube.transform.position += displacement);
         listOfTime.Add((float)delay + Time.deltaTime);
     }
-
-
 
     private void MoveF() => cube.transform.position += Vector3.forward * speed * Time.deltaTime;
     private void MoveR() => cube.transform.position += Vector3.right * speed * Time.deltaTime;
@@ -261,20 +251,16 @@ public class ScriptManager : MonoBehaviour
     // This method sets the speed at which the cube moves.
     private void SetCubeSpeed(float speed)
     {
+        UserOutTextFunctionDispaly("SetCubeSpeed");
         // Set the speed field to the specified value
-        userOutTextFunctionDispaly.text = "SetCubeSpeed";
         this.speed = speed;
+
     }
 
     private void StartLua(string script)
     {
         // Create a new instance of the Lua interpreter
         Script lua = new Script();
-
-
-        //lua.Globals["this"] = this;
-
-        //lua.Globals["newCube"] = newCube;
 
         // Register the "print" function so that the script can print messages to the debug log
         lua.Globals["print"] = (Action<DynValue>)PrintToDebugLogAndTextArea; ;
@@ -284,26 +270,14 @@ public class ScriptManager : MonoBehaviour
 
         // Execute the script
         lua.DoString(script);
+
     }
-    // This method prints the type and value of the specified value to the debug log and the Text object
-    private void PrintToDebugLogAndTextArea(DynValue value)
-    {
-        // Get the type of the value
-        string type = value.Type.ToString();
 
-        // Convert the value to a string
-        string message = value.ToObject().ToString();
-
-        // Print the type and value to the debug log
-        Debug.Log("Printing " + type + " value from Lua script: " + message);
-
-        // Set the text of the Text object to the type and value
-        userOutText.SetText(type + ": " + message);
-    }
     // The "turn" function turns the cube in the specified direction after waiting for the specified amount of time.
 
     private void Turn(string direction)
     {
+        UserOutTextFunctionDispaly("Turn");
         Vector3 rotation = new Vector3(0, 0, 0);
 
         // Set the rotation based on the specified direction
@@ -320,13 +294,12 @@ public class ScriptManager : MonoBehaviour
             rotation = new Vector3(0, 180, 0);
         }
         cube.transform.Rotate(rotation);
+        
+        
     }
     public void Teleport(float x, float y, float z)
     {
-        Debug.Log("Teleport");
-        Debug.Log(x);
-        Debug.Log(y);
-        Debug.Log(z);
+        UserOutTextFunctionDispaly("Teleport");
         // Get the current position of the game object
         Vector3 currentPosition = transform.position;
 
@@ -335,6 +308,7 @@ public class ScriptManager : MonoBehaviour
 
         // Update the transform's position
         cube.transform.position = currentPosition;
+        
     }
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
@@ -387,7 +361,26 @@ MoveBack(1)
 
         */
     }
-    public void resetText()
+    // This method prints the type and value of the specified value to the debug log and the Text object
+    private void PrintToDebugLogAndTextArea(DynValue value)
+    {
+        // Get the type of the value
+        string type = value.Type.ToString();
+
+        // Convert the value to a string
+        string message = value.ToObject().ToString();
+
+        // Print the type and value to the debug log
+        Debug.Log("Printing " + type + " value from Lua script: " + message);
+
+        // Set the text of the Text object to the type and value
+        userOutText.SetText(type + ": " + message);
+    }
+    public void UserOutTextFunctionDispaly(string text)
+    {
+        userOutTextFunctionDispaly.text = text;
+    }
+    public void ResetText()
     {
         userInputField.text = "";
     }
@@ -400,10 +393,17 @@ MoveBack(1)
         StopCoroutine(currentTask);
     }
 
-    public void ResetCubePosition()
+    public void ResetCubeData()
     {
-        // reset the position of the cube to its original position
+        // Reset the position of the cube
         cube.transform.position = Vector3.zero;
+
+        // Reset the color of the cube
+        cubeRenderer.material.color = Color.white;
+
+        // Reset the size of the cube
+        cube.transform.localScale = Vector3.one;
+
     }
 
     public void SaveInput()
