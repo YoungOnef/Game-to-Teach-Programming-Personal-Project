@@ -26,6 +26,7 @@ public class ScriptManager : MonoBehaviour
     private GameObject cube;
     private Renderer cubeRenderer;
     public GameObject ScreenButton;
+    public GameObject HelpWindow;
 
     // Variables for the cube's color and size
     private Color newCubeColor;
@@ -444,6 +445,19 @@ MoveBack(1)
         else
         {
             ScreenButton.SetActive(true);
+        }
+    }
+
+    public void HideOrViewHelpWindow()
+    {
+        if (HelpWindow.activeSelf == true)
+        {
+            HelpWindow.SetActive(false);
+
+        }
+        else
+        {
+            HelpWindow.SetActive(true);
         }
     }
 }
