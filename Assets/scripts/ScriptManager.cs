@@ -346,7 +346,7 @@ public class ScriptManager : MonoBehaviour
 
         //functions to move the cube
         lua.Globals["MoveForward"] = (Action<float>)MoveForward;
-        lua.Globals["MoveRight"] = (Action<float>)MoveRight;
+        lua .Globals["MoveRight"] = (Action<float>)MoveRight;
         lua.Globals["MoveLeft"] = (Action<float>)MoveLeft;
         lua.Globals["MoveBack"] = (Action<float>)MoveBack;
         lua.Globals["Move"] = (Action<double, string, double>)Move;

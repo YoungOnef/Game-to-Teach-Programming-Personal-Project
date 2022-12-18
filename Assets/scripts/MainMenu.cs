@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("Name of the levelscene Selector");
+        SceneManager.LoadScene("Level Selector");
     }
     public void Options()
     {

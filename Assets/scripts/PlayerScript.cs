@@ -7,10 +7,12 @@ public class PlayerScript : MonoBehaviour
     private void Update()
     {
         LevelHandler levelHandler = GameObject.Find("LevelHandler").GetComponent<LevelHandler>();
+        NextLevelManager nextLevelManager = GameObject.Find("NextLevelManager").GetComponent<NextLevelManager>();
         if (levelHandler.AllPointsCollected())
         {
             // All points have been collected
             Debug.Log("All points collected!");
+            nextLevelManager.ShowEndingScreen();
         }
     }
     private void OnTriggerEnter(Collider other)
