@@ -11,7 +11,7 @@ public class LevelHandler : MonoBehaviour
 
     private void Start()
     {
-        level = GameObject.Find("Level1Manager").GetComponent<LevelBase>();
+        level = GameObject.Find("LevelManager").GetComponent<LevelBase>();
         level.Setup(this);
         Debug.Log($"Points needed = ( {pointsNeeded} )");
     }

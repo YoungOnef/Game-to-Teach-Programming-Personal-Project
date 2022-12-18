@@ -468,7 +468,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196116091}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -3.2, y: 158.3, z: 0}
+  m_LocalPosition: {x: -14.9, y: 158.3, z: 6.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1281,8 +1281,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362535562}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.19, y: -0.55, z: -0.611}
-  m_LocalScale: {x: 0.35000968, y: 5.1996, z: 1.5377972}
+  m_LocalPosition: {x: -0.19, y: -0.55, z: 6.39}
+  m_LocalScale: {x: 0.35000968, y: 5.1996, z: 1.6513034}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3827,7 +3827,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168406337}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.4075, y: -17.5, z: 37.8315}
+  m_LocalPosition: {x: 3.7, y: -17.5, z: 8.1}
   m_LocalScale: {x: 18.069647, y: 5.1996, z: 15.266037}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4475,7 +4475,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616785493}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.18, y: 0, z: -7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5697,7 +5697,7 @@ GameObject:
   - component: {fileID: 1966756555}
   - component: {fileID: 1966756554}
   m_Layer: 0
-  m_Name: Level1Manager
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

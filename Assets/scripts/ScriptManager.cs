@@ -168,7 +168,7 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("Error: " + ex.Message);
             userOutTextForDebug.text = "Error: " + ex.Message;
         }
-        //ResetCubeData();
+        ResetCubeData();
 
     }
 
@@ -414,7 +414,19 @@ MoveBack(1)
         listOfTime.Clear();
         StopCoroutine(currentTask);
     }
+    public void ResetCubeData()
+    {
+        // reset the position of the cube to its original position
+        // Reset the position of the cube
+        cube.transform.position = Vector3.zero;
 
+        // Reset the color of the cube
+        cubeRenderer.material.color = Color.black;
+
+        // Reset the size of the cube
+        cube.transform.localScale = Vector3.one;
+
+    }
 
     public void SaveInput()
     {
