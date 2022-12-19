@@ -11,6 +11,7 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using MoonSharp.Interpreter.Debugging;
 using Unity.VisualScripting;
+using UnityEngine.ProBuilder.Shapes;
 
 public class ScriptManager : MonoBehaviour
 {
@@ -72,6 +73,9 @@ public class ScriptManager : MonoBehaviour
             
         }
 
+
+        
+
     }
 
     // Update is called once per frame
@@ -79,6 +83,8 @@ public class ScriptManager : MonoBehaviour
     {
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
+
+        
 
         // Check if the cube's y-position is less than -10
         if (cube.transform.position.y < -10)
@@ -91,6 +97,7 @@ public class ScriptManager : MonoBehaviour
 
     public void RestartScene()
     {
+        print("Level Restarted");
         DataInputHoldingData.instance.dataInput = userInputField.text;
         // Get the current scene name
         string sceneName = SceneManager.GetActiveScene().name;
@@ -138,7 +145,7 @@ public class ScriptManager : MonoBehaviour
             StartLua(script);
             userOutTextForDebug.text = "None Error messages from Lua";
 
-
+            
             if (listOfTasks.Count == listOfTime.Count)
             {
                 currentTask = DoTask();
@@ -168,8 +175,9 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("Error: " + ex.Message);
             userOutTextForDebug.text = "Error: " + ex.Message;
         }
-        ResetCubeData();
 
+
+        
     }
 
     public void SetCubeColor(float r, float g, float b)
@@ -264,11 +272,12 @@ public class ScriptManager : MonoBehaviour
         listOfTime.Add((float)delay + Time.deltaTime);
     }
 
-    private void MoveF() => cube.transform.position += Vector3.forward * speed * Time.deltaTime;
-    private void MoveR() => cube.transform.position += Vector3.right * speed * Time.deltaTime;
-    private void MoveB() => cube.transform.position -= Vector3.forward * speed * Time.deltaTime;
-    private void MoveL() => cube.transform.position -= Vector3.right * speed * Time.deltaTime;
-
+    private void MoveF() => cube.transform.position += cube.transform.forward * speed * Time.deltaTime;
+    private void MoveR() => cube.transform.position += cube.transform.right * speed * Time.deltaTime;
+    private void MoveB() => cube.transform.position -= cube.transform.forward * speed * Time.deltaTime;
+    private void MoveL() => cube.transform.position -= cube.transform.right * speed * Time.deltaTime;
+    
+    //cube.transform.position += cube.transform.forward* speed * Time.deltaTime;
 
     // This method sets the speed at which the cube moves.
     private void SetCubeSpeed(float speed)
@@ -293,6 +302,7 @@ public class ScriptManager : MonoBehaviour
         // Execute the script
         lua.DoString(script);
 
+        
     }
 
     // The "turn" function turns the cube in the specified direction after waiting for the specified amount of time.
@@ -425,7 +435,7 @@ MoveBack(1)
 
         // Reset the size of the cube
         cube.transform.localScale = Vector3.one;
-
+        
     }
 
     public void SaveInput()
