@@ -382,7 +382,7 @@ public class ScriptManager : MonoBehaviour
         lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
 
 
-        /*-- 
+        /*-- Examples
 MoveForward()
 MoveRight()
 MoveBack()
