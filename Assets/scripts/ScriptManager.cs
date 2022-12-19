@@ -28,6 +28,7 @@ public class ScriptManager : MonoBehaviour
     private Renderer cubeRenderer;
     public GameObject ScreenButton;
     public GameObject HelpWindow;
+    
 
     // Variables for the cube's color and size
     private Color newCubeColor;
@@ -48,6 +49,8 @@ public class ScriptManager : MonoBehaviour
     float time = 0.0001f;
     float defaultTime = 1f;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,8 +67,7 @@ public class ScriptManager : MonoBehaviour
         // Add a Rigidbody component to the cube game object and set its useGravity property to true
         Rigidbody rb = cube.GetComponent<Rigidbody>();
         rb.useGravity = true;
-        
-        
+
         string data = DataInputHoldingData.instance.dataInput;
 
         if (data != null || data != "")
@@ -73,9 +75,6 @@ public class ScriptManager : MonoBehaviour
             userInputField.text = data;
             
         }
-
-
-        
 
     }
 
@@ -85,7 +84,7 @@ public class ScriptManager : MonoBehaviour
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
 
-        
+       
 
         // Check if the cube's y-position is less than -10
         if (cube.transform.position.y < -10)
