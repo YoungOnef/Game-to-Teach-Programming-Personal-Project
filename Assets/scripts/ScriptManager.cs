@@ -45,7 +45,7 @@ public class ScriptManager : MonoBehaviour
     // The name of the current scene
     private string sceneName;
     public int score = 0;
-
+    float time = 0.0001f;
 
     // Start is called before the first frame update
     void Start()
@@ -176,8 +176,9 @@ public class ScriptManager : MonoBehaviour
             userOutTextForDebug.text = "Error: " + ex.Message;
         }
 
+        ResetCubeData();
 
-        
+
     }
 
     public void SetCubeColor(float r, float g, float b)
@@ -187,17 +188,24 @@ public class ScriptManager : MonoBehaviour
         cubeRenderer.material.SetColor("_Color", newCubeColor);
 
         // update the predefined color values so they match the new color of the cube
-        randomChannelOne = r;
-        randomChannelTwo = g;
-        randomChannelThree = b;
+        //randomChannelOne = r;
+        //randomChannelTwo = g;
+        //randomChannelThree = b;
 
         UserOutTextFunctionDispaly("SetCubeColor");
+
+        listOfTasks.Add(() => { });
+        listOfTime.Add(time);
     }
     public void SetCubeSize(float size)
     {
+
         UserOutTextFunctionDispaly("SetCubeSize");
         // set the scale of the cube to the specified size
-        cube.transform.localScale = new Vector3(size, size, size);
+        //cube.transform.localScale = new Vector3(size, size, size);
+
+        listOfTasks.Add(() => cube.transform.localScale = new Vector3(size, size, size));
+        listOfTime.Add(time);
     }
     public void MoveForward(float Time = 1f)
     {
@@ -277,15 +285,15 @@ public class ScriptManager : MonoBehaviour
     private void MoveB() => cube.transform.position -= cube.transform.forward * speed * Time.deltaTime;
     private void MoveL() => cube.transform.position -= cube.transform.right * speed * Time.deltaTime;
     
-    //cube.transform.position += cube.transform.forward* speed * Time.deltaTime;
 
     // This method sets the speed at which the cube moves.
     private void SetCubeSpeed(float speed)
     {
         UserOutTextFunctionDispaly("SetCubeSpeed");
         // Set the speed field to the specified value
-        this.speed = speed;
-
+        //this.speed = speed;
+        listOfTasks.Add(() => this.speed = speed);
+        listOfTime.Add(time);
     }
 
     private void StartLua(string script)
@@ -309,13 +317,14 @@ public class ScriptManager : MonoBehaviour
 
     private void Turn(string direction)
     {
-        UserOutTextFunctionDispaly("Turn");
+        //UserOutTextFunctionDispaly("Turn");
         Vector3 rotation = new Vector3(0, 0, 0);
 
         // Set the rotation based on the specified direction
         if (direction == "left")
         {
             rotation = new Vector3(0, -90, 0);
+            
         }
         else if (direction == "right")
         {
@@ -325,12 +334,14 @@ public class ScriptManager : MonoBehaviour
         {
             rotation = new Vector3(0, 180, 0);
         }
-        cube.transform.Rotate(rotation);
-        
-        
+        //listOfTasks.Add(() => cube.transform.position += displacement);
+        //cube.transform.Rotate(rotation);
+        listOfTasks.Add(() => cube.transform.Rotate(rotation));
+        listOfTime.Add(time);
     }
     public void Teleport(float x, float y, float z)
     {
+
         UserOutTextFunctionDispaly("Teleport");
         // Get the current position of the game object
         Vector3 currentPosition = transform.position;
@@ -339,8 +350,11 @@ public class ScriptManager : MonoBehaviour
         currentPosition = new Vector3(x, y, z);
 
         // Update the transform's position
-        cube.transform.position = currentPosition;
-        
+        //cube.transform.position = currentPosition;
+
+        listOfTasks.Add(() => cube.transform.position = currentPosition);
+        listOfTime.Add(time);
+
     }
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
@@ -367,30 +381,20 @@ public class ScriptManager : MonoBehaviour
         lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
 
 
-        /*-- Set the cube's color to blue
-SetCubeColor(0, 0, 1)
-
--- Wait for 2 seconds
-Wait(1)
-
+        /*-- 
+MoveForward()
+MoveRight()
+MoveBack()
+MoveLeft()
+Turn("left")
+MoveForward()
+Turn("right")
+Teleport(0,0,0)
 SetCubeSize(5)
-
-SetCubeSpeed(4)
-Wait(1)
--- Set the cube's color to red
-SetCubeColor(1, 0, 0)
-
--- Move the cube forward by 1 unit
-MoveForward(1)
-
--- Wait for 1 second
-Wait(1)
-
--- Move the cube right by 1 unit
-MoveRight(1)
-Wait(1)
-MoveBack(1)
-
+Wait()
+SetCubeSize(1)
+SetCubeSpeed(5)
+SetCubeColor(5,5,5)
         */
     }
     // This method prints the type and value of the specified value to the debug log and the Text object
@@ -435,7 +439,8 @@ MoveBack(1)
 
         // Reset the size of the cube
         cube.transform.localScale = Vector3.one;
-        
+
+        this.speed = 1;
     }
 
     public void SaveInput()
