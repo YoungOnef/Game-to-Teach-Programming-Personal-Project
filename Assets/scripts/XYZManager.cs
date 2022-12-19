@@ -19,7 +19,7 @@ public class XYZManager : MonoBehaviour
         Vector3 position = cube.transform.position;
 
         // Update the coordinatesText element to display the cube's position with two decimal places
-        cubeCoordinatesText.text = "Coordinates: " + position.x.ToString("F2") + ", " + position.y.ToString("F2") + ", " + position.z.ToString("F2");
+        cubeCoordinatesText.text = "Clicked Coordinates: " + position.x.ToString("F2") + ", " + position.y.ToString("F2") + ", " + position.z.ToString("F2");
 
         // Check if the left mouse button was clicked
         if (Input.GetMouseButtonDown(1))
@@ -37,7 +37,7 @@ public class XYZManager : MonoBehaviour
                 Vector3 hitPoint = hit.point;
 
                 // Update the coordinatesText element to display the hit point coordinates
-                clickCoordinatesText.text = "Coordinates: " + hitPoint.x.ToString("F2") + ", " + hitPoint.y.ToString("F2") + ", " + hitPoint.z.ToString("F2");
+                clickCoordinatesText.text = "Cube Coordinates: " + hitPoint.x.ToString("F2") + ", " + hitPoint.y.ToString("F2") + ", " + hitPoint.z.ToString("F2");
 
             }
         }
