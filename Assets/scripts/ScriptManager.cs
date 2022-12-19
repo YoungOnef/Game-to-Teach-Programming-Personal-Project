@@ -12,6 +12,8 @@ using UnityEngine.SceneManagement;
 using MoonSharp.Interpreter.Debugging;
 using Unity.VisualScripting;
 using UnityEngine.ProBuilder.Shapes;
+using Newtonsoft.Json.Linq;
+using UnityEngine.SocialPlatforms;
 
 public class ScriptManager : MonoBehaviour
 {
@@ -49,7 +51,11 @@ public class ScriptManager : MonoBehaviour
     float time = 0.0001f;
     float defaultTime = 1f;
 
-    
+    // Set up bool variables to indicate whether something is in front/back/left/right of the cube
+    public bool somethingInFront = false;
+    public bool somethingInBack = false;
+    public bool somethingInLeft = false;
+    public bool somethingInRight = false;
 
     // Start is called before the first frame update
     void Start()
@@ -84,8 +90,6 @@ public class ScriptManager : MonoBehaviour
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
 
-       
-
         // Check if the cube's y-position is less than -10
         if (cube.transform.position.y < -10)
         {
@@ -93,6 +97,66 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("You are dead!");
             RestartScene();
         }
+
+        // Set the starting position of the ray
+        Vector3 startingPosition = cube.transform.position;
+
+        // Set the maximum distance the ray should travel
+        float maxDistance = 0.5f;
+
+        // Set up a variable to store the result of the raycast
+        RaycastHit hit;
+
+        // Check for objects in front of the cube
+        Vector3 direction = cube.transform.forward;
+        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
+        {
+            somethingInFront = true;
+        }
+        else
+        {
+            somethingInFront = false;
+        }
+
+        // Check for objects behind the cube
+        direction = -cube.transform.forward;
+        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
+        {
+            somethingInBack = true;
+        }
+        else
+        {
+            somethingInBack = false;
+        }
+
+        // Check for objects to the left of the cube
+        direction = -cube.transform.right;
+        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
+        {
+            somethingInLeft = true;
+        }
+        else
+        {
+            somethingInLeft = false;
+        }
+
+        // Check for objects to the right of the cube
+        direction = cube.transform.right;
+        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
+        {
+            somethingInRight = true;
+        }
+        else
+        {
+            somethingInRight = false;
+        }
+
+        // Print the values of the bool variables to the debug log
+        //Debug.Log("somethingInFront: " + somethingInFront);
+        //Debug.Log("somethingInBack: " + somethingInBack);
+        //Debug.Log("somethingInLeft: " + somethingInLeft);
+        //Debug.Log("somethingInRight: " + somethingInRight);
+
     }
 
     public void RestartScene()
@@ -285,34 +349,6 @@ public class ScriptManager : MonoBehaviour
     private void MoveB() => cube.transform.position -= cube.transform.forward * speed * Time.deltaTime;
     private void MoveL() => cube.transform.position -= cube.transform.right * speed * Time.deltaTime;
     
-
-    // This method sets the speed at which the cube moves.
-    private void SetCubeSpeed(float speed)
-    {
-        UserOutTextFunctionDispaly("SetCubeSpeed");
-        // Set the speed field to the specified value
-        //this.speed = speed;
-        listOfTasks.Add(() => this.speed = speed);
-        listOfTime.Add(time);
-    }
-
-    private void StartLua(string script)
-    {
-        // Create a new instance of the Lua interpreter
-        Script lua = new Script();
-
-        // Register the "print" function so that the script can print messages to the debug log
-        lua.Globals["print"] = (Action<DynValue>)PrintToDebugLogAndTextArea; ;
-
-        // Register the custom functions that the script can call
-        RegisterFunctions(lua);
-
-        // Execute the script
-        lua.DoString(script);
-
-        
-    }
-
     // The "turn" function turns the cube in the specified direction after waiting for the specified amount of time.
 
     private void Turn(string direction)
@@ -356,6 +392,83 @@ public class ScriptManager : MonoBehaviour
         listOfTime.Add(time);
 
     }
+    // This method sets the speed at which the cube moves.
+    private void SetCubeSpeed(float speed)
+    {
+        UserOutTextFunctionDispaly("SetCubeSpeed");
+        // Set the speed field to the specified value
+        //this.speed = speed;
+        listOfTasks.Add(() => this.speed = speed);
+        listOfTime.Add(time);
+    }
+
+    private void StartLua(string script)
+    {
+        // Create a new instance of the Lua interpreter
+        Script lua = new Script();
+
+        // Register the "print" function so that the script can print messages to the debug log
+        lua.Globals["print"] = (Action<DynValue>)PrintToDebugLogAndTextArea; ;
+
+        // Register the custom functions that the script can call
+        RegisterFunctions(lua);
+
+        RegisterVeriables(lua);
+        // Execute the script
+        lua.DoString(script);
+    }
+    private void RegisterVeriables(Script lua)
+    {
+        // Set the value of the "somethingInFront" global variable in the Lua script
+        DynValue dynValue = DynValue.NewBoolean(somethingInFront);
+        lua.Globals.Set("somethingInFront", dynValue);
+
+        // Set the value of the "somethingInBack" global variable in the Lua script
+        dynValue = DynValue.NewBoolean(somethingInBack);
+        lua.Globals.Set("somethingInBack", dynValue);
+
+        // Set the value of the "somethingInLeft" global variable in the Lua script
+        dynValue = DynValue.NewBoolean(somethingInLeft);
+        lua.Globals.Set("somethingInLeft", dynValue);
+
+        // Set the value of the "somethingInRight" global variable in the Lua script
+        dynValue = DynValue.NewBoolean(somethingInRight);
+        lua.Globals.Set("somethingInRight", dynValue);
+    }
+    //    -- Access the values of the global variables in the Lua script
+    //local somethingInFront = somethingInFront
+    //local somethingInBack = somethingInBack
+    //local somethingInLeft = somethingInLeft
+    //local somethingInRight = somethingInRight
+
+    //-- Check if something is in front of the cube
+    //if somethingInFront then
+    //    -- Do something
+    //end
+
+    //-- Check if something is behind the cube
+    //if somethingInBack then
+    //    -- Do something
+    //end
+
+    //-- Check if something is to the left of the cube
+    //if somethingInLeft then
+    //    -- Do something
+    //end
+
+    //-- Check if something is to the right of the cube
+    //if somethingInRight then
+    //    -- Do something
+    //end
+
+    //Crashes the program
+//    local somethingInFront = somethingInFront
+
+//while not somethingInFront do
+//    MoveForward()
+//end
+
+//print("Something is in front of the cube!")
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
     {
