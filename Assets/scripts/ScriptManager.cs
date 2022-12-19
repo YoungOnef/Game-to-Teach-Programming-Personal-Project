@@ -46,6 +46,7 @@ public class ScriptManager : MonoBehaviour
     private string sceneName;
     public int score = 0;
     float time = 0.0001f;
+    float defaultTime = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -440,7 +441,7 @@ SetCubeColor(5,5,5)
         // Reset the size of the cube
         cube.transform.localScale = Vector3.one;
 
-        this.speed = 1;
+        
     }
 
     public void SaveInput()
