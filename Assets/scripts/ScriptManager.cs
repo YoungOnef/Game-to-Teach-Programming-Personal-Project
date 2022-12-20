@@ -97,12 +97,16 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("You are dead!");
             RestartScene();
         }
-
+    }
+    // Set up a function that takes a string as an argument
+    // The string represents the tag that we want to check for
+    void CheckForObjectWithTag(string tag)
+    {
         // Set the starting position of the ray
         Vector3 startingPosition = cube.transform.position;
 
         // Set the maximum distance the ray should travel
-        float maxDistance = 0.5f;
+        float maxDistance = 5.0f;
 
         // Set up a variable to store the result of the raycast
         RaycastHit hit;
@@ -111,7 +115,16 @@ public class ScriptManager : MonoBehaviour
         Vector3 direction = cube.transform.forward;
         if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
         {
-            somethingInFront = true;
+            if (hit.transform.tag == tag)
+            {
+                // Do something if the object has the tag that we're looking for
+                // For example, you could set the somethingInFront variable to true
+                somethingInFront = true;
+            }
+            else
+            {
+                somethingInFront = false;
+            }
         }
         else
         {
@@ -122,7 +135,14 @@ public class ScriptManager : MonoBehaviour
         direction = -cube.transform.forward;
         if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
         {
-            somethingInBack = true;
+            if (hit.transform.tag == tag)
+            {
+                somethingInBack = true;
+            }
+            else
+            {
+                somethingInBack = false;
+            }
         }
         else
         {
@@ -133,7 +153,14 @@ public class ScriptManager : MonoBehaviour
         direction = -cube.transform.right;
         if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
         {
-            somethingInLeft = true;
+            if (hit.transform.tag == tag)
+            {
+                somethingInLeft = true;
+            }
+            else
+            {
+                somethingInLeft = false;
+            }
         }
         else
         {
@@ -144,20 +171,22 @@ public class ScriptManager : MonoBehaviour
         direction = cube.transform.right;
         if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
         {
-            somethingInRight = true;
+            if (hit.transform.tag == tag)
+            {
+                somethingInRight = true;
+            }
+            else
+            {
+                somethingInRight = false;
+            }
         }
         else
         {
             somethingInRight = false;
         }
-
-        // Print the values of the bool variables to the debug log
-        //Debug.Log("somethingInFront: " + somethingInFront);
-        //Debug.Log("somethingInBack: " + somethingInBack);
-        //Debug.Log("somethingInLeft: " + somethingInLeft);
-        //Debug.Log("somethingInRight: " + somethingInRight);
-
     }
+
+
 
     public void RestartScene()
     {
@@ -493,6 +522,8 @@ public class ScriptManager : MonoBehaviour
 
         lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
 
+        // Register the "CheckForObjectWithTag" function
+        lua.Globals["CheckForObjectWithTag"] = (Action<string>)CheckForObjectWithTag;
 
         /*-- Examples
 MoveForward()
