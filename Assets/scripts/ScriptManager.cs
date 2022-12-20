@@ -35,7 +35,7 @@ public class ScriptManager : MonoBehaviour
     // Variables for the cube's color and size
     private Color newCubeColor;
     private float randomChannelOne, randomChannelTwo, randomChannelThree;
-    private float speed = 2;
+    private float speed = 1;
     //private float cubeSize = 1.0f;
 
     // Variables for managing tasks
@@ -99,95 +99,119 @@ public class ScriptManager : MonoBehaviour
         }
     }
     // Set up a function that takes a string as an argument
-    // The string represents the tag that we want to check for
-    void CheckForObjectWithTag(string tag)
+    // The string represents the direction that we want to check
+    bool CheckForObjectWithTagInDirection(string direction, string tag, float maxDistance = 1f)
     {
         // Set the starting position of the ray
         Vector3 startingPosition = cube.transform.position;
 
-        // Set the maximum distance the ray should travel
-        float maxDistance = 5.0f;
 
         // Set up a variable to store the result of the raycast
         RaycastHit hit;
 
-        // Check for objects in front of the cube
-        Vector3 direction = cube.transform.forward;
-        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
+        // Check for objects in the specified direction
+        if (direction == "front")
         {
-            if (hit.transform.tag == tag)
+            // Check for objects in front of the cube
+            Vector3 forwardDirection = cube.transform.forward;
+            if (Physics.Raycast(startingPosition, forwardDirection, out hit, maxDistance))
             {
-                // Do something if the object has the tag that we're looking for
-                // For example, you could set the somethingInFront variable to true
-                somethingInFront = true;
+                if (hit.transform.tag == tag)
+                {
+                    // An object with the specified tag was found in the specified direction
+                    return true;
+                }
+                else
+                {
+                    // An object was found in the specified direction, but it doesn't have the specified tag
+                    return false;
+                }
             }
             else
             {
-                somethingInFront = false;
+                // No object was found in the specified direction
+                return false;
+            }
+        }
+        else if (direction == "back")
+        {
+            // Check for objects behind the cube
+            Vector3 backDirection = -cube.transform.forward;
+            if (Physics.Raycast(startingPosition, backDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (direction == "left")
+        {
+            // Check for objects to the left of the cube
+            Vector3 leftDirection = -cube.transform.right;
+            if (Physics.Raycast(startingPosition, leftDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (direction == "right")
+        {
+            // Check for objects to the right of the cube
+            Vector3 rightDirection = cube.transform.right;
+            if (Physics.Raycast(startingPosition, rightDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
         else
         {
-            somethingInFront = false;
-        }
-
-        // Check for objects behind the cube
-        direction = -cube.transform.forward;
-        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
-        {
-            if (hit.transform.tag == tag)
-            {
-                somethingInBack = true;
-            }
-            else
-            {
-                somethingInBack = false;
-            }
-        }
-        else
-        {
-            somethingInBack = false;
-        }
-
-        // Check for objects to the left of the cube
-        direction = -cube.transform.right;
-        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
-        {
-            if (hit.transform.tag == tag)
-            {
-                somethingInLeft = true;
-            }
-            else
-            {
-                somethingInLeft = false;
-            }
-        }
-        else
-        {
-            somethingInLeft = false;
-        }
-
-        // Check for objects to the right of the cube
-        direction = cube.transform.right;
-        if (Physics.Raycast(startingPosition, direction, out hit, maxDistance))
-        {
-            if (hit.transform.tag == tag)
-            {
-                somethingInRight = true;
-            }
-            else
-            {
-                somethingInRight = false;
-            }
-        }
-        else
-        {
-            somethingInRight = false;
+            // The specified direction is not valid
+            Debug.LogError("Invalid direction: " + direction);
+            return false;
         }
     }
 
 
 
+    public Vector3 GetCubePosition()
+    {
+        // Get the position of the cube
+        Vector3 position = cube.transform.position;
+
+        // Return the position of the cube
+        return position;
+    }
+    
     public void RestartScene()
     {
         print("Level Restarted");
@@ -448,21 +472,21 @@ public class ScriptManager : MonoBehaviour
     }
     private void RegisterVeriables(Script lua)
     {
-        // Set the value of the "somethingInFront" global variable in the Lua script
-        DynValue dynValue = DynValue.NewBoolean(somethingInFront);
-        lua.Globals.Set("somethingInFront", dynValue);
+        //// Set the value of the "somethingInFront" global variable in the Lua script
+        //DynValue dynValue = DynValue.NewBoolean(somethingInFront);
+        //lua.Globals.Set("somethingInFront", dynValue);
 
-        // Set the value of the "somethingInBack" global variable in the Lua script
-        dynValue = DynValue.NewBoolean(somethingInBack);
-        lua.Globals.Set("somethingInBack", dynValue);
+        //// Set the value of the "somethingInBack" global variable in the Lua script
+        //dynValue = DynValue.NewBoolean(somethingInBack);
+        //lua.Globals.Set("somethingInBack", dynValue);
 
-        // Set the value of the "somethingInLeft" global variable in the Lua script
-        dynValue = DynValue.NewBoolean(somethingInLeft);
-        lua.Globals.Set("somethingInLeft", dynValue);
+        //// Set the value of the "somethingInLeft" global variable in the Lua script
+        //dynValue = DynValue.NewBoolean(somethingInLeft);
+        //lua.Globals.Set("somethingInLeft", dynValue);
 
-        // Set the value of the "somethingInRight" global variable in the Lua script
-        dynValue = DynValue.NewBoolean(somethingInRight);
-        lua.Globals.Set("somethingInRight", dynValue);
+        //// Set the value of the "somethingInRight" global variable in the Lua script
+        //dynValue = DynValue.NewBoolean(somethingInRight);
+        //lua.Globals.Set("somethingInRight", dynValue);
     }
     //    -- Access the values of the global variables in the Lua script
     //local somethingInFront = somethingInFront
@@ -522,8 +546,12 @@ public class ScriptManager : MonoBehaviour
 
         lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
 
-        // Register the "CheckForObjectWithTag" function
-        lua.Globals["CheckForObjectWithTag"] = (Action<string>)CheckForObjectWithTag;
+        // Register the "CheckForObjectWithTagInDirection" function
+        lua.Globals["CheckForObjectWithTagInDirection"] = (Func<string, string,float, bool>)CheckForObjectWithTagInDirection;
+
+        // Register the "GetCubePosition" function
+        lua.Globals["GetCubePosition"] = (Func<Vector3>)GetCubePosition;
+
 
         /*-- Examples
 MoveForward()
