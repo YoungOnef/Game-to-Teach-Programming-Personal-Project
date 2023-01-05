@@ -401,7 +401,7 @@ public class ScriptManager : MonoBehaviour
     private void MoveR() => cube.transform.position += cube.transform.right * speed * Time.deltaTime;
     private void MoveB() => cube.transform.position -= cube.transform.forward * speed * Time.deltaTime;
     private void MoveL() => cube.transform.position -= cube.transform.right * speed * Time.deltaTime;
-    
+
     // The "turn" function turns the cube in the specified direction after waiting for the specified amount of time.
 
     private void Turn(string direction)
@@ -413,7 +413,7 @@ public class ScriptManager : MonoBehaviour
         if (direction == "left")
         {
             rotation = new Vector3(0, -90, 0);
-            
+
         }
         else if (direction == "right")
         {
@@ -425,8 +425,8 @@ public class ScriptManager : MonoBehaviour
         }
         //listOfTasks.Add(() => cube.transform.position += displacement);
         //cube.transform.Rotate(rotation);
-        listOfTasks.Add(() => cube.transform.Rotate(rotation));
-        listOfTime.Add(time);
+        listOfTasks.Add(() => cube.transform.Rotate(rotation * Time.deltaTime));
+        listOfTime.Add(1);
     }
     public void Teleport(float x, float y, float z)
     {
@@ -599,6 +599,7 @@ SetCubeColor(5,5,5)
         listOfTasks.Clear();
         listOfTime.Clear();
         StopCoroutine(currentTask);
+        unityEvent.RemoveAllListeners();
     }
     public void ResetCubeData()
     {

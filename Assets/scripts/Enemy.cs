@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] bool _showDebug = false;
     [SerializeField] float _debugSize = .5f;
-    [SerializeField] Color _debugColor = Color.white;
+    [SerializeField] Color _debugColor = Color.red;
     int _followPointIndex;
 
     [SerializeField] List<Vector3> _path = new List<Vector3>();
