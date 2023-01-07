@@ -91,108 +91,7 @@ public class ScriptManager : MonoBehaviour
             uIManager.RestartScene();
         }
     }
-    // Set up a function that takes a string as an argument
-    // The string represents the direction that we want to check
-    bool CheckForObjectWithTagInDirection(string direction, string tag, float maxDistance = 1f)
-    {
-        // Set the starting position of the ray
-        Vector3 startingPosition = player.transform.position;
 
-
-        // Set up a variable to store the result of the raycast
-        RaycastHit hit;
-
-        // Check for objects in the specified direction
-        if (direction == "front")
-        {
-            // Check for objects in front of the Player
-            Vector3 forwardDirection = player.transform.forward;
-            if (Physics.Raycast(startingPosition, forwardDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    // An object with the specified tag was found in the specified direction
-                    return true;
-                }
-                else
-                {
-                    // An object was found in the specified direction, but it doesn't have the specified tag
-                    return false;
-                }
-            }
-            else
-            {
-                // No object was found in the specified direction
-                return false;
-            }
-        }
-        else if (direction == "back")
-        {
-            // Check for objects behind the Player
-            Vector3 backDirection = -player.transform.forward;
-            if (Physics.Raycast(startingPosition, backDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (direction == "left")
-        {
-            // Check for objects to the left of the Player
-            Vector3 leftDirection = -player.transform.right;
-            if (Physics.Raycast(startingPosition, leftDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (direction == "right")
-        {
-            // Check for objects to the right of the Player
-            Vector3 rightDirection = player.transform.right;
-            if (Physics.Raycast(startingPosition, rightDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            // The specified direction is not valid
-            Debug.LogError("Invalid direction: " + direction);
-            return false;
-        }
-    }
 
 
 
@@ -548,4 +447,109 @@ SetPlayerColor(5,5,5)
 
         
     }
+
+    // Set up a function that takes a string as an argument
+    // The string represents the direction that we want to check
+    bool CheckForObjectWithTagInDirection(string direction, string tag, float maxDistance = 1f)
+    {
+        // Set the starting position of the ray
+        Vector3 startingPosition = player.transform.position;
+
+
+        // Set up a variable to store the result of the raycast
+        RaycastHit hit;
+
+        // Check for objects in the specified direction
+        if (direction == "front")
+        {
+            // Check for objects in front of the Player
+            Vector3 forwardDirection = player.transform.forward;
+            if (Physics.Raycast(startingPosition, forwardDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    // An object with the specified tag was found in the specified direction
+                    return true;
+                }
+                else
+                {
+                    // An object was found in the specified direction, but it doesn't have the specified tag
+                    return false;
+                }
+            }
+            else
+            {
+                // No object was found in the specified direction
+                return false;
+            }
+        }
+        else if (direction == "back")
+        {
+            // Check for objects behind the Player
+            Vector3 backDirection = -player.transform.forward;
+            if (Physics.Raycast(startingPosition, backDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (direction == "left")
+        {
+            // Check for objects to the left of the Player
+            Vector3 leftDirection = -player.transform.right;
+            if (Physics.Raycast(startingPosition, leftDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (direction == "right")
+        {
+            // Check for objects to the right of the Player
+            Vector3 rightDirection = player.transform.right;
+            if (Physics.Raycast(startingPosition, rightDirection, out hit, maxDistance))
+            {
+                if (hit.transform.tag == tag)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            // The specified direction is not valid
+            Debug.LogError("Invalid direction: " + direction);
+            return false;
+        }
+    }
+
+
 }
