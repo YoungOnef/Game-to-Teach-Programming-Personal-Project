@@ -49,7 +49,9 @@ public class ScriptManager : MonoBehaviour
     public bool somethingInBack = false;
     public bool somethingInLeft = false;
     public bool somethingInRight = false;
-
+    
+    float jumpForce = 10.0f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -75,6 +77,16 @@ public class ScriptManager : MonoBehaviour
         }
 
     }
+
+    public void Jump(float jumpForce =10)
+    {
+        // Get the Rigidbody component attached to the player object
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+
+        // Apply a force in the upward direction
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -338,6 +350,7 @@ public class ScriptManager : MonoBehaviour
         listOfTime.Add(time);
     }
 
+
     private void StartLua(string script)
     {
         // Create a new instance of the Lua interpreter
@@ -401,9 +414,11 @@ public class ScriptManager : MonoBehaviour
 
         // Register the "CheckForObjectWithTagInDirection" function
         lua.Globals["CheckForObjectWithTagInDirection"] = (Func<string, string,float, bool>)CheckForObjectWithTagInDirection;
-
+        
         // Register the "GetPlayerPosition" function
         lua.Globals["GetPlayerPosition"] = (Func<Vector3>)GetPlayerPosition;
+
+        lua.Globals["Jump"] = (Action<float>)Jump;
 
 
         /*-- Examples
