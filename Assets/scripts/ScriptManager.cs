@@ -7,36 +7,30 @@ using TMPro;
 using System;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-using System.IO;
 using UnityEngine.SceneManagement;
 using MoonSharp.Interpreter.Debugging;
 using Unity.VisualScripting;
 using UnityEngine.ProBuilder.Shapes;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SocialPlatforms;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ScriptManager : MonoBehaviour
 {
-    // UI elements
-    public GameObject inputField;
-    public TMP_InputField userInputField;
-    public TextMeshProUGUI userOutTextForDebug;
-    public TextMeshProUGUI userOutText;
-    public TextMeshProUGUI userOutTextFunctionDispaly;
+    // Declare the uIManager field
+    private UIManager uIManager;
 
-    // The cube object
+    // The Player object
     [SerializeField]
-    private GameObject cube;
-    private Renderer cubeRenderer;
-    public GameObject ScreenButton;
-    public GameObject HelpWindow;
-    
+    private GameObject player;
+    private Renderer playerRenderer;
 
-    // Variables for the cube's color and size
-    private Color newCubeColor;
+
+    // Variables for the Player's color and size
+    private Color newPlayerColor;
     private float randomChannelOne, randomChannelTwo, randomChannelThree;
     private float speed = 1;
-    //private float cubeSize = 1.0f;
+    //private float PlayerSize = 1.0f;
 
     // Variables for managing tasks
     private List<UnityAction> listOfTasks = new List<UnityAction>();
@@ -45,13 +39,12 @@ public class ScriptManager : MonoBehaviour
     UnityEvent unityEvent = new UnityEvent();
     // Create a UnityAction object that represents a method
 
-    // The name of the current scene
-    private string sceneName;
+
     public int score = 0;
     float time = 0.0001f;
-    float defaultTime = 1f;
+    //float defaultTime = 1f;
 
-    // Set up bool variables to indicate whether something is in front/back/left/right of the cube
+    // Set up bool variables to indicate whether something is in front/back/left/right of the Player
     public bool somethingInFront = false;
     public bool somethingInBack = false;
     public bool somethingInLeft = false;
@@ -60,25 +53,24 @@ public class ScriptManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject newCube = GameObject.Find("cube");
-        //renderer = cube:GetComponent("Renderer")
-        // Get the renderer component of the cube
-        cubeRenderer = cube.GetComponent<Renderer>();
+        uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 
-        // Get the name of the current scene
-        sceneName = SceneManager.GetActiveScene().name;
-        sceneName += ".txt";
+        GameObject newPlayer = GameObject.Find("Player");
+        //renderer = Player:GetComponent("Renderer")
+        // Get the renderer component of the Player
+        playerRenderer = player.GetComponent<Renderer>();
 
+        
 
-        // Add a Rigidbody component to the cube game object and set its useGravity property to true
-        Rigidbody rb = cube.GetComponent<Rigidbody>();
+        // Add a Rigidbody component to the Player game object and set its useGravity property to true
+        Rigidbody rb = player.GetComponent<Rigidbody>();
         rb.useGravity = true;
 
         string data = DataInputHoldingData.instance.dataInput;
 
         if (data != null || data != "")
         {
-            userInputField.text = data;
+            uIManager.userInputField.text = data;
             
         }
 
@@ -87,15 +79,16 @@ public class ScriptManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // Invoke any tasks that are currently registered with the UnityEvent
         unityEvent.Invoke();
 
-        // Check if the cube's y-position is less than -10
-        if (cube.transform.position.y < -10)
+        // Check if the Player's y-position is less than -10
+        if (player.transform.position.y < -10)
         {
             // Display a message in the debug log
             Debug.Log("You are dead!");
-            RestartScene();
+            uIManager.RestartScene();
         }
     }
     // Set up a function that takes a string as an argument
@@ -103,7 +96,7 @@ public class ScriptManager : MonoBehaviour
     bool CheckForObjectWithTagInDirection(string direction, string tag, float maxDistance = 1f)
     {
         // Set the starting position of the ray
-        Vector3 startingPosition = cube.transform.position;
+        Vector3 startingPosition = player.transform.position;
 
 
         // Set up a variable to store the result of the raycast
@@ -112,8 +105,8 @@ public class ScriptManager : MonoBehaviour
         // Check for objects in the specified direction
         if (direction == "front")
         {
-            // Check for objects in front of the cube
-            Vector3 forwardDirection = cube.transform.forward;
+            // Check for objects in front of the Player
+            Vector3 forwardDirection = player.transform.forward;
             if (Physics.Raycast(startingPosition, forwardDirection, out hit, maxDistance))
             {
                 if (hit.transform.tag == tag)
@@ -135,8 +128,8 @@ public class ScriptManager : MonoBehaviour
         }
         else if (direction == "back")
         {
-            // Check for objects behind the cube
-            Vector3 backDirection = -cube.transform.forward;
+            // Check for objects behind the Player
+            Vector3 backDirection = -player.transform.forward;
             if (Physics.Raycast(startingPosition, backDirection, out hit, maxDistance))
             {
                 if (hit.transform.tag == tag)
@@ -155,8 +148,8 @@ public class ScriptManager : MonoBehaviour
         }
         else if (direction == "left")
         {
-            // Check for objects to the left of the cube
-            Vector3 leftDirection = -cube.transform.right;
+            // Check for objects to the left of the Player
+            Vector3 leftDirection = -player.transform.right;
             if (Physics.Raycast(startingPosition, leftDirection, out hit, maxDistance))
             {
                 if (hit.transform.tag == tag)
@@ -175,8 +168,8 @@ public class ScriptManager : MonoBehaviour
         }
         else if (direction == "right")
         {
-            // Check for objects to the right of the cube
-            Vector3 rightDirection = cube.transform.right;
+            // Check for objects to the right of the Player
+            Vector3 rightDirection = player.transform.right;
             if (Physics.Raycast(startingPosition, rightDirection, out hit, maxDistance))
             {
                 if (hit.transform.tag == tag)
@@ -203,32 +196,23 @@ public class ScriptManager : MonoBehaviour
 
 
 
-    public Vector3 GetCubePosition()
+    public Vector3 GetPlayerPosition()
     {
-        // Get the position of the cube
-        Vector3 position = cube.transform.position;
+        // Get the position of the Player
+        Vector3 position = player.transform.position;
 
-        // Return the position of the cube
+        // Return the position of the Player
         return position;
     }
     
-    public void RestartScene()
-    {
-        print("Level Restarted");
-        DataInputHoldingData.instance.dataInput = userInputField.text;
-        // Get the current scene name
-        string sceneName = SceneManager.GetActiveScene().name;
 
-        // Load the scene with the given name
-        SceneManager.LoadScene(sceneName);
-    }
     // This method loops through the list of tasks and waits the specified amount of time before executing each one.
     private IEnumerator DoTask()
     {
         for (int i = 0; i < listOfTasks.Count; i++)
         {
             // Update the userOutTextFunctionDispaly variable to show the name of the function being executed
-            userOutTextFunctionDispaly.text = listOfTasks[i].Method.Name;
+            uIManager.userOutTextFunctionDispaly.text = listOfTasks[i].Method.Name;
 
             // Add the task to the UnityEvent and wait the specified amount of time.
             unityEvent.AddListener(listOfTasks[i]);
@@ -255,12 +239,12 @@ public class ScriptManager : MonoBehaviour
         try
         {
             // Get the script text from the input field
-            string script = inputField.GetComponent<TMP_InputField>().text;
+            string script = uIManager.inputField.GetComponent<TMP_InputField>().text;
             Debug.Log("script: " + script);
 
 
             StartLua(script);
-            userOutTextForDebug.text = "None Error messages from Lua";
+            uIManager.userOutTextForDebug.text = "None Error messages from Lua";
 
             
             if (listOfTasks.Count == listOfTime.Count)
@@ -278,89 +262,89 @@ public class ScriptManager : MonoBehaviour
         {
             // if a syntax error was detected, display an error message to the user
             Debug.Log("Syntax error: " + ex.Message);
-            userOutTextForDebug.text = "Syntax error: " + ex.Message;
+            uIManager.userOutTextForDebug.text = "Syntax error: " + ex.Message;
         }
         catch (ScriptRuntimeException ex)
         {
             // if a runtime error was detected, display an error message to the user
             Debug.Log("Runtime error: " + ex.DecoratedMessage);
-            userOutTextForDebug.text = "Runtime error: " + ex.DecoratedMessage;
+            uIManager.userOutTextForDebug.text = "Runtime error: " + ex.DecoratedMessage;
         }
         catch (Exception ex)
         {
             // if any other exception was thrown, display the error message to the user
             Debug.Log("Error: " + ex.Message);
-            userOutTextForDebug.text = "Error: " + ex.Message;
+            uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
         }
 
-        ResetCubeData();
+        ResetPlayerData();
 
 
     }
 
-    public void SetCubeColor(float r, float g, float b)
+    public void SetPlayerColor(float r, float g, float b)
     {
-        // set the cube color using the r, g, and b values provided by the user
-        newCubeColor = new Color(r, g, b, 1f);
-        cubeRenderer.material.SetColor("_Color", newCubeColor);
+        // set the Player color using the r, g, and b values provided by the user
+        newPlayerColor = new Color(r, g, b, 1f);
+        playerRenderer.material.SetColor("_Color", newPlayerColor);
 
-        // update the predefined color values so they match the new color of the cube
+        // update the predefined color values so they match the new color of the Player
         //randomChannelOne = r;
         //randomChannelTwo = g;
         //randomChannelThree = b;
 
-        UserOutTextFunctionDispaly("SetCubeColor");
+        uIManager.UserOutTextFunctionDispaly("SetPlayerColor");
 
         listOfTasks.Add(() => { });
         listOfTime.Add(time);
     }
-    public void SetCubeSize(float size)
+    public void SetPlayerSize(float size)
     {
 
-        UserOutTextFunctionDispaly("SetCubeSize");
-        // set the scale of the cube to the specified size
-        //cube.transform.localScale = new Vector3(size, size, size);
+        uIManager.UserOutTextFunctionDispaly("SetPlayerSize");
+        // set the scale of the Player to the specified size
+        //Player.transform.localScale = new Vector3(size, size, size);
 
-        listOfTasks.Add(() => cube.transform.localScale = new Vector3(size, size, size));
+        listOfTasks.Add(() => player.transform.localScale = new Vector3(size, size, size));
         listOfTime.Add(time);
     }
     public void MoveForward(float Time = 1f)
     {
-        UserOutTextFunctionDispaly("MoveForward");
+        uIManager.UserOutTextFunctionDispaly("MoveForward");
         print($"MoveForward {Time}");
         listOfTasks.Add(MoveF);
         listOfTime.Add(Time);
     }
     private void MoveRight(float Time = 1f)
     {
-        UserOutTextFunctionDispaly("MoveRight");
+        uIManager.UserOutTextFunctionDispaly("MoveRight");
         print($"MoveRight {Time}");
         listOfTasks.Add(MoveR);
         listOfTime.Add(Time);
     }
     private void MoveLeft(float Time = 1f)
     {
-        UserOutTextFunctionDispaly("MoveLeft");
+        uIManager.UserOutTextFunctionDispaly("MoveLeft");
         print($"MoveLeft {Time}");
         listOfTasks.Add(MoveL);
         listOfTime.Add(Time);
     }
     private void MoveBack(float Time = 1f)
     {
-        UserOutTextFunctionDispaly("MoveBack");
+        uIManager.UserOutTextFunctionDispaly("MoveBack");
         print($"MoveBack {Time}");
         listOfTasks.Add(MoveB);
         listOfTime.Add(Time);
     }
     private void Wait(float Time = 1f)
     {
-        UserOutTextFunctionDispaly("Wait");
+        uIManager.UserOutTextFunctionDispaly("Wait");
         print($"Wait {Time}");
         listOfTasks.Add(() => { });
         listOfTime.Add(Time);
 
     }
-    // The "move" function moves the cube by the specified amount in the specified direction.
+    // The "move" function moves the Player by the specified amount in the specified direction.
     private void Move(double distance, string direction, double delay)
     {
         Vector3 displacement = new Vector3(0, 0, 0);
@@ -390,19 +374,19 @@ public class ScriptManager : MonoBehaviour
         {
             displacement = new Vector3(0, 0, -(float)distance * speed * Time.deltaTime);
         }
-        UserOutTextFunctionDispaly("Move");
-        // Add a task to the list of tasks that moves the cube by the specified amount in the specified direction.
+        uIManager.UserOutTextFunctionDispaly("Move");
+        // Add a task to the list of tasks that moves the Player by the specified amount in the specified direction.
         // The task will wait for the specified delay plus the time delta before executing.
-        listOfTasks.Add(() => cube.transform.position += displacement);
+        listOfTasks.Add(() => player.transform.position += displacement);
         listOfTime.Add((float)delay + Time.deltaTime);
     }
 
-    private void MoveF() => cube.transform.position += cube.transform.forward * speed * Time.deltaTime;
-    private void MoveR() => cube.transform.position += cube.transform.right * speed * Time.deltaTime;
-    private void MoveB() => cube.transform.position -= cube.transform.forward * speed * Time.deltaTime;
-    private void MoveL() => cube.transform.position -= cube.transform.right * speed * Time.deltaTime;
+    private void MoveF() => player.transform.position += player.transform.forward * speed * Time.deltaTime;
+    private void MoveR() => player.transform.position += player.transform.right * speed * Time.deltaTime;
+    private void MoveB() => player.transform.position -= player.transform.forward * speed * Time.deltaTime;
+    private void MoveL() => player.transform.position -= player.transform.right * speed * Time.deltaTime;
 
-    // The "turn" function turns the cube in the specified direction after waiting for the specified amount of time.
+    // The "turn" function turns the Player in the specified direction after waiting for the specified amount of time.
 
     private void Turn(string direction)
     {
@@ -423,15 +407,15 @@ public class ScriptManager : MonoBehaviour
         {
             rotation = new Vector3(0, 180, 0);
         }
-        //listOfTasks.Add(() => cube.transform.position += displacement);
-        //cube.transform.Rotate(rotation);
-        listOfTasks.Add(() => cube.transform.Rotate(rotation * Time.deltaTime));
+        //listOfTasks.Add(() => Player.transform.position += displacement);
+        //Player.transform.Rotate(rotation);
+        listOfTasks.Add(() => player.transform.Rotate(rotation * Time.deltaTime));
         listOfTime.Add(1);
     }
     public void Teleport(float x, float y, float z)
     {
 
-        UserOutTextFunctionDispaly("Teleport");
+        uIManager.UserOutTextFunctionDispaly("Teleport");
         // Get the current position of the game object
         Vector3 currentPosition = transform.position;
 
@@ -439,16 +423,16 @@ public class ScriptManager : MonoBehaviour
         currentPosition = new Vector3(x, y, z);
 
         // Update the transform's position
-        //cube.transform.position = currentPosition;
+        //Player.transform.position = currentPosition;
 
-        listOfTasks.Add(() => cube.transform.position = currentPosition);
+        listOfTasks.Add(() => player.transform.position = currentPosition);
         listOfTime.Add(time);
 
     }
-    // This method sets the speed at which the cube moves.
-    private void SetCubeSpeed(float speed)
+    // This method sets the speed at which the Player moves.
+    private void SetPlayerSpeed(float speed)
     {
-        UserOutTextFunctionDispaly("SetCubeSpeed");
+        uIManager.UserOutTextFunctionDispaly("SetPlayerSpeed");
         // Set the speed field to the specified value
         //this.speed = speed;
         listOfTasks.Add(() => this.speed = speed);
@@ -461,7 +445,8 @@ public class ScriptManager : MonoBehaviour
         Script lua = new Script();
 
         // Register the "print" function so that the script can print messages to the debug log
-        lua.Globals["print"] = (Action<DynValue>)PrintToDebugLogAndTextArea; ;
+
+        lua.Globals["print"] = (Action<DynValue>)uIManager.PrintToDebugLogAndTextArea;
 
         // Register the custom functions that the script can call
         RegisterFunctions(lua);
@@ -488,54 +473,23 @@ public class ScriptManager : MonoBehaviour
         //dynValue = DynValue.NewBoolean(somethingInRight);
         //lua.Globals.Set("somethingInRight", dynValue);
     }
-    //    -- Access the values of the global variables in the Lua script
-    //local somethingInFront = somethingInFront
-    //local somethingInBack = somethingInBack
-    //local somethingInLeft = somethingInLeft
-    //local somethingInRight = somethingInRight
 
-    //-- Check if something is in front of the cube
-    //if somethingInFront then
-    //    -- Do something
-    //end
 
-    //-- Check if something is behind the cube
-    //if somethingInBack then
-    //    -- Do something
-    //end
-
-    //-- Check if something is to the left of the cube
-    //if somethingInLeft then
-    //    -- Do something
-    //end
-
-    //-- Check if something is to the right of the cube
-    //if somethingInRight then
-    //    -- Do something
-    //end
-
-    //Crashes the program
-//    local somethingInFront = somethingInFront
-
-//while not somethingInFront do
-//    MoveForward()
-//end
-
-//print("Something is in front of the cube!")
+//print("Something is in front of the Player!")
     // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
     {
 
-        // Register the "SetCubeColor" function
-        lua.Globals["SetCubeColor"] = (Action<float, float, float>)SetCubeColor;
+        // Register the "SetPlayerColor" function
+        lua.Globals["SetPlayerColor"] = (Action<float, float, float>)SetPlayerColor;
 
-        // Register the "SetCubeSize" function
-        lua.Globals["SetCubeSize"] = (Action<float>)SetCubeSize;
+        // Register the "SetPlayerSize" function
+        lua.Globals["SetPlayerSize"] = (Action<float>)SetPlayerSize;
 
-        // Register the "SetCubeSpeed" function
-        lua.Globals["SetCubeSpeed"] = (Action<float>)SetCubeSpeed;
+        // Register the "SetPlayerSpeed" function
+        lua.Globals["SetPlayerSpeed"] = (Action<float>)SetPlayerSpeed;
 
-        //functions to move the cube
+        //functions to move the Player
         lua.Globals["MoveForward"] = (Action<float>)MoveForward;
         lua .Globals["MoveRight"] = (Action<float>)MoveRight;
         lua.Globals["MoveLeft"] = (Action<float>)MoveLeft;
@@ -549,8 +503,8 @@ public class ScriptManager : MonoBehaviour
         // Register the "CheckForObjectWithTagInDirection" function
         lua.Globals["CheckForObjectWithTagInDirection"] = (Func<string, string,float, bool>)CheckForObjectWithTagInDirection;
 
-        // Register the "GetCubePosition" function
-        lua.Globals["GetCubePosition"] = (Func<Vector3>)GetCubePosition;
+        // Register the "GetPlayerPosition" function
+        lua.Globals["GetPlayerPosition"] = (Func<Vector3>)GetPlayerPosition;
 
 
         /*-- Examples
@@ -562,36 +516,15 @@ Turn("left")
 MoveForward()
 Turn("right")
 Teleport(0,0,0)
-SetCubeSize(5)
+SetPlayerSize(5)
 Wait()
-SetCubeSize(1)
-SetCubeSpeed(5)
-SetCubeColor(5,5,5)
+SetPlayerSize(1)
+SetPlayerSpeed(5)
+SetPlayerColor(5,5,5)
         */
     }
     // This method prints the type and value of the specified value to the debug log and the Text object
-    private void PrintToDebugLogAndTextArea(DynValue value)
-    {
-        // Get the type of the value
-        string type = value.Type.ToString();
-
-        // Convert the value to a string
-        string message = value.ToObject().ToString();
-
-        // Print the type and value to the debug log
-        Debug.Log("Printing " + type + " value from Lua script: " + message);
-
-        // Set the text of the Text object to the type and value
-        userOutText.SetText(type + ": " + message);
-    }
-    public void UserOutTextFunctionDispaly(string text)
-    {
-        //userOutTextFunctionDispaly.text = text;
-    }
-    public void ResetText()
-    {
-        userInputField.text = "";
-    }
+    
 
     public void Stop()
     {
@@ -601,63 +534,18 @@ SetCubeColor(5,5,5)
         StopCoroutine(currentTask);
         unityEvent.RemoveAllListeners();
     }
-    public void ResetCubeData()
+    public void ResetPlayerData()
     {
-        // reset the position of the cube to its original position
-        // Reset the position of the cube
-        cube.transform.position = Vector3.zero;
+        // reset the position of the Player to its original position
+        // Reset the position of the Player
+        player.transform.position = Vector3.zero;
 
-        // Reset the color of the cube
-        cubeRenderer.material.color = Color.black;
+        // Reset the color of the Player
+        playerRenderer.material.color = Color.black;
 
-        // Reset the size of the cube
-        cube.transform.localScale = Vector3.one;
+        // Reset the size of the Player
+        player.transform.localScale = Vector3.one;
 
         
-    }
-
-    public void SaveInput()
-    {
-
-        // get the user input
-        string userInput = inputField.GetComponent<TMP_InputField>().text;
-
-        // write the user input to a file
-        File.WriteAllText(sceneName, userInput);
-    }
-
-    public void LoadSave()
-    {
-        // read the user input from the file
-        string userInput = File.ReadAllText(sceneName);
-
-        // set the input field to the saved user input
-        inputField.GetComponent<TMP_InputField>().text = userInput;
-    }
-
-    public void HideOrViewConsole()
-    {
-        if (ScreenButton.activeSelf == true)
-        {
-            ScreenButton.SetActive(false);
-
-        }
-        else
-        {
-            ScreenButton.SetActive(true);
-        }
-    }
-
-    public void HideOrViewHelpWindow()
-    {
-        if (HelpWindow.activeSelf == true)
-        {
-            HelpWindow.SetActive(false);
-
-        }
-        else
-        {
-            HelpWindow.SetActive(true);
-        }
     }
 }
