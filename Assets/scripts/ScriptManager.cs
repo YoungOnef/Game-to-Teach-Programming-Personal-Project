@@ -19,6 +19,7 @@ public class ScriptManager : MonoBehaviour
 {
     // Declare the uIManager field
     private UIManager uIManager;
+    private TaskManager taskManager;
 
     // The Player object
     [SerializeField]
@@ -32,11 +33,6 @@ public class ScriptManager : MonoBehaviour
     private float speed = 1;
     //private float PlayerSize = 1.0f;
 
-    // Variables for managing tasks
-    private List<UnityAction> listOfTasks = new List<UnityAction>();
-    private List<float> listOfTime = new List<float>();
-    private IEnumerator currentTask;
-    UnityEvent unityEvent = new UnityEvent();
     // Create a UnityAction object that represents a method
 
 
@@ -54,6 +50,7 @@ public class ScriptManager : MonoBehaviour
     void Start()
     {
         uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        taskManager = GameObject.Find("TaskManager").GetComponent<TaskManager>();
 
         GameObject newPlayer = GameObject.Find("Player");
         //renderer = Player:GetComponent("Renderer")
