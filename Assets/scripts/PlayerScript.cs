@@ -31,13 +31,11 @@ public class PlayerScript : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Enemy"))
         {
-            ScriptManager scriptManager = GameObject.Find("ScriptManager").GetComponent<ScriptManager>();
-            scriptManager.RestartScene();
+            UIManager uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+            uiManager.RestartScene();
             Destroy(other.gameObject);
             Debug.Log("You are dead!");
-            
         }
-
 
     }
 }
