@@ -207,8 +207,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804490704}
-        m_TargetAssemblyTypeName: ScriptManager, Assembly-CSharp
+      - m_Target: {fileID: 1807803004}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ResetText
         m_Mode: 1
         m_Arguments:
@@ -388,8 +388,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804490704}
-        m_TargetAssemblyTypeName: Level1, Assembly-CSharp
+      - m_Target: {fileID: 1807803004}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: LoadSave
         m_Mode: 1
         m_Arguments:
@@ -647,8 +647,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804490704}
-        m_TargetAssemblyTypeName: ScriptManager, Assembly-CSharp
+      - m_Target: {fileID: 1807803004}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideOrViewHelpWindow
         m_Mode: 1
         m_Arguments:
@@ -2510,9 +2510,9 @@ RectTransform:
   - {fileID: 2048733646}
   - {fileID: 268468046}
   - {fileID: 271230012}
-  - {fileID: 1714628913}
   - {fileID: 2117519924}
   - {fileID: 1028406997}
+  - {fileID: 1714628913}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2605,8 +2605,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804490704}
-        m_TargetAssemblyTypeName: ScriptManager, Assembly-CSharp
+      - m_Target: {fileID: 1807803004}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideOrViewHelpWindow
         m_Mode: 1
         m_Arguments:
@@ -3090,7 +3090,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 793878670}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3180,7 +3180,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 197.14343, w: 0}
+  m_margin: {x: 0, y: 0, z: -1.5281982, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3335,7 +3335,6 @@ MonoBehaviour:
   _debugColor: {r: 1, g: 1, b: 1, a: 1}
   _debugFollowPathColor: {r: 0, g: 1, b: 0, a: 1}
   _path:
-  - {x: -1.43, y: 0.25, z: 2.84}
   - {x: -1.43, y: 0.25, z: 5.77}
 --- !u!65 &1069790747
 BoxCollider:
@@ -3370,7 +3369,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b61d773cfcaad2440bae414651ff5b12, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5135,7 +5134,7 @@ RectTransform:
   m_Children:
   - {fileID: 1817361003}
   m_Father: {fileID: 793878670}
-  m_RootOrder: 15
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5721,7 +5720,7 @@ MonoBehaviour:
   userOutTextForDebug: {fileID: 1691575052}
   userOutText: {fileID: 1114556811}
   userOutTextFunctionDispaly: {fileID: 304302892}
-  ScreenButton: {fileID: 271230011}
+  ScreenButton: {fileID: 342648822}
   HelpWindow: {fileID: 1714628912}
 --- !u!4 &1807803005
 Transform:
@@ -6156,8 +6155,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804490704}
-        m_TargetAssemblyTypeName: Level1, Assembly-CSharp
+      - m_Target: {fileID: 1807803004}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SaveInput
         m_Mode: 1
         m_Arguments:
@@ -6290,8 +6289,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804490704}
-        m_TargetAssemblyTypeName: Level1, Assembly-CSharp
+      - m_Target: {fileID: 1807803004}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: HideOrViewConsole
         m_Mode: 1
         m_Arguments:
@@ -6371,7 +6370,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 793878670}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6461,7 +6460,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 197.14343, w: 0}
+  m_margin: {x: 0, y: 0, z: 0.15551758, w: -1.6837158}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
