@@ -50,7 +50,6 @@ public class ScriptManager : MonoBehaviour
     public bool somethingInLeft = false;
     public bool somethingInRight = false;
     
-    float jumpForce = 10.0f;
     
     // Start is called before the first frame update
     void Start()
