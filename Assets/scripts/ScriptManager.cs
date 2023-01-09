@@ -82,9 +82,6 @@ public class ScriptManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        // Invoke any tasks that are currently registered with the UnityEvent
-        unityEvent.Invoke();
 
         // Check if the Player's y-position is less than -10
         if (player.transform.position.y < -10)
@@ -95,7 +92,13 @@ public class ScriptManager : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+                
+        // Invoke any tasks that are currently registered with the UnityEvent
+        unityEvent.Invoke();
 
+    }
 
 
     public Vector3 GetPlayerPosition()

@@ -48,12 +48,7 @@ public class LLevel3Manager : LevelBase
     /*
 for i = 1, 4 do
     for i = 1, 4 do
-        MoveForward()
-        MoveForward()
-        MoveForward()
-        MoveForward()
-        MoveForward()
-        MoveForward()
+        MoveForward(12)
         Turn("right")
     end
     Turn("left") 

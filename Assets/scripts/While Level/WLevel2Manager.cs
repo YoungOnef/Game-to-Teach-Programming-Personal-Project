@@ -25,19 +25,30 @@ public class WLevel2Manager : LevelBase
     /*
      * 
 
+    maxIterations = 100
+
+for i = 1, maxIterations do
+    if WhatsInFront("front", "Enemy", 4) then
+        Wait(5)
+        print("Enemy infront waiting")
 
 
--- Set the maximum number of iterations to 100
+
+    else
+        print("Moving forward")
+        MoveForward()
+end
+end
+    
+MoveForward()
+
+
 maxIterations = 100
 
--- Repeat the loop until the "Coin" is in front of the player or the counter reaches the maximum number of iterations
 for i = 1, maxIterations do
 
 
-    -- Check if the "Enemy" is in front of the player
-    Wait(1)
     if WhatsInFront("front", "Enemy", 4) then
-            -- There is no "Enemy" in front of the player, so move forward for 1 second
         print("Moving forward")
         MoveForward()
 
