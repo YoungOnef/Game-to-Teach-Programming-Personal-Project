@@ -1,0 +1,4 @@
+if WhatsInFront("front", "Enemy", 5) then
+    Wait(1)
+    print("waiting")
+end

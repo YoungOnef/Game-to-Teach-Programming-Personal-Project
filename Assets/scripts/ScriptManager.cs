@@ -1,19 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using MoonSharp.Interpreter;
 using TMPro;
 using System;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
-using MoonSharp.Interpreter.Debugging;
-using Unity.VisualScripting;
-using UnityEngine.ProBuilder.Shapes;
-using Newtonsoft.Json.Linq;
-using UnityEngine.SocialPlatforms;
-using static UnityEditor.Experimental.GraphView.GraphView;
+
 
 public class ScriptManager : MonoBehaviour
 {
@@ -246,14 +238,21 @@ public class ScriptManager : MonoBehaviour
         listOfTasks.Add(MoveB);
         listOfTime.Add(Time);
     }
-    private void Wait(float Time = 1f)
+    private void Wait(float time = 1f)
     {
         uIManager.UserOutTextFunctionDispaly("Wait");
-        print($"Wait {Time}");
+        print($"Wait {time}");
         listOfTasks.Add(() => { });
-        listOfTime.Add(Time);
-
+        listOfTime.Add(time);
+        // Start the WaitCoroutine coroutine with the specified time
+        StartCoroutine(WaitCoroutine(time));
     }
+    private IEnumerator WaitCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+    }
+
+
     // The "move" function moves the Player by the specified amount in the specified direction.
     private void Move(double distance, string direction, double delay)
     {
@@ -412,7 +411,7 @@ public class ScriptManager : MonoBehaviour
         lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
 
         // Register the "CheckForObjectWithTagInDirection" function
-        lua.Globals["CheckForObjectWithTagInDirection"] = (Func<string, string,float, bool>)CheckForObjectWithTagInDirection;
+        lua.Globals["WhatsInFront"] = (Func<string, string,float, bool>)CheckForObjectWithTagInDirection;
         
         // Register the "GetPlayerPosition" function
         lua.Globals["GetPlayerPosition"] = (Func<Vector3>)GetPlayerPosition;
