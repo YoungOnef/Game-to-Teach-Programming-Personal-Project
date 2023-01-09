@@ -33,7 +33,7 @@ for i = 1, 5 do
     local move = i
     local result = MultiplyByTwo(i)
     print(result)
-    MoveForward(move)
+    MoveForward()
     Turn("right")
 end
 

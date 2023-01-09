@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level9Manager : LevelBase
+public class FLevel1Manager : LevelBase
 {
     public GameObject prefab; // Reference to the coin prefab
     public List<Coin> coins; // List to store the coins
@@ -12,8 +12,8 @@ public class Level9Manager : LevelBase
         base.Setup(handler);
         print("Level1Manager Running");
 
-        handler.spawn(prefab, new Vector3(0, platformLevel, 6));
-        handler.spawn(prefab, new Vector3(0, platformLevel, 12));
+        handler.spawn(prefab, new Vector3(10, platformLevel, -15));
+
 
         // Instantiate the coins and add them to the list
         coins = new List<Coin>();
@@ -23,18 +23,26 @@ public class Level9Manager : LevelBase
         }
     }
     /*
-local i = 0
-while i < 2 do
-    local result = CheckForObjectWithTagInDirection("front", "Coin", 6)
+     * 
 
-    if result == true then
-        MoveForward(6)
-    else
-        print("no coin found")
-    end
 
-    i = i + 1
+function MoveForwardAndTurn()
+    -- Multiply the distance moved by 2 each time the function is called
+    distance = distance * 2
+    -- Move forward for the specified distance
+    MoveForward(distance)
+    -- Turn right
+    Turn("right")
 end
+
+-- Set the initial distance to 1
+distance = 2.5
+
+-- Repeat the MoveForwardAndTurn function 4 times
+for i = 1, 4 do
+    MoveForwardAndTurn()
+end
+
 
         */
 
