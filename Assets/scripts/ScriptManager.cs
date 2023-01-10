@@ -17,10 +17,8 @@ public class ScriptManager : MonoBehaviour
     private GameObject player;
     private Renderer playerRenderer;
 
-
     // Variables for the Player's color and size
     private Color newPlayerColor;
-    private float randomChannelOne, randomChannelTwo, randomChannelThree;
     private float speed = 1;
     //private float PlayerSize = 1.0f;
 
@@ -31,18 +29,9 @@ public class ScriptManager : MonoBehaviour
     UnityEvent unityEvent = new UnityEvent();
     // Create a UnityAction object that represents a method
 
-
     public int score = 0;
     float time = 0.0001f;
     //float defaultTime = 1f;
-
-    // Set up bool variables to indicate whether something is in front/back/left/right of the Player
-    public bool somethingInFront = false;
-    public bool somethingInBack = false;
-    public bool somethingInLeft = false;
-    public bool somethingInRight = false;
-    
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -53,22 +42,16 @@ public class ScriptManager : MonoBehaviour
         // Get the renderer component of the Player
         playerRenderer = player.GetComponent<Renderer>();
 
-        
-
         // Add a Rigidbody component to the Player game object and set its useGravity property to true
         Rigidbody rb = player.GetComponent<Rigidbody>();
         rb.useGravity = true;
-
         string data = DataInputHoldingData.instance.dataInput;
-
         if (data != null || data != "")
         {
             uIManager.userInputField.text = data;
             
         }
-
     }
-
     public void Jump(float jumpForce =10)
     {
         // Get the Rigidbody component attached to the player object
@@ -77,12 +60,9 @@ public class ScriptManager : MonoBehaviour
         // Apply a force in the upward direction
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
-
-
     // Update is called once per frame
     void Update()
     {
-
         // Check if the Player's y-position is less than -10
         if (player.transform.position.y < -10)
         {
@@ -91,7 +71,6 @@ public class ScriptManager : MonoBehaviour
             uIManager.RestartScene();
         }
     }
-
     private void FixedUpdate()
     {
                 
@@ -99,8 +78,6 @@ public class ScriptManager : MonoBehaviour
         unityEvent.Invoke();
 
     }
-
-
     public Vector3 GetPlayerPosition()
     {
         // Get the position of the Player
@@ -109,8 +86,6 @@ public class ScriptManager : MonoBehaviour
         // Return the position of the Player
         return position;
     }
-    
-
     // This method loops through the list of tasks and waits the specified amount of time before executing each one.
     private IEnumerator DoTask()
     {
@@ -150,7 +125,6 @@ public class ScriptManager : MonoBehaviour
 
             StartLua(script);
             uIManager.userOutTextForDebug.text = "None Error messages from Lua";
-
             
             if (listOfTasks.Count == listOfTime.Count)
             {
@@ -162,7 +136,6 @@ public class ScriptManager : MonoBehaviour
                 Debug.LogError($"ERROR Lists Count NotMaching : listOfTasks.Count({listOfTasks.Count}) listOfTime.Count({listOfTime.Count})");
             }
         }
-
         catch (SyntaxErrorException ex)
         {
             // if a syntax error was detected, display an error message to the user
@@ -181,35 +154,20 @@ public class ScriptManager : MonoBehaviour
             Debug.Log("Error: " + ex.Message);
             uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
         }
-
         ResetPlayerData();
-
-
     }
 
     public void SetPlayerColor(float r, float g, float b)
     {
-        // set the Player color using the r, g, and b values provided by the user
         newPlayerColor = new Color(r, g, b, 1f);
         playerRenderer.material.SetColor("_Color", newPlayerColor);
-
-        // update the predefined color values so they match the new color of the Player
-        //randomChannelOne = r;
-        //randomChannelTwo = g;
-        //randomChannelThree = b;
-
         uIManager.UserOutTextFunctionDispaly("SetPlayerColor");
-
         listOfTasks.Add(() => { });
         listOfTime.Add(time);
     }
     public void SetPlayerSize(float size)
     {
-
         uIManager.UserOutTextFunctionDispaly("SetPlayerSize");
-        // set the scale of the Player to the specified size
-        //Player.transform.localScale = new Vector3(size, size, size);
-
         listOfTasks.Add(() => player.transform.localScale = new Vector3(size, size, size));
         listOfTime.Add(time);
     }
@@ -255,8 +213,6 @@ public class ScriptManager : MonoBehaviour
         yield return new WaitForSeconds(time);
     }
 
-
-    // The "move" function moves the Player by the specified amount in the specified direction.
     private void Move(double distance, string direction, double delay)
     {
         Vector3 displacement = new Vector3(0, 0, 0);
@@ -287,18 +243,13 @@ public class ScriptManager : MonoBehaviour
             displacement = new Vector3(0, 0, -(float)distance * speed * Time.deltaTime);
         }
         uIManager.UserOutTextFunctionDispaly("Move");
-        // Add a task to the list of tasks that moves the Player by the specified amount in the specified direction.
-        // The task will wait for the specified delay plus the time delta before executing.
         listOfTasks.Add(() => player.transform.position += displacement);
         listOfTime.Add((float)delay + Time.deltaTime);
     }
-
     private void MoveF() => player.transform.position += player.transform.forward * speed * Time.deltaTime;
     private void MoveR() => player.transform.position += player.transform.right * speed * Time.deltaTime;
     private void MoveB() => player.transform.position -= player.transform.forward * speed * Time.deltaTime;
     private void MoveL() => player.transform.position -= player.transform.right * speed * Time.deltaTime;
-
-    // The "turn" function turns the Player in the specified direction after waiting for the specified amount of time.
 
     private void Turn(string direction)
     {
@@ -309,7 +260,6 @@ public class ScriptManager : MonoBehaviour
         if (direction == "left")
         {
             rotation = new Vector3(0, -90, 0);
-
         }
         else if (direction == "right")
         {
@@ -326,16 +276,12 @@ public class ScriptManager : MonoBehaviour
     }
     public void Teleport(float x, float y, float z)
     {
-
         uIManager.UserOutTextFunctionDispaly("Teleport");
         // Get the current position of the game object
         Vector3 currentPosition = transform.position;
 
         // Set the new position of the game object
         currentPosition = new Vector3(x, y, z);
-
-        // Update the transform's position
-        //Player.transform.position = currentPosition;
 
         listOfTasks.Add(() => player.transform.position = currentPosition);
         listOfTime.Add(time);
@@ -345,8 +291,6 @@ public class ScriptManager : MonoBehaviour
     private void SetPlayerSpeed(float speed)
     {
         uIManager.UserOutTextFunctionDispaly("SetPlayerSpeed");
-        // Set the speed field to the specified value
-        //this.speed = speed;
         listOfTasks.Add(() => this.speed = speed);
         listOfTime.Add(time);
     }
@@ -354,7 +298,6 @@ public class ScriptManager : MonoBehaviour
 
     private void StartLua(string script)
     {
-        // Create a new instance of the Lua interpreter
         Script lua = new Script();
 
         // Register the "print" function so that the script can print messages to the debug log
@@ -364,45 +307,15 @@ public class ScriptManager : MonoBehaviour
         // Register the custom functions that the script can call
         RegisterFunctions(lua);
 
-        RegisterVeriables(lua);
         // Execute the script
         lua.DoString(script);
     }
-    private void RegisterVeriables(Script lua)
-    {
-        //// Set the value of the "somethingInFront" global variable in the Lua script
-        //DynValue dynValue = DynValue.NewBoolean(somethingInFront);
-        //lua.Globals.Set("somethingInFront", dynValue);
 
-        //// Set the value of the "somethingInBack" global variable in the Lua script
-        //dynValue = DynValue.NewBoolean(somethingInBack);
-        //lua.Globals.Set("somethingInBack", dynValue);
-
-        //// Set the value of the "somethingInLeft" global variable in the Lua script
-        //dynValue = DynValue.NewBoolean(somethingInLeft);
-        //lua.Globals.Set("somethingInLeft", dynValue);
-
-        //// Set the value of the "somethingInRight" global variable in the Lua script
-        //dynValue = DynValue.NewBoolean(somethingInRight);
-        //lua.Globals.Set("somethingInRight", dynValue);
-    }
-
-
-//print("Something is in front of the Player!")
-    // This method registers the custom functions that the script can call.
     private void RegisterFunctions(Script lua)
     {
-
-        // Register the "SetPlayerColor" function
         lua.Globals["SetPlayerColor"] = (Action<float, float, float>)SetPlayerColor;
-
-        // Register the "SetPlayerSize" function
         lua.Globals["SetPlayerSize"] = (Action<float>)SetPlayerSize;
-
-        // Register the "SetPlayerSpeed" function
         lua.Globals["SetPlayerSpeed"] = (Action<float>)SetPlayerSpeed;
-
-        //functions to move the Player
         lua.Globals["MoveForward"] = (Action<float>)MoveForward;
         lua .Globals["MoveRight"] = (Action<float>)MoveRight;
         lua.Globals["MoveLeft"] = (Action<float>)MoveLeft;
@@ -410,36 +323,11 @@ public class ScriptManager : MonoBehaviour
         lua.Globals["Move"] = (Action<double, string, double>)Move;
         lua.Globals["Turn"] = (Action<string>)Turn;
         lua.Globals["Wait"] = (Action<float>)Wait;
-
         lua.Globals["Teleport"] = (Action<float, float, float>)Teleport;
-
-        // Register the "CheckForObjectWithTagInDirection" function
         lua.Globals["WhatsInFront"] = (Func<string, string,float, bool>)CheckForObjectWithTagInDirection;
-        
-        // Register the "GetPlayerPosition" function
         lua.Globals["GetPlayerPosition"] = (Func<Vector3>)GetPlayerPosition;
-
-        lua.Globals["Jump"] = (Action<float>)Jump;
-
-
-        /*-- Examples
-MoveForward()
-MoveRight()
-MoveBack()
-MoveLeft()
-Turn("left")
-MoveForward()
-Turn("right")
-Teleport(0,0,0)
-SetPlayerSize(5)
-Wait()
-SetPlayerSize(1)
-SetPlayerSpeed(5)
-SetPlayerColor(5,5,5)
-        */
     }
-    // This method prints the type and value of the specified value to the debug log and the Text object
-    
+
 
     public void Stop()
     {
@@ -451,17 +339,10 @@ SetPlayerColor(5,5,5)
     }
     public void ResetPlayerData()
     {
-        // reset the position of the Player to its original position
-        // Reset the position of the Player
         player.transform.position = Vector3.zero;
-
-        // Reset the color of the Player
         playerRenderer.material.color = Color.black;
-
-        // Reset the size of the Player
         player.transform.localScale = Vector3.one;
-
-        
+        player.transform.rotation = Quaternion.identity;
     }
 
     // Set up a function that takes a string as an argument
