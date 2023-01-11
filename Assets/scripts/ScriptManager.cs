@@ -11,6 +11,7 @@ public class ScriptManager : MonoBehaviour
 {
     private UIManager uIManager;
 
+
     [SerializeField]
     private GameObject player;
 
@@ -21,19 +22,20 @@ public class ScriptManager : MonoBehaviour
         GameObject newPlayer = GameObject.Find("Player");
 
         luaScript = new Script();
-        //working with in C#
-        //StartCoroutine(MoveForward(10));
-        //StartCoroutine(Turn("left"));
 
+        /*
+Turn("left")
+MoveForward(10)
+Turn("left")
+MoveForward(10) */
     }
 
-    public IEnumerator MoveForward(float distance)
+    public void MoveForward(float distance)
     {
         player.transform.position += player.transform.forward * distance;
-        yield return new WaitForSeconds(distance);
     }
 
-    public IEnumerator Turn(string direction)
+    public void Turn(string direction)
     {
         if (direction == "left")
         {
@@ -43,50 +45,17 @@ public class ScriptManager : MonoBehaviour
         {
             player.transform.Rotate(Vector3.up, 90f);
         }
-        yield return null;
     }
-
-    private IEnumerator StartLua(string script)
-    {
-
-        // Bind the C# functions to the Lua script
-        luaScript.Globals["MoveForward"] = (Func<float, IEnumerator>)MoveForward;
-        luaScript.Globals["Turn"] = (Func<string, IEnumerator>)Turn;
-
-        // Execute the Lua script
-        DynValue result = luaScript.DoString(script);
-
-        // Check if the result is a coroutine
-        if (result.Type == DataType.Function)
-        {
-            DynValue coroutine = luaScript.CreateCoroutine(result);
-
-            bool isRunning = true;
-            while (isRunning)
-            {
-                coroutine = coroutine.Coroutine.Resume();
-                if (coroutine.Coroutine.State != CoroutineState.Running)
-                {
-                    isRunning = false;
-                }
-                else
-                {
-                    yield return null;
-                }
-            }
-        }
-        HandleLuaErrors();
-    }
-    public void InputText()
-    {
-        string script = uIManager.inputField.GetComponent<TMP_InputField>().text;
-        StartCoroutine(StartLua(script));
-    }
-
-    private void HandleLuaErrors()
+    private void StartLua(string script)
     {
         try
         {
+            // Bind the C# functions to the Lua script
+            luaScript.Globals["MoveForward"] = (Action<float>)MoveForward;
+            luaScript.Globals["Turn"] = (Action<string>)Turn;
+
+            // Execute the Lua script
+            luaScript.DoString(script);
             uIManager.userOutTextForDebug.text = "None Error messages from Lua";
         }
         catch (SyntaxErrorException ex)
@@ -108,5 +77,9 @@ public class ScriptManager : MonoBehaviour
             uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
         }
     }
-    
+    public void InputText()
+    {
+        string script = uIManager.inputField.GetComponent<TMP_InputField>().text;
+        StartLua(script);
+    }
 }
