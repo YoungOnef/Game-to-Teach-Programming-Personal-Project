@@ -1,1 +1,2 @@
-print("hello")
+coroutine.yield(MoveForward(10))
+coroutine.yield(Turn("left"))
