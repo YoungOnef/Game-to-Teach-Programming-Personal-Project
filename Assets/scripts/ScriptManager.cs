@@ -21,7 +21,9 @@ public class ScriptManager : MonoBehaviour
         GameObject newPlayer = GameObject.Find("Player");
 
         luaScript = new Script();
-
+        //working with in C#
+        //StartCoroutine(MoveForward(10));
+        //StartCoroutine(Turn("left"));
 
     }
 
@@ -51,7 +53,6 @@ public class ScriptManager : MonoBehaviour
         luaScript.Globals["MoveForward"] = (Func<float, IEnumerator>)MoveForward;
         luaScript.Globals["Turn"] = (Func<string, IEnumerator>)Turn;
 
-
         // Execute the Lua script
         DynValue result = luaScript.DoString(script);
 
@@ -74,8 +75,12 @@ public class ScriptManager : MonoBehaviour
                 }
             }
         }
-
         HandleLuaErrors();
+    }
+    public void InputText()
+    {
+        string script = uIManager.inputField.GetComponent<TMP_InputField>().text;
+        StartCoroutine(StartLua(script));
     }
 
     private void HandleLuaErrors()
@@ -103,9 +108,5 @@ public class ScriptManager : MonoBehaviour
             uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
         }
     }
-    public void InputText()
-    {
-        string script = uIManager.inputField.GetComponent<TMP_InputField>().text;
-        StartCoroutine(StartLua(script));
-    }
+    
 }
