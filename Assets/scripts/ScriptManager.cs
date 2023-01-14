@@ -15,26 +15,16 @@ public class ScriptManager : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
-    private Script luaScript;
-    void Start()
-    {
-        uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
-        GameObject newPlayer = GameObject.Find("Player");
+    int cycles = 0; // variable to keep track of number of times MoveUp() is called
 
-        luaScript = new Script();
-
-        /*
-Turn("left")
-MoveForward(10)
-Turn("left")
-MoveForward(10) */
-    }
-
+    // method to move the object forward by a given distance
     public void MoveForward(float distance)
     {
         player.transform.position += player.transform.forward * distance;
+        cycles += 1; // increment the cycles
     }
 
+    // method to turn the object in a given direction
     public void Turn(string direction)
     {
         if (direction == "left")
@@ -46,40 +36,35 @@ MoveForward(10) */
             player.transform.Rotate(Vector3.up, 90f);
         }
     }
-    private void StartLua(string script)
-    {
-        try
-        {
-            // Bind the C# functions to the Lua script
-            luaScript.Globals["MoveForward"] = (Action<float>)MoveForward;
-            luaScript.Globals["Turn"] = (Action<string>)Turn;
 
-            // Execute the Lua script
-            luaScript.DoString(script);
-            uIManager.userOutTextForDebug.text = "None Error messages from Lua";
-        }
-        catch (SyntaxErrorException ex)
-        {
-            // if a syntax error was detected, display an error message to the user
-            Debug.Log("Syntax error: " + ex.Message);
-            uIManager.userOutTextForDebug.text = "Syntax error: " + ex.Message;
-        }
-        catch (ScriptRuntimeException ex)
-        {
-            // if a runtime error was detected, display an error message to the user
-            Debug.Log("Runtime error: " + ex.DecoratedMessage);
-            uIManager.userOutTextForDebug.text = "Runtime error: " + ex.DecoratedMessage;
-        }
-        catch (Exception ex)
-        {
-            // if any other exception was thrown, display the error message to the user
-            Debug.Log("Error: " + ex.Message);
-            uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
-        }
-    }
-    public void InputText()
+    private IEnumerator _Start()
     {
-        string script = uIManager.inputField.GetComponent<TMP_InputField>().text;
-        StartLua(script);
+        string code = @"
+    -- Lua code to control the player object
+    Turn(""left"")
+MoveForward(1)
+    ";
+
+        // Load the code and get the returned function
+        Script script = new Script(CoreModules.None);
+        script.Globals["MoveForward"] = (Action<float>)MoveForward; // register the MoveForward() method to be used in the Lua script
+        script.Globals["Turn"] = (Action<string>)Turn; // register the Turn() method to be used in the Lua script
+        script.DoString(code); // execute the Lua script
+
+        DynValue result = null;
+
+        for (result = script.DoString(code); // call the script
+            result.Type == DataType.YieldRequest; // check if script has ended
+            result = script.DoString(code)) // continue the script
+        {
+            print(cycles); // print the number of cycles
+            yield return new WaitForSeconds(0.001f); // pause execution for 0.001 seconds
+        }
     }
+
+    private void Start()
+    {
+        StartCoroutine(_Start()); // start the script
+    }
+
 }
