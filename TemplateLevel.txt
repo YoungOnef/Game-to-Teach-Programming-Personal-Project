@@ -1,1 +1,6 @@
-print("hello")
+while true do
+TurnRight()
+TurnLeft()
+TurnLeft()
+MoveForward(2)
+end

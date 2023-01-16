@@ -1328,8 +1328,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362535562}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1131043, y: -1.4084489, z: 1.1411214}
-  m_LocalScale: {x: 0.35000968, y: 5.1996, z: 1.6513034}
+  m_LocalPosition: {x: 2.1131043, y: -1.4084489, z: 1.1411}
+  m_LocalScale: {x: 5.690808, y: 84.540306, z: 26.848543}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 529338101}
@@ -4508,8 +4508,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
+        time: 0.028892517
+        value: 0.2553196
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -5543,11 +5543,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1616785493}
-  score: 0
-  somethingInFront: 0
-  somethingInBack: 0
-  somethingInLeft: 0
-  somethingInRight: 0
+  speed: 1
+  __TimerON: 0
+  __TimerTime: -1
+  Moving: 0
 --- !u!4 &1804490705
 Transform:
   m_ObjectHideFlags: 0
