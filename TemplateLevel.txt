@@ -1,2 +1,11 @@
-coroutine.yield(MoveForward(10))
-coroutine.yield(Turn("left"))
+Wait(2)
+MoveDown(10)
+MoveLeft(10)
+for i = 1, 4 do
+    MoveUp(20)
+    MoveRight(20)
+    MoveDown(20)
+    MoveLeft(20)
+end
+MoveUp(10)
+MoveRight(10)

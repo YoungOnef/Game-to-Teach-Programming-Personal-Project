@@ -5542,7 +5542,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f09503351375824e8854150a980fbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uIManager: {fileID: 1807803004}
   player: {fileID: 1616785493}
+  speed: 1
+  __TimerON: 0
+  __TimerTime: -1
 --- !u!4 &1804490705
 Transform:
   m_ObjectHideFlags: 0

@@ -9,62 +9,90 @@ using UnityEngine.Events;
 
 public class ScriptManager : MonoBehaviour
 {
-    private UIManager uIManager;
-
-
+    UIManager uIManager;
     [SerializeField]
     private GameObject player;
 
-    int cycles = 0; // variable to keep track of number of times MoveUp() is called
+    [Min(0f)][SerializeField] float speed = 1f;
 
-    // method to move the object forward by a given distance
-    public void MoveForward(float distance)
+    [SerializeField] bool __TimerON = false;
+    [SerializeField] float __TimerTime = -1f;
+    [SerializeField]
+    Vector3 CubeTargetPos = new Vector3(0, 0, 0);
+    bool Moving = false;
+    float MovingTimer = -1;
+    string code;
+    private Vector3 Move(Vector3 vector3, int Distance)
     {
-        player.transform.position += player.transform.forward * distance;
-        cycles += 1; // increment the cycles
+        Wait(Distance);
+        return new Vector3(0, 0, 0);
+    }
+    
+
+    public void MoveForward(int Distance = 1) => CubeTargetPos += Move(Vector3.forward,Distance);
+    public void MoveRight(int Distance = 1) => CubeTargetPos += Move(Vector3.right, Distance);
+    public void MoveBack(int Distance = 1) => CubeTargetPos += Move(Vector3.back, Distance);
+    public void MoveLeft(int Distance = 1) => CubeTargetPos += Move(Vector3.left, Distance);
+    public void Wait(float seconds = 1)
+    {
+        __TimerON = true;
+        __TimerTime = seconds;
+    }
+    private void Start()
+    {
+        uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 
-    // method to turn the object in a given direction
-    public void Turn(string direction)
-    {
-        if (direction == "left")
-        {
-            player.transform.Rotate(Vector3.up, -90f);
-        }
-        else if (direction == "right")
-        {
-            player.transform.Rotate(Vector3.up, 90f);
-        }
-    }
 
     private IEnumerator _Start()
     {
-        string code = @"
-    -- Lua code to control the player object
-    Turn(""left"")
-MoveForward(1)
-    ";
-
+        var _readyCode = "function Start()\n" + code + "\nend";
         // Load the code and get the returned function
         Script script = new Script(CoreModules.None);
-        script.Globals["MoveForward"] = (Action<float>)MoveForward; // register the MoveForward() method to be used in the Lua script
-        script.Globals["Turn"] = (Action<string>)Turn; // register the Turn() method to be used in the Lua script
-        script.DoString(code); // execute the Lua script
+        script.Globals["MoveForward"] = (Action<int>)MoveForward;
+        script.Globals["MoveRight"] = (Action<int>)MoveRight;
+        script.Globals["MoveBack"] = (Action<int>)MoveBack;
+        script.Globals["MoveLeft"] = (Action<int>)MoveLeft;
+        script.Globals["Wait"] = (Action<float>)Wait;
+        //script.LoadFunction("function Wait (n) return ('Wait' ,n) end \n");
+        script.DoString(_readyCode);
+
+        // get the function
+        DynValue function = script.Globals.Get("Start");//start funcion
+
+        // Create the coroutine in C#
+        DynValue coroutine = script.CreateCoroutine(function);
+
+        coroutine.Coroutine.AutoYieldCounter = 2;//line by line yeld return ????
 
         DynValue result = null;
 
-        for (result = script.DoString(code); // call the script
-            result.Type == DataType.YieldRequest; // check if script has ended
-            result = script.DoString(code)) // continue the script
+        result = coroutine.Coroutine.Resume();
+        while (true)
         {
-            print(cycles); // print the number of cycles
-            yield return new WaitForSeconds(0.001f); // pause execution for 0.001 seconds
+
+            if (result.Type != DataType.YieldRequest)
+                break;
+
+
+            if (__TimerON)
+            {
+                yield return new WaitForSeconds(__TimerTime);
+                __TimerON = false;
+                __TimerTime = -1;
+            }
+            yield return new WaitForSeconds(.1f);
+            result = coroutine.Coroutine.Resume();
         }
     }
 
-    private void Start()
-    {
-        StartCoroutine(_Start()); // start the script
-    }
 
+    public void InputText()
+    {
+        code = uIManager.inputField.GetComponent<TMP_InputField>().text;
+        
+        StartCoroutine(_Start());
+
+
+    }
 }

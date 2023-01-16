@@ -12,8 +12,8 @@ public class LevelManagerTemplate : LevelBase
         base.Setup(handler);
         print("Level1Manager Running");
 
-        handler.spawn(prefab, new Vector3(0, 10, 6));
-        handler.spawn(prefab, new Vector3(0, 10, 12));
+        handler.spawn(prefab, new Vector3(0, platformLevel, 6));
+        handler.spawn(prefab, new Vector3(0, platformLevel, 12));
 
         // Instantiate the coins and add them to the list
         coins = new List<Coin>();
