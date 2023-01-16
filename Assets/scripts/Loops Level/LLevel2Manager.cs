@@ -38,22 +38,12 @@ public class LLevel2Manager : LevelBase
     /*
 
 for i = 1, 4 do
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-Turn("right")
+MoveForward(12)
+TurnRight()
 end
 for i = 1, 4 do
-Turn("left")
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
+TurnLeft()
+MoveForward(12)
 end
     */
 }

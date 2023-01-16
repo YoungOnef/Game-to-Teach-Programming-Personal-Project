@@ -27,8 +27,7 @@ public class BLevel2Manager : LevelBase
 
     /*
 MoveForward(12)
-
-Turn("right")
+TurnRight()
 MoveForward(12)
 
     */

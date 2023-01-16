@@ -25,22 +25,37 @@ public class FLevel1Manager : LevelBase
     /*
      * 
 
+    Working
 
-function MoveForwardAndTurn()
-    -- Multiply the distance moved by 2 each time the function is called
-    distance = distance * 2
-    -- Move forward for the specified distance
-    MoveForward(distance)
-    -- Turn right
-    Turn("right")
-end
 
--- Set the initial distance to 1
 distance = 2.5
 
--- Repeat the MoveForwardAndTurn function 4 times
-for i = 1, 4 do
+for i = 1, 3 do
+
+
+    distance = distance * 2
+    MoveForward(distance)
+    TurnRight()
+    
+end
+
+    ---------------------------
+distance = 2.5
+
+for i = 1, 3 do
+
     MoveForwardAndTurn()
+    
+end
+
+    
+function MoveForwardAndTurn()
+
+    distance = distance * 2
+
+    MoveForward(distance)
+
+    TurnRight()
 end
 
 

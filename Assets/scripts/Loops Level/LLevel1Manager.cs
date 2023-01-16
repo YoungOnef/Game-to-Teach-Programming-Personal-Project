@@ -31,13 +31,8 @@ public class LLevel1Manager : LevelBase
     /*
 
 for i = 1, 4 do
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-Turn("right")
+MoveForward(12)
+TurnRight()
 end
     */
 }

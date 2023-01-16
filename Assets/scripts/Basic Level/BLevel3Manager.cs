@@ -24,6 +24,17 @@ public class BLevel3Manager : LevelBase
         }
     }
     /*
+MoveForward(6)
+TurnRight()
+TurnRight()
+MoveForward(12)
+TurnRight()
+TurnRight()
+MoveForward(6)
+TurnRight()
+MoveForward(6)
+TurnRight()
+TurnRight()
 MoveForward(12)
 
         */
