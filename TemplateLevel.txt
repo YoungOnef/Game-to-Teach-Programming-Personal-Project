@@ -1,11 +1,6 @@
-Wait(2)
-MoveDown(10)
-MoveLeft(10)
-for i = 1, 4 do
-    MoveUp(20)
-    MoveRight(20)
-    MoveDown(20)
-    MoveLeft(20)
+while true do
+TurnRight()
+TurnLeft()
+TurnLeft()
+MoveForward(2)
 end
-MoveUp(10)
-MoveRight(10)

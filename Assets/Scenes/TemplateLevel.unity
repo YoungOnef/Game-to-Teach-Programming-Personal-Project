@@ -4508,8 +4508,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
+        time: 0.028892517
+        value: 0.2553196
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -5542,11 +5542,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f09503351375824e8854150a980fbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIManager: {fileID: 1807803004}
   player: {fileID: 1616785493}
   speed: 1
   __TimerON: 0
   __TimerTime: -1
+  Moving: 0
 --- !u!4 &1804490705
 Transform:
   m_ObjectHideFlags: 0
