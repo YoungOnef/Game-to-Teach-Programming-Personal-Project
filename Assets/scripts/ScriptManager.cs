@@ -10,6 +10,8 @@ public class ScriptManager : MonoBehaviour
     UIManager uIManager;
     [SerializeField]
     private GameObject player;
+    [SerializeField]
+    private float movementSpeed = 1;
 
 
     [SerializeField] bool __TimerON = false;
@@ -22,15 +24,17 @@ public class ScriptManager : MonoBehaviour
     Vector3 directionTurn = new Vector3Int(0, 0, 0);
     Vector3 currnetTurnAngle = new Vector3Int(0, 0, 0);
 
-
+    private void SetPlayerSpeed(float speed)
+    {
+        movementSpeed = speed;
+    }
     private void Move(Vector3 Direction, int Distance)
     {
         uIManager.UserOutTextFunctionDispaly("Moving " + Distance + " units in direction " + Direction);
-        Wait(Distance);
-        MovingTimer = Distance;
+        Wait(Distance / movementSpeed); // adjust the wait time based on speed
+        MovingTimer = Distance / movementSpeed; // adjust the moving timer based on speed
         directionMovement = Direction;
         Moving = true;
-        
     }
     private void Turn(int Angle)
     {
@@ -81,7 +85,7 @@ public class ScriptManager : MonoBehaviour
         __TimerTime = -1;
         StopAllCoroutines();
     }
-
+    //create new function  SetPlayerSpeed
     private IEnumerator _Start()
     {
         var _readyCode = "function Start()\n" + code + "\nend";
@@ -93,15 +97,12 @@ public class ScriptManager : MonoBehaviour
         script.Globals["MoveRight"] = (Action<int>)MoveRight;
         script.Globals["MoveBack"] = (Action<int>)MoveBack;
         script.Globals["MoveLeft"] = (Action<int>)MoveLeft;
-
         script.Globals["TurnRight"] = (Action)TurnRight;
         script.Globals["TurnLeft"] = (Action)TurnLeft;
-
         script.Globals["Wait"] = (Action<float>)Wait;
-
         script.Globals["WhatsInFront"] = (Func<string, string, float, bool>)WhatsInFront;
-
         script.Globals["print"] = (Action<DynValue>)uIManager.PrintToDebugLogAndTextArea;
+        script.Globals["SetPlayerSpeed"] = (Action<float>)SetPlayerSpeed;
 
 
         script.DoString(_readyCode);
@@ -137,7 +138,7 @@ public class ScriptManager : MonoBehaviour
         if (Moving)
         {
             MovingTimer -= Time.deltaTime;
-            player.transform.position += directionMovement * Time.deltaTime;
+            player.transform.position += directionMovement * movementSpeed * Time.deltaTime;
             player.transform.Rotate(directionTurn * Time.deltaTime);
             if (MovingTimer <= 0)
             {
