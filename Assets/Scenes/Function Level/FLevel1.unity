@@ -5741,11 +5741,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1616785493}
-  score: 0
-  somethingInFront: 0
-  somethingInBack: 0
-  somethingInLeft: 0
-  somethingInRight: 0
+  __TimerON: 0
+  __TimerTime: -1
+  Moving: 0
 --- !u!4 &1804490705
 Transform:
   m_ObjectHideFlags: 0

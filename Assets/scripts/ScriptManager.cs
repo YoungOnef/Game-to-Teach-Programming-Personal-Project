@@ -60,25 +60,25 @@ public class ScriptManager : MonoBehaviour
     {
         uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
 
+        NewGame();
 
-        string data = DataInputHoldingData.instance.dataInput;
-
-        NewGame(data);
     }
-    public void NewGame(string data)
+    public void NewGame()
     {
+        string data = DataInputHoldingData.instance.dataInput;
         if (data != null || data != "")
         {
             uIManager.userInputField.text = data;
 
         }
     }
-    
+
     public void Stop()
     {
         Moving = false;
-        directionMovement = new Vector3(0, 0, 0);
-        directionTurn = new Vector3Int(0, 0, 0);
+        MovingTimer = -1;
+        __TimerON = false;
+        __TimerTime = -1;
     }
 
     private IEnumerator _Start()
@@ -148,6 +148,7 @@ public class ScriptManager : MonoBehaviour
                 MovingTimer = -1;
             }
         }
+
         // Check if the Player's y-position is less than -10
         if (player.transform.position.y < -10)
         {
@@ -157,111 +158,48 @@ public class ScriptManager : MonoBehaviour
         }
     }
 
+
     public void InputText()
     {
         code = uIManager.inputField.GetComponent<TMP_InputField>().text;
        
         StartCoroutine(_Start());
 
-
     }
-    bool WhatsInFront(string direction, string tag, float maxDistance = 1f)
+    //improve this function
+    private bool WhatsInFront(string direction, string objectType, float distance)
     {
-        // Set the starting position of the ray
-        Vector3 startingPosition = player.transform.position;
-
-
-        // Set up a variable to store the result of the raycast
+        uIManager.UserOutTextFunctionDispaly("Checking if " + objectType + " is " + distance + " in front of me");
         RaycastHit hit;
-
-        // Check for objects in the specified direction
-        if (direction == "front")
+        Vector3 directionVector = player.transform.forward;
+        if (direction == "right")
         {
-            // Check for objects in front of the Player
-            Vector3 forwardDirection = player.transform.forward;
-            if (Physics.Raycast(startingPosition, forwardDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    // An object with the specified tag was found in the specified direction
-                    return true;
-                }
-                else
-                {
-                    // An object was found in the specified direction, but it doesn't have the specified tag
-                    return false;
-                }
-            }
-            else
-            {
-                // No object was found in the specified direction
-                return false;
-            }
+            directionVector = player.transform.right;
         }
-        else if (direction == "back")
+        if (direction == "left")
         {
-            // Check for objects behind the Player
-            Vector3 backDirection = -player.transform.forward;
-            if (Physics.Raycast(startingPosition, backDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            directionVector = -player.transform.right;
         }
-        else if (direction == "left")
+        if (direction == "back")
         {
-            // Check for objects to the left of the Player
-            Vector3 leftDirection = -player.transform.right;
-            if (Physics.Raycast(startingPosition, leftDirection, out hit, maxDistance))
-            {
-                if (hit.transform.tag == tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            directionVector = -player.transform.forward;
         }
-        else if (direction == "right")
+        if (Physics.Raycast(player.transform.position, directionVector, out hit, distance))
         {
-            // Check for objects to the right of the Player
-            Vector3 rightDirection = player.transform.right;
-            if (Physics.Raycast(startingPosition, rightDirection, out hit, maxDistance))
+            if (hit.collider.gameObject.tag == objectType)
             {
-                if (hit.transform.tag == tag)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                uIManager.UserOutTextFunctionDispaly("There is a " + objectType + " in front of me");
+                return true;
             }
             else
             {
+                uIManager.UserOutTextFunctionDispaly("There is not a " + objectType + " in front of me");
                 return false;
             }
         }
         else
         {
-            // The specified direction is not valid
-            Debug.LogError("Invalid direction: " + direction);
+            uIManager.UserOutTextFunctionDispaly("There is not a " + objectType + " in front of me");
             return false;
         }
     }
