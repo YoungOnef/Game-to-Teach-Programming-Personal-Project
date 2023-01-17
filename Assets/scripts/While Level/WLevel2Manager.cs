@@ -24,64 +24,18 @@ public class WLevel2Manager : LevelBase
     }
     /*
      * 
-
-    maxIterations = 100
-
-for i = 1, maxIterations do
-    if WhatsInFront("front", "Enemy", 4) then
-        Wait(5)
-        print("Enemy infront waiting")
-
-
-
+while not WhatsInFront("front", "Coin",2) do
+    if WhatsInFront("front", "Enemy", 2) then
+        Wait()
+        print("Enemy infront")
     else
-        print("Moving forward")
-        MoveForward()
-end
-end
-    
-MoveForward()
-
-
-maxIterations = 100
-
-for i = 1, maxIterations do
-
-
-    if WhatsInFront("front", "Enemy", 4) then
-        print("Moving forward")
-        MoveForward()
-
-    else
-        -- The "Enemy" is in front of the player, so wait for 1 second
-        Wait(1)
-        print("waiting")
+        MoveForward(2)
+        print("No enemy infront")
     end
-
 end
-    
-MoveForward()
+print("Coin found")
+MoveForward(2)
 
-
-
-
-        -- Check if the "Coin" is in front of the player
-    if WhatsInFront("front", "Coin", 1) then
-        -- The "Coin" is in front of the player, so exit the loop
-        break
-    end
-
-
-
-
-    -- Check if there is an "Enemy" in front of the player
-if WhatsInFront("front", "Enemy", 6) then
-    -- There is an "Enemy" in front of the player, so do something
-      MoveForward()
-else
-    -- There is no "Enemy" in front of the player, so do something else
-    Wait()
-end
 
 
         */

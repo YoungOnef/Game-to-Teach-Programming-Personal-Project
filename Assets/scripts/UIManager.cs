@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
     }
     public void UserOutTextFunctionDispaly(string text)
     {
-        //userOutTextFunctionDispaly.text = text;
+        userOutTextFunctionDispaly.text = text;
     }
     public void ResetText()
     {

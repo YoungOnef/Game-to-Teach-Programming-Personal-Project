@@ -1,12 +1,1 @@
-MoveForward(3)
-Wait(5)
-
-    if WhatsInFront("front", "Enemy", 4) then
-        Wait(5)
-        print("Enemy infront waiting")
-
-
-    else
-        print("Moving forward")
-        MoveForward()
-end
+MoveForward(12)

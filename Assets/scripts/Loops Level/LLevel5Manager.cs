@@ -23,12 +23,19 @@ public class LLevel5Manager : LevelBase
         }
     }
     /*
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
+MoveForward(20)
+TurnRight()
+MoveForward(8)
+TurnRight()
+MoveForward(20)
+TurnLeft()
+MoveForward(8)
+TurnLeft()
+MoveForward(20)
+TurnRight()
+MoveForward(8)
+TurnRight()
+MoveForward(20)
         */
 
 }

@@ -25,38 +25,14 @@ public class FLevel1Manager : LevelBase
     /*
      * 
 
-    Working
-
-
 distance = 2.5
 
 for i = 1, 3 do
-
-
-    distance = distance * 2
+        distance = distance * 2
     MoveForward(distance)
     TurnRight()
-    
 end
 
-    ---------------------------
-distance = 2.5
-
-for i = 1, 3 do
-
-    MoveForwardAndTurn()
-    
-end
-
-    
-function MoveForwardAndTurn()
-
-    distance = distance * 2
-
-    MoveForward(distance)
-
-    TurnRight()
-end
 
 
         */

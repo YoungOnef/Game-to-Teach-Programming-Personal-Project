@@ -24,12 +24,18 @@ public class LLevel4Manager : LevelBase
         }
     }
     /*
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
-MoveForward()
+MoveForward(6)
+TurnRight()
+TurnRight()
+MoveForward(12)
+TurnRight()
+TurnRight()
+MoveForward(6)
+TurnRight()
+MoveForward(6)
+TurnRight()
+TurnRight()
+MoveForward(12)
         */
 
 }

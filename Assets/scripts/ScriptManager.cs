@@ -25,25 +25,29 @@ public class ScriptManager : MonoBehaviour
 
     private void Move(Vector3 Direction, int Distance)
     {
+        uIManager.UserOutTextFunctionDispaly("Moving " + Distance + " units in direction " + Direction);
         Wait(Distance);
         MovingTimer = Distance;
         directionMovement = Direction;
         Moving = true;
+        
     }
     private void Turn(int Angle)
     {
+        uIManager.UserOutTextFunctionDispaly("Turning " + Angle + " degrees");
         Wait(1);
         MovingTimer = 1;
         directionTurn = new Vector3Int(0, Angle, 0);
         currnetTurnAngle += new Vector3Int(0, Angle, 0);
         Moving = true;
+        
+
     }
 
     public void TurnRight() => Turn(90);
     public void TurnLeft() => Turn(-90);
 
-
-    public void MoveForward(int Distance = 1) => Move(player.transform.forward,Distance);
+    public void MoveForward(int Distance = 1) => Move(player.transform.forward, Distance);
     public void MoveRight(int Distance = 1) => Move(player.transform.right, Distance);
     public void MoveBack(int Distance = 1) => Move(-player.transform.forward, Distance);
     public void MoveLeft(int Distance = 1) => Move(-player.transform.right, Distance);
@@ -55,6 +59,26 @@ public class ScriptManager : MonoBehaviour
     private void Start()
     {
         uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+
+
+        string data = DataInputHoldingData.instance.dataInput;
+
+        NewGame(data);
+    }
+    public void NewGame(string data)
+    {
+        if (data != null || data != "")
+        {
+            uIManager.userInputField.text = data;
+
+        }
+    }
+    
+    public void Stop()
+    {
+        Moving = false;
+        directionMovement = new Vector3(0, 0, 0);
+        directionTurn = new Vector3Int(0, 0, 0);
     }
 
     private IEnumerator _Start()
@@ -78,16 +102,15 @@ public class ScriptManager : MonoBehaviour
 
         script.Globals["print"] = (Action<DynValue>)uIManager.PrintToDebugLogAndTextArea;
 
-        //script.LoadFunction("function Wait (n) return ('Wait' ,n) end \n");
+
         script.DoString(_readyCode);
 
-        // get the function
-        DynValue function = script.Globals.Get("Start");//start funcion
+        DynValue function = script.Globals.Get("Start");
 
         // Create the coroutine in C#
         DynValue coroutine = script.CreateCoroutine(function);
 
-        coroutine.Coroutine.AutoYieldCounter = 2;//line by line yeld return ????
+        coroutine.Coroutine.AutoYieldCounter = 2;
 
         DynValue result = null;
 
@@ -125,6 +148,13 @@ public class ScriptManager : MonoBehaviour
                 MovingTimer = -1;
             }
         }
+        // Check if the Player's y-position is less than -10
+        if (player.transform.position.y < -10)
+        {
+            // Display a message in the debug log
+            Debug.Log("You are dead!");
+            uIManager.RestartScene();
+        }
     }
 
     public void InputText()
@@ -135,10 +165,6 @@ public class ScriptManager : MonoBehaviour
 
 
     }
-
-
-    // Set up a function that takes a string as an argument
-    // The string represents the direction that we want to check
     bool WhatsInFront(string direction, string tag, float maxDistance = 1f)
     {
         // Set the starting position of the ray
