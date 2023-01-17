@@ -79,6 +79,7 @@ public class ScriptManager : MonoBehaviour
         MovingTimer = -1;
         __TimerON = false;
         __TimerTime = -1;
+        StopAllCoroutines();
     }
 
     private IEnumerator _Start()
@@ -157,16 +158,25 @@ public class ScriptManager : MonoBehaviour
             uIManager.RestartScene();
         }
     }
-
+    //function that will stop all timers and coroutines, restart player postion and rotatation
+    public void StopAll()
+    {
+        StopAllCoroutines();
+        player.transform.position = new Vector3(0, 0, 0);
+        player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        currnetTurnAngle = new Vector3Int(0, 0, 0);
+        Stop();
+    }
 
     public void InputText()
     {
+        StopAll();
         code = uIManager.inputField.GetComponent<TMP_InputField>().text;
        
         StartCoroutine(_Start());
 
     }
-    //improve this function
+    
     private bool WhatsInFront(string direction, string objectType, float distance)
     {
         uIManager.UserOutTextFunctionDispaly("Checking if " + objectType + " is " + distance + " in front of me");
