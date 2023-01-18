@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class ScriptManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class ScriptManager : MonoBehaviour
     [SerializeField] private GameObject player;
 
     [SerializeField] private float movementSpeed = 1;
-    [SerializeField] Slider speedSlider;
+    [SerializeField] UnityEngine.UI.Slider speedSlider;
     [SerializeField] float speedProcent = 1f;//controled by slider
 
     //start pos/rot
@@ -121,6 +122,7 @@ public class ScriptManager : MonoBehaviour
     public void MoveLeft(int Distance = 1) => Move(-player.transform.right, Distance);
     public void Wait(float seconds = 1)
     {
+        uIManager.UserOutTextFunctionDispaly("Waiting for  " + seconds + " Seconds");
         _iEnumeratorTimerOn = true;
         _iEnumeratorTime = seconds * speedProcent;
     }

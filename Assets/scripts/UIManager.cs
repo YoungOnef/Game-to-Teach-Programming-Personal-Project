@@ -16,9 +16,12 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI userOutText;
     public TextMeshProUGUI userOutTextFunctionDispaly;
 
-
     public GameObject ScreenButton;
     public GameObject HelpWindow;
+
+    public GameObject FunctionWindow;
+
+
 
 
     // The name of the current scene
@@ -113,7 +116,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void HideOrViewFunctionWindow()
+    {
+        if (FunctionWindow.activeSelf == true)
+        {
+            FunctionWindow.SetActive(false);
 
+        }
+        else
+        {
+            FunctionWindow.SetActive(true);
+        }
+    }
 
 
 
