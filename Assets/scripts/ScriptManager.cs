@@ -49,7 +49,7 @@ public class ScriptManager : MonoBehaviour
     private void _SetMovmentTimer(int time)
     {
         _movmentCurrentTimer = 0.000001f;
-        _setMovmentTimer = time * speedProcent;
+        _setMovmentTimer = (time * speedProcent) / movementSpeed;
     }
     private bool WhatsInFront(string direction, string objectType, float distance)
     {
