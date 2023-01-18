@@ -1,6 +1,4 @@
-while true do
+SetPlayerSpeed(10)
 TurnRight()
-TurnLeft()
-TurnLeft()
-MoveForward(2)
-end
+
+MoveForward(12)

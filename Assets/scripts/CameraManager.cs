@@ -14,8 +14,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private CinemachineVirtualCamera playerCamera;
     public float movementSpeed = 0.1f;
-    
     bool WorldCamera = false;
+    UIManager uIManager;
 
     private void OnEnable()
     {
@@ -28,12 +28,13 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
+        uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         action.performed += _ => SwitchPriority();
     }
-
+    
     private void Update()
     {
-        if (WorldCamera)
+        if (WorldCamera && !uIManager.userInputField.isFocused)
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -44,16 +45,19 @@ public class CameraManager : MonoBehaviour
 
     private void SwitchPriority()
     {
-        if (WorldCamera)
+        if (!uIManager.userInputField.isFocused)
         {
-            overWorldCamera.Priority = 0;
-            playerCamera.Priority = 1;
+            if (WorldCamera)
+            {
+                overWorldCamera.Priority = 0;
+                playerCamera.Priority = 1;
+            }
+            else
+            {
+                overWorldCamera.Priority = 1;
+                playerCamera.Priority = 0;
+            }
+            WorldCamera = !WorldCamera;
         }
-        else
-        {
-            overWorldCamera.Priority = 1;
-            playerCamera.Priority = 0;
-        }
-        WorldCamera = !WorldCamera;
     }
 }
