@@ -1,4 +1,1 @@
-SetPlayerSpeed(10)
-TurnRight()
-
-MoveForward(12)
+dfsf ds fdsf
