@@ -14,8 +14,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private CinemachineVirtualCamera playerCamera;
     public float movementSpeed = 0.1f;
-
-    bool WorldCamera = true;
+    
+    bool WorldCamera = false;
 
     private void OnEnable()
     {
