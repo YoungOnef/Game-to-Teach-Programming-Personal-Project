@@ -1,0 +1,5 @@
+while (true)
+do
+MoveForward(8)
+MoveLeft(6)
+end

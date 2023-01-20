@@ -45,6 +45,12 @@ public class PlayerScript : MonoBehaviour
             HandlePlayerDeath();
             Destroy(other.gameObject);
         }
+        else if (other.gameObject.CompareTag("Wall"))
+        {
+            HandlePlayerDeath();
+            Destroy(other.gameObject);
+        }
+
     }
 
     private void HandlePlayerDeath()
