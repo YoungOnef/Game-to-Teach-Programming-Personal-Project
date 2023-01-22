@@ -171,8 +171,6 @@ public class ScriptManager : MonoBehaviour
         var _readyCode = "function Start()\n" + code + "\nend";
         // Load the code and get the returned function
         Script script = new Script(CoreModules.None);
-
-
         script.Globals["MoveForward"] = (Action<int>)MoveForward;
         script.Globals["MoveRight"] = (Action<int>)MoveRight;
         script.Globals["MoveBack"] = (Action<int>)MoveBack;
@@ -183,34 +181,53 @@ public class ScriptManager : MonoBehaviour
         script.Globals["WhatsInFront"] = (Func<string, string, float, bool>)WhatsInFront;
         script.Globals["print"] = (Action<DynValue>)uIManager.PrintToDebugLogAndTextArea;
         script.Globals["SetPlayerSpeed"] = (Action<float>)SetPlayerSpeed;
-
-
-        script.DoString(_readyCode);
-
-        DynValue function = script.Globals.Get("Start");
-
-        // Create the coroutine in C#
-        DynValue coroutine = script.CreateCoroutine(function);
-
-        coroutine.Coroutine.AutoYieldCounter = 2;
-
+        bool errorOccurred = false;
+        DynValue coroutine = null;
         DynValue result = null;
-
-        result = coroutine.Coroutine.Resume();
-        while (result.Type == DataType.YieldRequest)
+        try
         {
-            if (_iEnumeratorTimerOn)
-            {
-                yield return new WaitForSeconds(_iEnumeratorTime);
-                _iEnumeratorTimerOn = false;
-                _iEnumeratorTime = -1;
-            }
-            yield return new WaitForSeconds(.1f * speedProcent);
+            script.DoString(_readyCode);
+            DynValue function = script.Globals.Get("Start");
+            // Create the coroutine in C#
+            coroutine = script.CreateCoroutine(function);
+            coroutine.Coroutine.AutoYieldCounter = 2;
             result = coroutine.Coroutine.Resume();
         }
+        catch (SyntaxErrorException ex)
+        {
+            // if a syntax error was detected, display an error message to the user
+            Debug.Log("Syntax error: " + ex.Message);
+            uIManager.userOutTextForDebug.text = "Syntax error: " + ex.Message;
+        }
+        catch (ScriptRuntimeException ex)
+        {
+            // if a runtime error was detected, display an error message to the user
+            Debug.Log("Runtime error: " + ex.DecoratedMessage);
+            uIManager.userOutTextForDebug.text = "Runtime error: " + ex.DecoratedMessage;
+        }
+        catch (Exception ex)
+        {
+            // if any other exception was thrown, display the error message to the user
+            Debug.Log("Error: " + ex.Message);
+            uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
+        }
+
+
+        if (!errorOccurred)
+        {
+            while (result.Type == DataType.YieldRequest)
+            {
+                if (_iEnumeratorTimerOn)
+                {
+                    yield return new WaitForSeconds(_iEnumeratorTime);
+                    _iEnumeratorTimerOn = false;
+                    _iEnumeratorTime = -1;
+                }
+                yield return new WaitForSeconds(.1f * speedProcent);
+                result = coroutine.Coroutine.Resume();
+            }
+        }
     }
-
-
 
     private void Update()
     {
