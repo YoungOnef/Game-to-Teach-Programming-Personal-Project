@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WLevel2Manager2 : LevelBase
+public class WLevel4Manager : LevelBase
 {
     public GameObject prefab; // Reference to the coin prefab
     public List<Coin> coins; // List to store the coins
@@ -24,19 +24,19 @@ public class WLevel2Manager2 : LevelBase
     }
     /*
      * 
-while not WhatsInFront("front", "Coin",2) do
-    if WhatsInFront("front", "Enemy", 2) then
-        Wait()
-        print("Enemy infront")
-    else
-        MoveForward(2)
-        print("No enemy infront")
-    end
+
+
+distance = 1
+
+while not WhatsInFront("front", "Coin",distance) do
+
+  distance = distance + 1
+  print(distance, "not found yet")
+  
+
 end
-print("Coin found")
-MoveForward(2)
 
-
+MoveForward(distance) 
 
         */
 

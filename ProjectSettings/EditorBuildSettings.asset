@@ -50,4 +50,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/While/WhileLevel3.unity
     guid: 459ce41d3c8aafb459ae83043f1c7099
+  - enabled: 1
+    path: Assets/Scenes/Levels/While/WhileLevel4.unity
+    guid: 12c5112cce5b706409c06ab7fb40af43
+  - enabled: 1
+    path: Assets/Scenes/Levels/While/WhileLevel5.unity
+    guid: baf99546f04281a4790938a38014f55e
   m_configObjects: {}

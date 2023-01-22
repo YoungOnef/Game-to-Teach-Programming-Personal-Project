@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LLevel4Manager : LevelBase
+public class WLevel5Manager : LevelBase
 {
     public GameObject prefab; // Reference to the coin prefab
     public List<Coin> coins; // List to store the coins
@@ -12,10 +12,9 @@ public class LLevel4Manager : LevelBase
         base.Setup(handler);
         print("Level1Manager Running");
 
-        handler.spawn(prefab, new Vector3(0, platformLevel, 6));
-        handler.spawn(prefab, new Vector3(0, platformLevel, -6));
-        handler.spawn(prefab, new Vector3(6, platformLevel, 0));
-        handler.spawn(prefab, new Vector3(-6, platformLevel, 0));
+        handler.spawn(prefab, new Vector3(0, platformLevel, 12));
+
+
         // Instantiate the coins and add them to the list
         coins = new List<Coin>();
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Coin"))
@@ -24,18 +23,21 @@ public class LLevel4Manager : LevelBase
         }
     }
     /*
-MoveForward(6)
-TurnRight()
-TurnRight()
-MoveForward(12)
-TurnRight()
-TurnRight()
-MoveForward(6)
-TurnRight()
-MoveForward(6)
-TurnRight()
-TurnRight()
-MoveForward(12)
+     * 
+while not WhatsInFront("front", "Coin",2) do
+    if WhatsInFront("front", "Enemy", 2) then
+        Wait()
+        print("Enemy infront")
+    else
+        MoveForward(2)
+        print("No enemy infront")
+    end
+end
+print("Coin found")
+MoveForward(2)
+
+
+
         */
 
 }
