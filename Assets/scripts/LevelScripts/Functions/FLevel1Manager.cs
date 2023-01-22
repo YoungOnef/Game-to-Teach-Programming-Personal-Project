@@ -28,7 +28,7 @@ public class FLevel1Manager : LevelBase
 distance = 2.5
 
 for i = 1, 3 do
-        distance = distance * 2
+    distance = distance * 2
     MoveForward(distance)
     TurnRight()
 end
