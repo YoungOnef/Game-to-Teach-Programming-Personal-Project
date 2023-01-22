@@ -6786,7 +6786,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Challenge:
+  m_text: 'Challenge: Collect All the coins
+
+
 
 
 '
@@ -7581,21 +7583,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1.
+  m_text: 'Begin by checking the distance between the player and the coins by clicking
+    the right mouse button. The distance will be displayed on the screen.
 
-    2.
 
-    3.
+    Use
+    the information you get from the right mouse button click to decide how many
+    steps you need to take to reach the coin.
 
-    4.
+    Use the "MoveForward" function
+    with the appropriate distance to move towards the coin.
 
-    5.
 
-    6.
+    Repeat the process
+    from step 1-3 until you collect all the coins.
 
-    7.
 
-    8.
+    You can also use the "Wait"
+    function to pause the execution of code before making a move. This would allow
+    you to think strategically and plan out the next move to collect all the coins.
 
 '
   m_isRightToLeft: 0
@@ -7660,7 +7666,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 763.6122, w: 6.957733}
+  m_margin: {x: 0, y: 104.53424, z: 69.68262, w: 6.957733}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -8028,7 +8034,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1966756553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2036cf45b7f8ce4788b87753b4a2d2d, type: 3}
+  m_Script: {fileID: 11500000, guid: ac540c5715d40e3459b4ec334d21338a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4245623398132361490, guid: 4771cf522cff4e94992c72ec31d4389f, type: 3}
