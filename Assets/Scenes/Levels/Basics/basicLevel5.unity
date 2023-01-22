@@ -998,7 +998,54 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: All Available Functions to use
+  m_text: '"MoveForward(x)" - This function allows you to move the player character
+    forward by a certain distance (x) in units. For example, "MoveForward(5)" will
+    move the player 5 units forward.
+
+
+    "MoveRight(x)" - This function allows
+    you to move the player character to the right by a certain distance (x) in units.
+    For example, "MoveRight(2)" will move the player 2 units to the right.
+
+
+    "MoveBack(x)"
+    - This function allows you to move the player character backwards by a certain
+    distance (x) in units. For example, "MoveBack(3)" will move the player 3 units
+    backwards.
+
+
+    "MoveLeft(x)" - This function allows you to move the player
+    character to the left by a certain distance (x) in units. For example, "MoveLeft(4)"
+    will move the player 4 units to the left.
+
+
+    "TurnRight()" - This function
+    allows you to turn the player character to the right.
+
+
+    "TurnLeft()" - This
+    function allows you to turn the player character to the left.
+
+
+    "Wait(x)"
+    - This function allows you to pause the execution of code for a certain amount
+    of time (x) in seconds. For example, "Wait(1)" will pause the execution of code
+    for 1 second.
+
+
+    "WhatsInFront(direction, objectType, distance)" - This function
+    allows you to check if a certain object (objectType) is in a certain direction
+    (direction) and within a certain distance (distance) from the player. For example,
+    "WhatsInFront("front", "coin", 2)" will check if there is a coin 2 units in front
+    of the player.
+
+
+    "print(x)" - This function allows you to print a message
+    (x) to the debug log and text area.
+
+
+    "SetPlayerSpeed(x)" - This function
+    allows you to set the player''s speed to a certain value (x).'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1025,8 +1072,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.2
-  m_fontSizeBase: 45.2
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7160,10 +7207,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Challenge:
-
-
-'
+  m_text: 'Challenge: Collect All the coins, don''t get yourself removed'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7955,23 +7999,43 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1.
+  m_text: 'The first step is to turn the player to the right by 90 degrees. Use the
+    command: TurnRight().
 
-    2.
 
-    3.
+    Move the player forward by 13 units using the command:
+    MoveForward(13)
 
-    4.
 
-    5.
+    Turn the player to the left by 90 degrees using the command:
+    TurnLeft().
 
-    6.
 
-    7.
+    Move the player forward by 6 units using the command: MoveForward(6)
 
-    8.
 
-'
+    Turn
+    the player to the right by 90 degrees using the command: TurnRight()
+
+
+    Move
+    the player forward by 11 units using the command: MoveForward(11)
+
+
+    Turn
+    the player to the right by 90 degrees using the command: TurnRight()
+
+
+    Move
+    the player forward by 6 units using the command: MoveForward(6)
+
+
+    Turn the
+    player to the left by 90 degrees using the command: TurnLeft()
+
+
+    Move the
+    player forward by 15 units using the command: MoveForward(15)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8034,7 +8098,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 763.6122, w: 6.957733}
+  m_margin: {x: 0, y: 0, z: 118.78345, w: 6.957733}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -22,16 +22,21 @@ public class BLevel5Manager : LevelBase
         }
     }
     /*
-TurnRight()
-MoveForward(13)
-TurnLeft()
+
+
 MoveForward(6)
 TurnRight()
-MoveForward(11)
+TurnRight()
+MoveForward(12)
+TurnRight()
 TurnRight()
 MoveForward(6)
-TurnLeft()
-MoveForward(15)
+TurnRight()
+MoveForward(6)
+TurnRight()
+TurnRight()
+MoveForward(12)
+
         */
 
 }

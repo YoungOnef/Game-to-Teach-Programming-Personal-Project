@@ -24,18 +24,16 @@ public class BLevel4Manager : LevelBase
         }
     }
     /*
+TurnRight()
+MoveForward(13)
+TurnLeft()
 MoveForward(6)
 TurnRight()
-TurnRight()
-MoveForward(12)
-TurnRight()
+MoveForward(11)
 TurnRight()
 MoveForward(6)
-TurnRight()
-MoveForward(6)
-TurnRight()
-TurnRight()
-MoveForward(12)
+TurnLeft()
+MoveForward(15)
 
         */
 

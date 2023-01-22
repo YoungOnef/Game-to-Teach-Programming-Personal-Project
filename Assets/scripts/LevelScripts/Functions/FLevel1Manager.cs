@@ -24,17 +24,24 @@ public class FLevel1Manager : LevelBase
     }
     /*
      * 
-
+function newfuntion(distance)
+    MoveForward(distance)
+    TurnRight()
+end
+    
 distance = 2.5
 
 for i = 1, 3 do
     distance = distance * 2
-    MoveForward(distance)
-    TurnRight()
+    newfuntion(distance)
 end
 
 
 
+
+
+
+    
         */
 
 }

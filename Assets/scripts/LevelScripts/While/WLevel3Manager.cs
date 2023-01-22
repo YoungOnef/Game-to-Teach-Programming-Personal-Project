@@ -27,8 +27,9 @@ public class WLevel3Manager : LevelBase
     /*
 while (true)
 do
-MoveForward(8)
-MoveLeft(6)
+MoveForward(10)
+MoveBack(10)
+MoveRight(10)
 end
 
     
