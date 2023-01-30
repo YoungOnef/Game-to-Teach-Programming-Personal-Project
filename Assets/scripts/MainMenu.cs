@@ -10,9 +10,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Level Selector");
     }
-    public void Options()
+    public void Tutorial()
     {
-        SceneManager.LoadScene("Name of the Option scene");
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void Quit()
