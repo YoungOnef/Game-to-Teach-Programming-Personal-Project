@@ -2097,16 +2097,16 @@ MonoBehaviour:
 
     "Exit Level" button exits the current level.
 
-    "Help" button
-    offers helpful information for completing the level.
+    "Help" button offers
+    helpful information for completing the level.
 
-    "Functions" button
-    lists all available functions.
+    "Functions" button lists all
+    available functions.
 
-    "Slow/Fast Scroll" adjusts the speed of
-    code execution.
+    "Slow/Fast Scroll" adjusts the speed of code execution.
 
-    "Stop" button terminates code execution.
+    "Stop"
+    button terminates code execution.
 
 
 '
@@ -6956,10 +6956,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Challenge:
-
-
-'
+  m_text: "Challenge: Get familiar with UI \n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7944,7 +7941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.4862745}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
