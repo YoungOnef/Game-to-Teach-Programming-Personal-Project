@@ -2740,6 +2740,145 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535601351}
   m_CullTransparentMesh: 1
+--- !u!1 &541225647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 541225648}
+  - component: {fileID: 541225650}
+  - component: {fileID: 541225649}
+  m_Layer: 5
+  m_Name: Help Text (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &541225648
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541225647}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1817361003}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 794, y: 14}
+  m_SizeDelta: {x: 1546.0784, y: 779.8118}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &541225649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541225647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "For example, here is a simple function that takes a number as an argument
+    and returns its square:\r\n\nfunction square(x)\r\n    return x*x\r\nend\r\n\n\rFunctions
+    can be called by using the function name followed by parentheses, and passing
+    the required parameters inside the parentheses, for example:\n\nresult = square(5)\r\nprint(result)
+    -- prints 25\n"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 23.7
+  m_fontSizeBase: 20.7
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 12.4
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 2
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 892.0806, w: 371.0933}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &541225650
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541225647}
+  m_CullTransparentMesh: 1
 --- !u!1 &546375348
 GameObject:
   m_ObjectHideFlags: 0
@@ -7750,7 +7889,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 794, y: 14}
+  m_AnchoredPosition: {x: 794, y: -424}
   m_SizeDelta: {x: 1546.0784, y: 779.8118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1692157850
@@ -7773,11 +7912,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "For example, here is a simple function that takes a number as an argument
-    and returns its square:\r\n\nfunction square(x)\r\n    return x*x\r\nend\r\n\n\rFunctions
-    can be called by using the function name followed by parentheses, and passing
-    the required parameters inside the parentheses, for example:\n\nresult = square(5)\r\nprint(result)
-    -- prints 25\n"
+  m_text: "Solution Code\n-- The function \"newfuntion\" takes in a distance and
+    performs two actions: moving forward by that distance and then turning right.\r\n\r\nfunction
+    newfuntion(distance)\r\n    -- Move the object forward by the specified distance\r\n   
+    MoveForward(distance)\r\n    -- Turn the object right by 90 degrees\r\n    TurnRight()\r\nend\r\n\r\n--
+    Initialize the distance to be 2.5 units\r\ndistance = 2.5\r\n\r\n-- Repeat the
+    following block of code three times\r\nfor i = 1, 3 do\r\n    -- Double the distance
+    on each iteration\r\n    distance = distance * 2\r\n    -- Call the \"newfuntion\"
+    function with the updated distance\r\n    newfuntion(distance)\r\nend\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7804,11 +7946,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.7
+  m_fontSize: 17.4
   m_fontSizeBase: 20.7
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 15.8
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
@@ -7840,7 +7982,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 892.0806, w: 371.0933}
+  m_margin: {x: 0, y: 2.177002, z: 787.58307, w: 357.11618}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -8432,22 +8574,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The first step is to define a new function named "newfuntion" that takes
-    in a parameter "distance". Inside this function, the player will move forward
-    by the distance provided and turn right.
+  m_text: 'Solution Explanation
 
-    Next, a variable "distance" is
-    defined and set to 2.5.
+    The first step is to define a new function named
+    "newfuntion" that takes in a parameter "distance". Inside this function, the
+    player will move forward by the distance provided and turn right.
 
-    Then, a for loop is used to run the newfuntion function
-    three times.
+    Next,
+    a variable "distance" is defined and set to 2.5.
 
-    In each iteration of the loop, the "distance" variable is multiplied
-    by 2 before being passed as an argument to the newfuntion function.
+    Then, a for loop is used
+    to run the newfuntion function three times.
 
-    After
-    the loop finishes executing, the player will have moved forward by the following
-    distances: 2.5, 5, 10 and turned right three times.'
+    In each iteration of the loop,
+    the "distance" variable is multiplied by 2 before being passed as an argument
+    to the newfuntion function.
+
+    After the loop finishes executing, the player
+    will have moved forward by the following distances: 2.5, 5, 10 and turned right
+    three times.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8474,7 +8619,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.25
+  m_fontSize: 22
   m_fontSizeBase: 34.11
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8510,7 +8655,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 93.543335, w: 436.68295}
+  m_margin: {x: 0, y: 0, z: 746.14355, w: 436.68295}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -8658,6 +8803,7 @@ RectTransform:
   - {fileID: 1212475209}
   - {fileID: 1692157849}
   - {fileID: 1774998411}
+  - {fileID: 541225648}
   m_Father: {fileID: 1714628913}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
