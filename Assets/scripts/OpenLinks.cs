@@ -7,9 +7,9 @@ public class OpenLinks : MonoBehaviour
 {
     public static void OpenURL(string url)
     {
-#if !UNITY_EDITOR && UNITY_WEBGL
-        OpenURL(url);
-#endif
+        #if !UNITY_EDITOR && UNITY_WEBGL
+        OpenTab(url);
+        #endif
     }
 
     [DllImport("__Internal")]
