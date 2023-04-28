@@ -15,15 +15,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI userOutTextForDebug;
     public TextMeshProUGUI userOutText;
     public TextMeshProUGUI userOutTextFunctionDispaly;
-
     public GameObject ScreenButton;
     public GameObject HelpWindow;
-
     public GameObject FunctionWindow;
-
-
-
-
     // The name of the current scene
     private string sceneName;
 
@@ -90,18 +84,23 @@ public class UIManager : MonoBehaviour
         inputField.GetComponent<TMP_InputField>().text = userInput;
     }
 
+    // Function to hide or view the console
     public void HideOrViewConsole()
     {
+        // Check if the ScreenButton game object is active
         if (ScreenButton.activeSelf == true)
         {
+            // If active, set the game object to inactive
             ScreenButton.SetActive(false);
 
         }
         else
         {
+            // If inactive, set the game object to active
             ScreenButton.SetActive(true);
         }
     }
+
 
     public void HideOrViewHelpWindow()
     {

@@ -112,8 +112,6 @@ public class ScriptManager : MonoBehaviour
         _isRotating = true;
     }
 
-
-
     public void TurnRight() => Turn(90);
     public void TurnLeft() => Turn(-90);
     public void MoveForward(int Distance = 1) => Move(player.transform.forward, Distance);
@@ -126,15 +124,20 @@ public class ScriptManager : MonoBehaviour
         _iEnumeratorTimerOn = true;
         _iEnumeratorTime = seconds * speedProcent;
     }
+    // This method starts a new game and retrieves the data from DataInputHoldingData
     public void NewGame()
     {
+        // Retrieve the data input from the DataInputHoldingData instance
         string data = DataInputHoldingData.instance.dataInput;
+
+        // Check if the data input is not null or an empty string
         if (data != null || data != "")
         {
+            // Set the text of the user input field in the UI Manager to the data input
             uIManager.userInputField.text = data;
-
         }
     }
+
     public void Stop()
     {
         _isMoving = false;
@@ -159,18 +162,25 @@ public class ScriptManager : MonoBehaviour
     }
     public void InputText()
     {
+        // Stop any previous execution of the code
         StopAll();
+
+        // Get the text from the input field
         code = uIManager.inputField.GetComponent<TMP_InputField>().text;
 
+        // Start executing the code
         StartCoroutine(_Start());
-
     }
+
     //create new function  SetPlayerSpeed
     private IEnumerator _Start()
     {
+        // Concatenate the function declaration and the code from the input field
         var _readyCode = "function Start()\n" + code + "\nend";
-        // Load the code and get the returned function
+        // Load the code and get the returned function using the MoonSharp script engine
         Script script = new Script(CoreModules.None);
+
+        // Register global functions and objects that can be used in the code
         script.Globals["MoveForward"] = (Action<int>)MoveForward;
         script.Globals["MoveRight"] = (Action<int>)MoveRight;
         script.Globals["MoveBack"] = (Action<int>)MoveBack;
@@ -181,88 +191,116 @@ public class ScriptManager : MonoBehaviour
         script.Globals["WhatsInFront"] = (Func<string, string, float, bool>)WhatsInFront;
         script.Globals["print"] = (Action<DynValue>)uIManager.PrintToDebugLogAndTextArea;
         script.Globals["SetPlayerSpeed"] = (Action<float>)SetPlayerSpeed;
+
+        // Initialize variables to detect errors
         bool errorOccurred = false;
         DynValue coroutine = null;
         DynValue result = null;
         try
         {
+            // Execute the code and get the coroutine
             script.DoString(_readyCode);
             DynValue function = script.Globals.Get("Start");
-            // Create the coroutine in C#
             coroutine = script.CreateCoroutine(function);
             coroutine.Coroutine.AutoYieldCounter = 2;
             result = coroutine.Coroutine.Resume();
         }
         catch (SyntaxErrorException ex)
         {
-            // if a syntax error was detected, display an error message to the user
+            // If a syntax error was detected, display an error message to the user
             Debug.Log("Syntax error: " + ex.Message);
             uIManager.userOutTextForDebug.text = "Syntax error: " + ex.Message;
         }
         catch (ScriptRuntimeException ex)
         {
-            // if a runtime error was detected, display an error message to the user
+            // If a runtime error was detected, display an error message to the user
             Debug.Log("Runtime error: " + ex.DecoratedMessage);
             uIManager.userOutTextForDebug.text = "Runtime error: " + ex.DecoratedMessage;
         }
         catch (Exception ex)
         {
-            // if any other exception was thrown, display the error message to the user
+            // If any other exception was thrown, display the error message to the user
             Debug.Log("Error: " + ex.Message);
             uIManager.userOutTextForDebug.text = "Error: " + ex.Message;
         }
-
-
+        // If no error was detected, execute the coroutine
         if (!errorOccurred)
         {
+            // Check if there was no error
             while (result.Type == DataType.YieldRequest)
             {
+                // If the result type is a YieldRequest
                 if (_iEnumeratorTimerOn)
                 {
+                    // If the iEnumeratorTimer is on
                     yield return new WaitForSeconds(_iEnumeratorTime);
+                    // Wait for the specified amount of time in _iEnumeratorTime
                     _iEnumeratorTimerOn = false;
+                    // Turn off the iEnumeratorTimer
                     _iEnumeratorTime = -1;
+                    // Reset the value of _iEnumeratorTime
                 }
                 yield return new WaitForSeconds(.1f * speedProcent);
+                // Wait for .1 seconds multiplied by the speedProcent value
                 result = coroutine.Coroutine.Resume();
+                // Resume the coroutine
             }
         }
+
     }
 
     private void Update()
     {
+        // Check if the movement is in progress
         if (_isMoving)
         {
+            // Increment the movement timer by the delta time
             _movmentCurrentTimer += Time.deltaTime;
 
+            // Calculate the current position of the player based on the start position, end position, and current timer
             player.transform.position = Vector3Lerp(_startPosMovment, _endPosMovment, _movmentCurrentTimer / _setMovmentTimer);
+
+            // Check if the current timer is greater than or equal to the set movement timer
             if (_movmentCurrentTimer >= _setMovmentTimer)
             {
+                // Update the start position to be the end position
                 _startPosMovment = _endPosMovment;
+                // Update the player's position to the end position
                 player.transform.position = _endPosMovment;
+                // Set the movement flag to false
                 _isMoving = false;
             }
         }
+        // Check if the rotation is in progress
         if (_isRotating)
         {
+            // Increment the movement timer by the delta time
             _movmentCurrentTimer += Time.deltaTime;
+
+            // Calculate the current rotation of the player based on the start rotation, end rotation, and current timer
             player.transform.rotation = Quaternion.Euler(Vector3Lerp(_startRotMovment, _endRotMovment, _movmentCurrentTimer / _setMovmentTimer));
+
+            // Check if the current timer is greater than or equal to the set movement timer
             if (_movmentCurrentTimer >= _setMovmentTimer)
             {
+                // Update the start rotation to be the end rotation
                 _startRotMovment = _endRotMovment;
+                // Update the player's rotation to the end rotation
                 player.transform.rotation = Quaternion.Euler(_endRotMovment);
+                // Set the rotation flag to false
                 _isRotating = false;
             }
         }
-
         // Check if the Player's y-position is less than -10
         if (player.transform.position.y < -10)
         {
             // Display a message in the debug log
             Debug.Log("You are dead!");
+            // Call the RestartScene method on the UI manager
             uIManager.RestartScene();
         }
     }
+
     private void Start()
     {
         uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();

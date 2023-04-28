@@ -32,7 +32,10 @@ public class Enemy : MonoBehaviour
 
     void _MoveToPoint()
     {
+        // Call the _Idle function
         _Idle();
+
+        // Check if the object is ideling
         if (_ideling)
             return;
 
@@ -45,12 +48,16 @@ public class Enemy : MonoBehaviour
         // Move the transform by the velocity
         transform.position += velocity * Time.deltaTime;
 
+        // Check if the minimum distance to the next point has been reached
         if (minDystans >= (_path[_followPointIndex] - transform.position).magnitude)
         {
+            // Call the _NextPoint function
             _NextPoint();
+            // Set the ideling flag to true
             _ideling = true;
         }
     }
+
     void _NextPoint()
     {
         _followPointIndex++;
@@ -75,31 +82,47 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // Check if debugging is enabled
         if (!_showDebug)
             return;
+
+        // Set the color for the gizmos
         Gizmos.color = _debugColor;
+
+        // Loop through each point in the path
         for (int i = 0; i < _path.Count; i++)
         {
+            // Check if the current point is the follow point index
             if (_followPointIndex == i)
                 Gizmos.color = _debugFollowPathColor;
 
+            // Draw a sphere at the current point
             Gizmos.DrawSphere(_path[i], _debugSize);
 
+            // Change the color back to the original color
             if (_followPointIndex == i)
                 Gizmos.color = _debugColor;
         }
+
+        // Loop through each point in the path (excluding the last point)
         for (int i = 0; i < _path.Count - 1; i++)
         {
+            // Check if the current point is the follow point index
             if (_followPointIndex == i)
                 Gizmos.color = _debugFollowPathColor;
 
+            // Draw a line between the current point and the next point
             Gizmos.DrawLine(_path[i], _path[i + 1]);
 
+            // Change the color back to the original color
             if (_followPointIndex == i)
                 Gizmos.color = _debugColor;
         }
+
+        // Draw a line between the last point and the first point
         Gizmos.DrawLine(_path[_path.Count - 1], _path[0]);
     }
+
     private void OnValidate()
     {
         if (ADD_POS)
