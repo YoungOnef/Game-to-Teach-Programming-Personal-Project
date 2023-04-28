@@ -11,7 +11,7 @@ public class FLevel1Manager : LevelBase
     {
         base.Setup(handler);
         print("Level1Manager Running");
-
+        //definind spawn coin location
         handler.spawn(prefab, new Vector3(10, platformLevel, -15));
 
 

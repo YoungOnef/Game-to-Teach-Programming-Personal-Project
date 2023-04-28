@@ -45,14 +45,20 @@ public class UIManager : MonoBehaviour
         // Set the text of the Text object to the type and value
         userOutText.SetText(type + ": " + message);
     }
+    // This method updates the text displayed in the user output field
     public void UserOutTextFunctionDispaly(string text)
     {
+        // Set the text of the user output field to the provided text
         userOutTextFunctionDispaly.text = text;
     }
+
+    // This method resets the text in the user input field
     public void ResetText()
     {
+        // Set the text of the user input field to an empty string
         userInputField.text = "";
     }
+
 
     public void RestartScene()
     {
@@ -102,31 +108,38 @@ public class UIManager : MonoBehaviour
     }
 
 
+    // This method toggles the visibility of the HelpWindow game object
     public void HideOrViewHelpWindow()
     {
+        // Check if HelpWindow is currently active (visible)
         if (HelpWindow.activeSelf == true)
         {
+            // If HelpWindow is active, hide it
             HelpWindow.SetActive(false);
-
         }
         else
         {
+            // If HelpWindow is inactive, show it
             HelpWindow.SetActive(true);
         }
     }
 
+    // This method toggles the visibility of the FunctionWindow game object
     public void HideOrViewFunctionWindow()
     {
+        // Check if FunctionWindow is currently active (visible)
         if (FunctionWindow.activeSelf == true)
         {
+            // If FunctionWindow is active, hide it
             FunctionWindow.SetActive(false);
-
         }
         else
         {
+            // If FunctionWindow is inactive, show it
             FunctionWindow.SetActive(true);
         }
     }
+
 
 
 

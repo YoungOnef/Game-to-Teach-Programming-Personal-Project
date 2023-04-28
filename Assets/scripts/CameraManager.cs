@@ -7,24 +7,34 @@ using UnityEngine.InputSystem;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField]
-    private InputAction action;
-    [SerializeField]
-    private CinemachineVirtualCamera overWorldCamera;
-    [SerializeField]
-    private CinemachineVirtualCamera playerCamera;
+    // This field is of type InputAction and is marked with SerializeField, which allows it to be shown in the Inspector window.
+    [SerializeField] private InputAction action;
+
+    // These fields are of type CinemachineVirtualCamera and are also marked with SerializeField.
+    [SerializeField] private CinemachineVirtualCamera overWorldCamera;
+    [SerializeField] private CinemachineVirtualCamera playerCamera;
+
+    // This public float is used to control the player's movement speed.
     public float movementSpeed = 0.1f;
+
+    // This bool is used to determine whether the world camera is active or not.
     bool WorldCamera = false;
+
+    // This field is of type UIManager and is not marked with SerializeField since it is assigned to in code.
     UIManager uIManager;
 
+    // The OnEnable() method is called when the object becomes enabled and enables the InputAction.
     private void OnEnable()
     {
         action.Enable();
     }
+
+    // The OnDisable() method is called when the object becomes disabled and disables the InputAction.
     private void OnDisable()
     {
         action.Disable();
     }
+
 
     private void Start()
     {

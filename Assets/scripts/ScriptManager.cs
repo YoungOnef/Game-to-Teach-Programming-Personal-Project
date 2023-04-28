@@ -11,7 +11,7 @@ public class ScriptManager : MonoBehaviour
 {
     UIManager uIManager;
     [SerializeField] private GameObject player;
-
+    //veriable for the player movement speed
     [SerializeField] private float movementSpeed = 1;
     [SerializeField] UnityEngine.UI.Slider speedSlider;
     [SerializeField] float speedProcent = 1f;//controled by slider
@@ -25,20 +25,21 @@ public class ScriptManager : MonoBehaviour
     Vector3 _endRotMovment;
 
 
-
+    //veriable for timer
     bool _iEnumeratorTimerOn = false;
     float _iEnumeratorTime = -1f;
 
+    //veriables for moving and rotating
     bool _isMoving = false;
     bool _isRotating = false;
-
+    //restarts the tiemr
     float _movmentCurrentTimer = -1;
     float _setMovmentTimer = -1;
-
+    //string for the script
     string code;
 
 
-
+    // // This private method returns a Vector3 that is a linear interpolation between Vector3 a and Vector3 b by factor t
     private Vector3 Vector3Lerp(Vector3 a, Vector3 b, float t)
     {
         float x = Mathf.Lerp(a.x, b.x, t);
@@ -47,11 +48,13 @@ public class ScriptManager : MonoBehaviour
 
         return new Vector3(x, y, z);
     }
+    //sets timer for movment
     private void _SetMovmentTimer(int time)
     {
         _movmentCurrentTimer = 0.000001f;
         _setMovmentTimer = (time * speedProcent) / movementSpeed;
     }
+    //sends a ray cast infron of the player and returns the hit object
     private bool WhatsInFront(string direction, string objectType, float distance)
     {
         uIManager.UserOutTextFunctionDispaly("Checking if " + objectType + " is " + distance + " in front of me");
@@ -88,10 +91,13 @@ public class ScriptManager : MonoBehaviour
             return false;
         }
     }
+    // This private method sets the player's movement speed to the specified value
     private void SetPlayerSpeed(float speed)
     {
+        // Update the movementSpeed variable with the specified value
         movementSpeed = speed;
     }
+    // This private method sets the player's movement speed to the specified value
     private void Move(Vector3 Direction, int Distance)
     {
         uIManager.UserOutTextFunctionDispaly("Moving " + Distance + " units in direction " + Direction);
@@ -102,22 +108,44 @@ public class ScriptManager : MonoBehaviour
         _endPosMovment += Direction * Distance;
         _isMoving = true;
     }
+    // This private method turns the player by the specified angle (in degrees)
     private void Turn(int Angle)
     {
+        // Display a message indicating that the player is turning by the specified angle
         uIManager.UserOutTextFunctionDispaly("Turning " + Angle + " degrees");
 
+        // Wait for 1 second before starting the turn
         Wait(1);
+
+        // Set the movement timer to 1 (used for movement animations)
         _SetMovmentTimer(1);
+
+        // Update the end rotation movement vector by adding the specified angle
         _endRotMovment += new Vector3Int(0, Angle, 0);
+
+        // Set the flag indicating that the player is currently rotating
         _isRotating = true;
     }
 
+
+    // This method turns the player to the right by 90 degrees
     public void TurnRight() => Turn(90);
+
+    // This method turns the player to the left by 90 degrees
     public void TurnLeft() => Turn(-90);
+
+    // This method moves the player forward in the direction they are facing
     public void MoveForward(int Distance = 1) => Move(player.transform.forward, Distance);
+
+    // This method moves the player to the right (relative to their current facing direction)
     public void MoveRight(int Distance = 1) => Move(player.transform.right, Distance);
+
+    // This method moves the player backward (opposite to their current facing direction)
     public void MoveBack(int Distance = 1) => Move(-player.transform.forward, Distance);
+
+    // This method moves the player to the left (relative to their current facing direction)
     public void MoveLeft(int Distance = 1) => Move(-player.transform.right, Distance);
+
     public void Wait(float seconds = 1)
     {
         uIManager.UserOutTextFunctionDispaly("Waiting for  " + seconds + " Seconds");
@@ -137,7 +165,7 @@ public class ScriptManager : MonoBehaviour
             uIManager.userInputField.text = data;
         }
     }
-
+    //restarts to default vlaues
     public void Stop()
     {
         _isMoving = false;

@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    // This private method returns the LevelHandler component of the LevelHandler game object
     private LevelHandler GetLevelHandler()
     {
+        // Find the LevelHandler game object and return its LevelHandler component
         return GameObject.Find("LevelHandler").GetComponent<LevelHandler>();
     }
 
+    // This private method returns the NextLevelManager component of the NextLevelManager game object
     private NextLevelManager GetNextLevelManager()
     {
+        // Find the NextLevelManager game object and return its NextLevelManager component
         return GameObject.Find("NextLevelManager").GetComponent<NextLevelManager>();
     }
+
 
     private void Update()
     {

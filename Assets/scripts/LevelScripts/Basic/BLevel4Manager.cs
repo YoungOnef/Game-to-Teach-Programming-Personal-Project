@@ -11,7 +11,7 @@ public class BLevel5Manager : LevelBase
     {
         base.Setup(handler);
         print("Level1Manager Running");
-
+        //definind spawn coin location
         handler.spawn(prefab, new Vector3(40, platformLevel, 0));
 
         // Instantiate the coins and add them to the list
