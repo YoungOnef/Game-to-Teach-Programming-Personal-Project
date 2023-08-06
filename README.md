@@ -1,6 +1,6 @@
 # Game to Teach Programming - Programming Adventure
 
-"Game to Teach Programming" is an engaging educational game that utilizes Lua programming language, offering a progressive learning experience from basic functions to conditional statements and loops. With immediate feedback and a discovery-based approach, it fosters creativity and problem-solving skills while reinforcing learning through a spiral curriculum. Powered by the Moon Sharp library, the game makes programming enjoyable and effective for all skill levels.
+"Programming Adventure" is an engaging educational game that utilizes Lua programming language, offering a progressive learning experience from basic functions to conditional statements and loops. With immediate feedback and a discovery-based approach, it fosters creativity and problem-solving skills while reinforcing learning through a spiral curriculum. Powered by the Moon Sharp library, the game makes programming enjoyable and effective for all skill levels.
 
 [Play the Game - Programming Adventure (Click Me)](https://youngone1.itch.io/game-to-teach-programming)
 
